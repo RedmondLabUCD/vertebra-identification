@@ -1,0 +1,339 @@
+default: &DEFAULT
+  num_epochs: 20
+  batch_size: 64
+  
+UNet_ROI_FemHead:
+  <<: *DEFAULT
+  model_name: UNet
+  image_dir: "ROI"
+  target_dir: "ROI FemHead Masks"
+  target_sfx: ".png"
+  checkpoint_dir: "Checkpoints/ROI FemHead UNet"
+  log_dir: 'Logs/ROI FemHead UNet'
+  dataset_class: "HipSegDataset"
+  loss: "BCELoss"
+  eval_metric: "dice_metric"
+  num_classes: 1
+  batch_size: 8
+  input_size: 512
+  early_stopping_up: True
+
+Final_UNet_ROI_FemHead:
+  <<: *DEFAULT
+  model_name: UNet
+  image_dir: "ROI"
+  target_dir: "ROI FemHead Masks"
+  target_sfx: ".png"
+  checkpoint_dir: "Checkpoints/Final ROI FemHead UNet"
+  log_dir: 'Logs/Final ROI FemHead UNet'
+  dataset_class: "HipSegDataset"
+  loss: "BCELoss"
+  eval_metric: "dice_metric"
+  num_classes: 1
+  batch_size: 8
+  input_size: 512
+  early_stopping_up: True
+
+UNet_ROI:
+  <<: *DEFAULT
+  model_name: UNet
+  image_dir: "Images"
+  target_dir: "ROI Masks"
+  target_sfx: ".png"
+  checkpoint_dir: "Checkpoints/ROI UNet"
+  log_dir: 'Logs/ROI UNet'
+  dataset_class: "HipSegDataset"
+  loss: "BCELoss"
+  eval_metric: "dice_metric"
+  num_classes: 1
+  batch_size: 8
+  input_size: 512
+  early_stopping_up: True
+  
+Final_UNet_ROI:
+  <<: *DEFAULT
+  model_name: UNet
+  image_dir: "Images"
+  target_dir: "ROI Masks"
+  target_sfx: ".png"
+  checkpoint_dir: "Checkpoints/Final ROI UNet"
+  log_dir: 'Logs/Final ROI UNet'
+  dataset_class: "HipSegDataset"
+  loss: "BCELoss"
+  eval_metric: "dice_metric"
+  num_classes: 1
+  batch_size: 8
+  input_size: 512
+  early_stopping_up: True
+  
+UNet_FemHead:
+  <<: *DEFAULT
+  model_name: UNet
+  image_dir: "Images"
+  target_dir: "FemHead Masks"
+  target_sfx: ".png"
+  checkpoint_dir: "Checkpoints/FemHead UNet"
+  log_dir: 'Logs/FemHead UNet'
+  dataset_class: "HipSegDataset"
+  loss: "BCELoss"
+  eval_metric: "dice_metric"
+  num_classes: 1
+  batch_size: 8
+  input_size: 512
+  early_stopping_up: True
+  
+UNet_LM:
+  <<: *DEFAULT
+  model_name: UNet
+  image_dir: "Images"
+  target_dir: "LM Heatmaps"
+  target_sfx: ".npy"
+  checkpoint_dir: "Checkpoints/LM UNet"
+  log_dir: 'Logs/LM UNet'
+  dataset_class: "HipSegDataset"
+  loss: "MSELoss"
+  eval_metric: "pb_mse_metric"
+  num_classes: 22
+  batch_size: 8
+  input_size: 256
+  early_stopping_up: False
+  
+UNet_LM_CL:
+  <<: *DEFAULT
+  model_name: UNet
+  image_dir: "Images"
+  target_dir: "LM Heatmaps"
+  target_sfx: ".npy"
+  checkpoint_dir: "Checkpoints/LM UNet CL"
+  log_dir: 'Logs/LM UNet CL'
+  dataset_class: "HipSegDataset"
+  loss: "custom_weighted_loss"
+  eval_metric: "pb_mse_metric"
+  num_classes: 22
+  batch_size: 8
+  input_size: 256
+  early_stopping_up: False
+  
+Final_UNet_LM_CL:
+  <<: *DEFAULT
+  model_name: UNet
+  image_dir: "Images"
+  target_dir: "LM Heatmaps"
+  target_sfx: ".npy"
+  checkpoint_dir: "Checkpoints/Final LM UNet CL"
+  log_dir: 'Logs/Final LM UNet CL'
+  dataset_class: "HipSegDataset"
+  loss: "custom_weighted_loss"
+  eval_metric: "pb_mse_metric"
+  num_classes: 22
+  batch_size: 8
+  input_size: 256
+  early_stopping_up: False
+  
+UNet_LM_CL10:
+  <<: *DEFAULT
+  model_name: UNet
+  image_dir: "Images"
+  target_dir: "LM Heatmaps"
+  target_sfx: ".npy"
+  checkpoint_dir: "Checkpoints/LM UNet CL10"
+  log_dir: 'Logs/LM UNet CL10'
+  dataset_class: "HipSegDataset"
+  loss: "custom_weighted_loss10"
+  eval_metric: "pb_mse_metric"
+  num_classes: 22
+  batch_size: 8
+  input_size: 256
+  early_stopping_up: False
+  
+UNet_LM_B:
+  <<: *DEFAULT
+  model_name: UNet
+  image_dir: "Images"
+  target_dir: "LM Heatmaps Back"
+  target_sfx: ".npy"
+  checkpoint_dir: "Checkpoints/LM UNet B"
+  log_dir: 'Logs/LM UNet B'
+  dataset_class: "HipSegDataset"
+  loss: "MSELoss"
+  eval_metric: "pb_mse_metric_back"
+  num_classes: 23
+  batch_size: 8
+  input_size: 256
+  early_stopping_up: False
+  
+UNet_MSE_LM:
+  <<: *DEFAULT
+  model_name: UNet_MSE
+  image_dir: "Images"
+  target_dir: "LM Heatmaps"
+  target_sfx: ".npy"
+  checkpoint_dir: "Checkpoints/LM UNet MSE"
+  log_dir: 'Logs/LM UNet MSE'
+  dataset_class: "HipSegDataset"
+  loss: "MSELoss"
+  eval_metric: "pb_mse_metric"
+  num_classes: 22
+  batch_size: 8
+  input_size: 256
+  early_stopping_up: False
+  
+UNet_deep_LM:
+  <<: *DEFAULT
+  model_name: UNet_deep
+  image_dir: "Images"
+  target_dir: "LM Heatmaps"
+  target_sfx: ".npy"
+  checkpoint_dir: "Checkpoints/LM UNet deep"
+  log_dir: 'Logs/LM UNet deep'
+  dataset_class: "HipSegDataset"
+  loss: "MSELoss"
+  eval_metric: "pb_mse_metric"
+  num_classes: 22
+  batch_size: 8
+  input_size: 256
+  early_stopping_up: False
+  
+Attn_UNet_LM:
+  <<: *DEFAULT
+  model_name: Attn_UNet
+  image_dir: "Images"
+  target_dir: "LM Heatmaps"
+  target_sfx: ".npy"
+  checkpoint_dir: "Checkpoints/Attn UNet LM"
+  log_dir: 'Logs/Attn UNet LM'
+  dataset_class: "HipSegDataset"
+  loss: "MSELoss"
+  eval_metric: "pb_mse_metric"
+  num_classes: 22
+  batch_size: 8
+  input_size: 256
+  early_stopping_up: False
+  
+Attn_UNet_LM_CL:
+  <<: *DEFAULT
+  model_name: Attn_UNet
+  image_dir: "Images"
+  target_dir: "LM Heatmaps"
+  target_sfx: ".npy"
+  checkpoint_dir: "Checkpoints/Attn UNet LM CL"
+  log_dir: 'Logs/Attn UNet LM CL'
+  dataset_class: "HipSegDataset"
+  loss: "custom_weighted_loss"
+  eval_metric: "pb_mse_metric"
+  num_classes: 22
+  batch_size: 8
+  input_size: 256
+  early_stopping_up: False
+  
+Attn_UNet_LM_B:
+  <<: *DEFAULT
+  model_name: Attn_UNet
+  image_dir: "Images"
+  target_dir: "LM Heatmaps Back"
+  target_sfx: ".npy"
+  checkpoint_dir: "Checkpoints/Attn UNet LM B"
+  log_dir: 'Logs/Attn UNet LM B'
+  dataset_class: "HipSegDataset"
+  loss: "MSELoss"
+  eval_metric: "pb_mse_metric_back"
+  num_classes: 23
+  batch_size: 8
+  input_size: 256
+  early_stopping_up: False
+  
+UNet_ROI_LM:
+  <<: *DEFAULT
+  model_name: UNet
+  image_dir: "ROI LMs"
+  target_dir: "ROI LM Heatmaps"
+  target_sfx: ".npy"
+  checkpoint_dir: "Checkpoints/UNet ROI LM"
+  log_dir: 'Logs/UNet ROI LM'
+  dataset_class: "HipSegDataset"
+  loss: "MSELoss"
+  eval_metric: "pb_roi_mse_metric"
+  num_classes: 9
+  batch_size: 16
+  input_size: 128
+  early_stopping_up: False
+  
+UNet_ROI_LM_CL:
+  <<: *DEFAULT
+  model_name: UNet
+  image_dir: "ROI LMs"
+  target_dir: "ROI LM Heatmaps"
+  target_sfx: ".npy"
+  checkpoint_dir: "Checkpoints/UNet ROI LM CL"
+  log_dir: 'Logs/UNet ROI LM CL'
+  dataset_class: "HipSegDataset"
+  loss: "custom_weighted_loss"
+  eval_metric: "pb_roi_mse_metric"
+  num_classes: 9
+  batch_size: 16
+  input_size: 128
+  early_stopping_up: False
+  
+Final_UNet_ROI_LM_CL:
+  <<: *DEFAULT
+  model_name: UNet
+  image_dir: "ROI LMs"
+  target_dir: "ROI LM Heatmaps"
+  target_sfx: ".npy"
+  checkpoint_dir: "Checkpoints/Final UNet ROI LM CL"
+  log_dir: 'Logs/Final UNet ROI LM CL'
+  dataset_class: "HipSegDataset"
+  loss: "custom_weighted_loss"
+  eval_metric: "pb_roi_mse_metric"
+  num_classes: 9
+  batch_size: 16
+  input_size: 128
+  early_stopping_up: False
+  
+UNet_ROI_LM_Double:
+  <<: *DEFAULT
+  model_name: UNet
+  image_dir: "ROI LMs Double"
+  target_dir: "ROI LM Heatmaps Double"
+  target_sfx: ".npy"
+  checkpoint_dir: "Checkpoints/UNet ROI LM Double"
+  log_dir: 'Logs/UNet ROI LM Double'
+  dataset_class: "HipSegDataset"
+  loss: "MSELoss"
+  eval_metric: "pb_roi_mse_metric"
+  num_classes: 9
+  batch_size: 8
+  input_size: 256
+  early_stopping_up: False
+  
+UNet_ROI_LM_Double_CL:
+  <<: *DEFAULT
+  model_name: UNet
+  image_dir: "ROI LMs Double"
+  target_dir: "ROI LM Heatmaps Double"
+  target_sfx: ".npy"
+  checkpoint_dir: "Checkpoints/UNet ROI LM Double CL"
+  log_dir: 'Logs/UNet ROI LM Double CL'
+  dataset_class: "HipSegDataset"
+  loss: "custom_weighted_loss"
+  eval_metric: "pb_roi_mse_metric"
+  num_classes: 9
+  batch_size: 8
+  input_size: 256
+  early_stopping_up: False
+  
+UNet_ROI_LM_MSE:
+  <<: *DEFAULT
+  model_name: UNet_MSE
+  image_dir: "ROI LMs Double"
+  target_dir: "ROI LM Heatmaps Double"
+  target_sfx: ".npy"
+  checkpoint_dir: "Checkpoints/UNet ROI LM Double MSE"
+  log_dir: 'Logs/UNet ROI LM Double MSE'
+  dataset_class: "HipSegDataset"
+  loss: "MSELoss"
+  eval_metric: "pb_roi_mse_metric"
+  num_classes: 9
+  batch_size: 8
+  input_size: 256
+  early_stopping_up: False

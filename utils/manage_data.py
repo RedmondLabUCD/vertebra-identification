@@ -36,7 +36,7 @@ def prep_data():
     df_x = pd.read_excel(excel_file)
 
     # Loop through each row in the Excel file and process
-    for index, row in df.iterrows():
+    for index, row in df_x.iterrows():
         create_data_file(row,df)
 
     df2 = df.replace('', np.nan, regex=True)

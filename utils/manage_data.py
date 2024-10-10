@@ -6,8 +6,8 @@ import os
 import itertools
 import math
 from glob import glob
-from sklearn.utils import shuffle
-from sklearn.model_selection import train_test_split
+from scikit-learn.utils import shuffle
+from scikit-learn.model_selection import train_test_split
 import shutil
 import random
 import seaborn as sns

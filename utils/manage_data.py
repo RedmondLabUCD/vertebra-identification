@@ -19,12 +19,6 @@ from utils.landmark_prep import prep_landmarks
 from utils.heatmaps import create_hm, create_roi_hm, create_hm_w_back, pb_create_hm, pb_create_hm_aug
 from utils.feature_extraction import extract_image_size
 from utils.data_prep import aug_femhead_data, augment_lm_data, doughnut_contrast, size_by_black
-
-
-if __name__ == '__main__':
-
-    prep_data()
-    plot_images_with_points()
     
 
 def prep_data():

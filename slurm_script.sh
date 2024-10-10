@@ -23,4 +23,4 @@ source /trinity/home/r094879/vertebra-identification/bin/activate
 
 # ----- Your tasks -----
 echo "Hello world"
-python utils.manage_data.py
+python main.py

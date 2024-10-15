@@ -26,9 +26,10 @@ def prep_data():
     df = pd.DataFrame(columns = ['image','id','group','t4x','t4y','t5x','t5y','t6x','t6y','t7x','t7y','t8x','t8y','t9x','t9y',
                              't10x','t10y','t11x','t11y','t12x','t12y','l1x','l1y','l2x','l2y','l3x','l3y','l4x','l4y'])
 
-    filenames = [os.path.normpath(file).split(os.path.sep)[-1].split('.')[0]
+    filenames = [os.path.normpath(file).split(os.path.sep)[-1][:-4]
                      for file in glob('//data/scratch/r094879/data/images/*.dcm')]
 
+    print(filenames)
     df['image'] = filenames
 
     # Read the Excel file
@@ -50,6 +51,9 @@ def create_data_file(row,df):
     # Extract ID and group
     id = row['id']
     group = row['group']
+
+    print(id)
+    print(group)
 
     # Open corresponding SPSS file
     spss_file = f"/data/scratch/r094879/data/annotations/{group}_mergedABQQM_Ling_20140128.sav"

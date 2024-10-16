@@ -46,6 +46,7 @@ def prep_data():
 def create_data_file(row,df):
 
     vertebra_list = ['T4','T5','T6','T7','T8','T9','T10','T11','T12','L1','L2','L3','L4']
+    variable_names = {'RSI_1':'e1','RSI_2':'e2','RSI_3':'e3','RSI_4':'e4','RSII_2':'e4','RSIII_1':'ej'}
 
     # Extract ID and group
     id = row['id']
@@ -64,9 +65,9 @@ def create_data_file(row,df):
     # For each vertebra, get image name and x, y coordinates
     for vertebra in vertebra_list:
 
-        x = spss_row['e1_17971.'+str(vertebra)].values[0]
-        y = spss_row['e1_17972.'+str(vertebra)].values[0]
-        img = spss_row['e1_17962.'+str(vertebra)].values[0]
+        x = spss_row[variable_names[group]+'_17971.'+str(vertebra)].values[0]
+        y = spss_row[variable_names[group]+'_17972.'+str(vertebra)].values[0]
+        img = spss_row[variable_names[group]+'_17962.'+str(vertebra)].values[0]
 
         df.loc[df["image"]==img,str(vertebra)+'x'] = x
         df.loc[df["image"]==img,str(vertebra)+'y'] = y

@@ -130,7 +130,7 @@ def plot_images_with_points():
     
             print(f"Saved {output_file_path}")
         else:
-            print(f"No valid points to plot for {dicom_image_name}")
+            print(f"No valid points to plot for {image_name}")
 
     print("All images have been processed and saved as PNG files.")
             

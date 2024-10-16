@@ -32,8 +32,8 @@ def prep_data():
     df['image'] = filenames
 
     # Read the Excel file
-    excel_file = '//data/scratch/r094879/data/annotations/mappings.xlsx' 
-    df_x = pd.read_excel(excel_file)
+    ma_file = '//data/scratch/r094879/data/annotations/mappings.csv' 
+    df_x = pd.read_csv(excel_file)
 
     # Loop through each row in the Excel file and process
     for index, row in df_x.iterrows():

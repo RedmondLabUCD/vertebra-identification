@@ -84,7 +84,7 @@ def create_data_file(row,df):
 def plot_images_with_points():
 
     csv_file = '//data/scratch/r094879/data/annotations/annotations.csv' 
-    df_x = pd.read_csv(csv_file)
+    df = pd.read_csv(csv_file)
 
     dicom_dir = '//data/scratch/r094879/data/images'
     output_dir = '//data/scratch/r094879/data/images_with_points'

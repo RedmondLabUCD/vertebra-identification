@@ -23,13 +23,12 @@ from utils.data_prep import aug_femhead_data, augment_lm_data, doughnut_contrast
 
 def prep_data():
 
-    df = pd.DataFrame(columns = ['image','id','group','t4x','t4y','t5x','t5y','t6x','t6y','t7x','t7y','t8x','t8y','t9x','t9y',
-                             't10x','t10y','t11x','t11y','t12x','t12y','l1x','l1y','l2x','l2y','l3x','l3y','l4x','l4y'])
+    df = pd.DataFrame(columns = ['image','id','group','T4x','T4y','T5x','T5y','T6x','T6y','T7x','T7y','T8x','T8y','T9x','T9y',
+                             'T10x','T10y','T11x','T11y','T12x','T12y','L1x','L1y','L2x','L2y','L3x','L3y','L4x','L4y'])
 
     filenames = [os.path.normpath(file).split(os.path.sep)[-1][:-4]
                      for file in glob('//data/scratch/r094879/data/images/*.dcm')]
 
-    print(filenames)
     df['image'] = filenames
 
     # Read the Excel file
@@ -51,9 +50,6 @@ def create_data_file(row,df):
     # Extract ID and group
     id = row['id']
     group = row['group']
-
-    print(id)
-    print(group)
 
     # Open corresponding SPSS file
     spss_file = f"/data/scratch/r094879/data/annotations/{group}_mergedABQQM_Ling_20140128.sav"

@@ -6,7 +6,7 @@
 #SBATCH -t 0-12:00:00        ### The time limit in D-hh:mm:ss format
 #SBATCH -o /trinity/home/r094879/repositories/vertebra-identification/output/out_%j.log       ### Where to store the console output (%j is the job number)
 #SBATCH -e /trinity/home/r094879/repositories/vertebra-identification/error/error_%j.log      ### Where to store the error output
-#SBATCH --job-name=pt_hello  ### Name your job so you can distinguish between jobs
+#SBATCH --job-name=pp_data  ### Name your job so you can distinguish between jobs
 
 # ----- Load the modules -----
 module purge
@@ -22,5 +22,4 @@ source /trinity/home/r094879/vertebra-identification/bin/activate
 # replace the above path with your own virtualenv!
 
 # ----- Your tasks -----
-echo "Hello world"
 python main.py

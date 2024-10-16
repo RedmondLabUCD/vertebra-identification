@@ -97,7 +97,7 @@ def plot_images_with_points():
         dicom_file_path = os.path.join(dicom_dir, image_name)
 
         # Read the DICOM file
-        dicom_image = pydicom.dcmread(dicom_file_path)
+        dicom_image = dcmread(dicom_file_path)
 
         # Extract pixel array from the DICOM file
         pixel_array = dicom_image.pixel_array

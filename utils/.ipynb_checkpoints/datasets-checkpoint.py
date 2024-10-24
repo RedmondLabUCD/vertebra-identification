@@ -24,10 +24,10 @@ class SpineDataset(Dataset):
             
     def __getitem__(self, index): #getitem method
         filename = self.file_list[index]
-        input_filename = os.path.join(self.input_dir, filename+'.npy')
+        input_filename = os.path.join(self.input_dir, filename+'.png')
         output_filename = os.path.join(self.output_dir, filename+'.npy')
         # Load target and image
-        input = np.load(input_filename)
+        input = self.loader(input_filename)
         output = np.load(output_filename)
         # Apply transforms if given
         if self.input_tf is not None: 

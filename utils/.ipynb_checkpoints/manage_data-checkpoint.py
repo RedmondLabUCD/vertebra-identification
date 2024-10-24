@@ -3,6 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd 
 import os
+from PIL import Image
 import itertools
 import math
 from glob import glob
@@ -168,5 +169,7 @@ def create_dataset():
 
         hm = create_hm(xy_pairs,pixel_array.shape,new_dim=256.0,size=15)
         np.save(os.path.join(output_dir,image_name),hm)
-        np.save(os.path.join(output_dir_2,image_name),pixel_array)
+
+        image = Image.fromarray(pixel_array)
+        image.save(os.path.join(output_dir_2,image_name+'.png'))
 

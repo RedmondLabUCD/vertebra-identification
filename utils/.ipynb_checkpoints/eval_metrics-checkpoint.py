@@ -128,8 +128,8 @@ class pb_mse_metric(nn.Module):
         # Use input image to resize predictions
         image_dir = params.image_dir
         target_dir = "annotations/"
-        img = np.load(os.path.join(root,image_dir,filename))
-        img_size = img.shape
+        img = Image.open(os.path.join(root,image_dir,filename+".png"))
+        img_size = img.size
         img_size = np.asarray(img_size).astype(float)
         
         lm_pred[:,0] = lm_pred[:,0] * img_size[0]/float(params.input_size)

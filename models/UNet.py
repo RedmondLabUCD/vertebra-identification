@@ -142,7 +142,7 @@ def val(model, loader, criterion, eval_metric, params, checkpoint=None):
             valid_loss.update(loss) # update running loss value
             
             # Get filename
-            filenames = full_filenames[0]
+            filenames = full_filenames[0][:-4]
             filename = filenames.split("\\")[-1]
             metric_avg = eval_metric(targets,predictions,filename,params)
             metrics.append(metric_avg)

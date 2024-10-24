@@ -15,10 +15,8 @@ import scipy
 import pyreadstat
 from pydicom import dcmread
 from utils.roi_functions import create_ROI_mask, extract_ROI, resize_roi_lm, extract_ROI_from_lm, extract_ROI_from_lm_aug, extract_ROI_from_lm_aug2
-from utils.landmark_prep import prep_landmarks
-from utils.heatmaps import create_hm, create_roi_hm, create_hm_w_back, pb_create_hm, pb_create_hm_aug
+from utils.heatmaps import create_hm
 from utils.feature_extraction import extract_image_size
-from utils.data_prep import aug_femhead_data, augment_lm_data, doughnut_contrast, size_by_black
     
 
 def prep_data():

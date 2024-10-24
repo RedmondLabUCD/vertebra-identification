@@ -23,4 +23,4 @@ source /trinity/home/r094879/vertebra-identification/bin/activate
 
 # ----- Your tasks -----
 python main.py
-python final_training.py
+python final_training.py UNet_LM_CL --custom_loss True

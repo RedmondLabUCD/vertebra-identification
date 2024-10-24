@@ -169,7 +169,7 @@ def main():
         if early_stopping.early_stop:
             print("Early stopping")
             fig = plot_training(train_losses,train_accs,val_losses,val_accs,model_name=args.model_name+extra)
-            fig.savefig(os.path.join("figs", "{}_training_vis".format(args.model_name+extra))
+            fig.savefig(os.path.join(root,"figs", "{}_training_vis".format(args.model_name+extra)))
             break
 
     # Define "best" epoch
@@ -195,10 +195,10 @@ def main():
         "norm_std": norm_std
     }
 
-    with open(os.path.join(params.log_dir,"{}{}.json".format(args.model_name, extra)), 'w') as f:
+    with open(os.path.join(root,params.log_dir,"{}{}.json".format(args.model_name, extra)), 'w') as f:
         json.dump(logs, f)
 
-    chkpt = os.path.join(params.checkpoint_dir,"chkpt_{}".format(args.model_name+extra))
+    chkpt = os.path.join(root,params.checkpoint_dir,"chkpt_{}".format(args.model_name+extra))
 
 if __name__ == '__main__':
 

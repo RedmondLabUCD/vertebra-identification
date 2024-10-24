@@ -23,3 +23,4 @@ source /trinity/home/r094879/vertebra-identification/bin/activate
 
 # ----- Your tasks -----
 python main.py
+python final_training.py

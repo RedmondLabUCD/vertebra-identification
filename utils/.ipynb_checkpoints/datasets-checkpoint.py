@@ -24,8 +24,8 @@ class SpineDataset(Dataset):
             
     def __getitem__(self, index): #getitem method
         filename = self.file_list[index]
-        input_filename = os.path.join(self.input_dir, filename)
-        output_filename = os.path.join(self.output_dir, filename)
+        input_filename = os.path.join(self.input_dir, filename+'.npy')
+        output_filename = os.path.join(self.output_dir, filename+'.npy')
         # Load target and image
         input = np.load(input_filename)
         output = np.load(output_filename)

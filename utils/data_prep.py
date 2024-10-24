@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 from glob import glob
 import cv2
-from utils.datasets import HipSegDataset
+from utils import dataset
 from numpy import fliplr
 import math
 from tqdm import tqdm
@@ -26,7 +26,7 @@ def mean_and_std(index, data_dir, params, AUG):
     used in image normalization.
     Inspired by: towardsdatascience.com/how-to-calculate-the-mean-and-standard-deviation-normalizing-datasets-in-pytorch-704bd7d05f4c
     '''
-    Dataset = getattr(datasets,"HipSegDataset")
+    Dataset = getattr(datasets,"SpineDataset")
     
     # Define basic transform (resize and make tensor)
     transform = transforms.Compose([transforms.Resize((params.input_size,params.input_size)),
@@ -84,13 +84,13 @@ def mean_and_std(index, data_dir, params, AUG):
     return mean2, std2
 
 
-def final_mean_and_std(data_dir, params, AUG):
+def final_mean_and_std(data_dir, params):
     '''
     Calculates mean and standard deviation of images to be 
     used in image normalization.
     Inspired by: towardsdatascience.com/how-to-calculate-the-mean-and-standard-deviation-normalizing-datasets-in-pytorch-704bd7d05f4c
     '''
-    Dataset = getattr(datasets,"HipSegDataset")
+    Dataset = getattr(datasets,"SpineDataset")
     
     # Define basic transform (resize and make tensor)
     transform = transforms.Compose([transforms.Resize((params.input_size,params.input_size)),

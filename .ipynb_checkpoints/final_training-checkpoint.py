@@ -11,7 +11,6 @@ from sklearn.model_selection import KFold
 import shutil
 from glob import glob
 import gc
-from numba import cuda
 
 import torch
 import torch.nn as nn

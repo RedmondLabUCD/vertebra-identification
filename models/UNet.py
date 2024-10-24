@@ -173,9 +173,7 @@ def test(model, loader, eval_metric, params, checkpoint=None, name=None, extra=N
             predictions = model(inputs)
             filenames = full_filenames[0][:-4]
             filename = filenames.split("\\")[-1]
-            subdir = filenames.split("\\")[-3]
-            fold_num = filenames.split("\\")[-3].split(" ")[-1]
-            metric_avg = eval_metric(targets,predictions,filename,params,subdir,AUG,square=False)
+            metric_avg = eval_metric(targets,predictions,filename,params,square=False)
             metrics.append(metric_avg)
             if prediction_dir is not None:
                 if "ROI_LM" in str(name):

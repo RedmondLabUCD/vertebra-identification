@@ -2,7 +2,7 @@ default: &DEFAULT
   num_epochs: 20
   batch_size: 64
   
-Final_UNet_LM_CL:
+UNet_LM_CL:
   <<: *DEFAULT
   model_name: UNet
   image_dir: "imgs"

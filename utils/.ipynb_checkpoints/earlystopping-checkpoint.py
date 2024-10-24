@@ -8,7 +8,7 @@ class EarlyStopping:
     
     """
     
-    def __init__(self, fold, patience=5, verbose=False, up=True, path='checkpoint.pt', trace_func=print):
+    def __init__(self, patience=5, verbose=False, up=True, path='checkpoint.pt', trace_func=print):
         """
         Args:
             patience (int): How long to wait after last time validation accuracy improved.
@@ -29,7 +29,6 @@ class EarlyStopping:
         self.early_stop = False
         self.path = path
         self.trace_func = trace_func
-        self.fold = fold
         self.up = up
         if self.up:
             self.val_acc_worst = 0
@@ -64,7 +63,7 @@ class EarlyStopping:
             'model': model.state_dict(),
             'epoch': epoch
         }
-        torch.save(checkpoint_dict, os.path.join(self.path,"chkpt_{}_fold_{}".format(model_name+extra,self.fold)))
+        torch.save(checkpoint_dict, os.path.join(self.path,"chkpt_{}".format(model_name+extra)))
         self.val_acc_worst = val_acc
         
     def load_checkpoint(optimizer, model, filename):

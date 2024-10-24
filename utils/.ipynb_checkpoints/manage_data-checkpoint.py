@@ -136,151 +136,39 @@ def plot_images_with_points():
             
 
 def create_dataset():
+
+    csv_file = '//data/scratch/r094879/data/annotations/annotations.csv' 
+    df = pd.read_csv(csv_file)
+
+    dicom_dir = '//data/scratch/r094879/data/images'
+    output_dir = '//data/scratch/r094879/data/heatmaps'
+    output_dir_2 = '//data/scratch/r094879/data/imgs'
     
-    root = os.path.abspath(os.path.join(os.getcwd(), os.pardir))
-    
-    # Remove all of previous dataset so no replicas
-    save_dir = os.path.join(root,"Dataset")
-    
-    if not os.path.exists(os.path.join(save_dir,"Images AUG")):
-        os.makedirs(os.path.join(save_dir,"Images AUG"))
-    if not os.path.exists(os.path.join(save_dir,"ROI")):
-        os.makedirs(os.path.join(save_dir,"ROI"))
 
-    csv_filename_set = {os.path.normpath(file).split(os.path.sep)[-1].split('.')[0]
-                        for file in glob(os.path.join(save_dir,fold_name,"CSVs","*.csv"))}
+    if not os.path.exists(output_dir):
+        os.makedirs(output_dir)
 
-    filenames = [os.path.normpath(file).split(os.path.sep)[-1].split('.')[0]
-                 for file in glob(os.path.join(save_dir,fold_name,"Images","*.png"))]
-    
-    current_dir = os.path.join(save_dir,fold_name)
-#         aug_femhead_data(current_dir)
-#         augment_lm_data(current_dir)
+    if not os.path.exists(output_dir_2):
+        os.makedirs(output_dir_2)
 
-#         aug_csv_filenames = [os.path.normpath(file).split(os.path.sep)[-1].split('.')[0]
-#                             for file in glob(os.path.join(save_dir,fold_name,"CSVs AUG","*.csv"))]
+    for index, row in df.iterrows():
+        image_name = row['image']  # Get the DICOM image name from the 'image' column
+        dicom_file_path = os.path.join(dicom_dir, image_name+'.dcm')
 
-    # Go through each image and create a LM mask
-    for filename in filenames:
+        # Read the DICOM file
+        dicom_image = dcmread(dicom_file_path)
 
-        # Create ROI Mask and extract ROI of images and femhead masks
-        image_size = extract_image_size(os.path.join(current_dir,"Images",filename+".png"))
-#             roi_mask = create_ROI_mask(current_dir,filename)
-        extract_ROI(current_dir,filename)
-        extract_ROI(current_dir,filename,img_dir="FemHead Masks",save_dir="ROI FemHead Masks")
+        # Extract pixel array from the DICOM file
+        pixel_array = dicom_image.pixel_array
 
-#             if filename in csv_filename_set:
-#                 landmarks, image_size = prep_landmarks(filename,os.path.join(current_dir,"CSVs"))
-#                 hm = create_hm_w_back(landmarks,image_size,new_dim=256.0,size=15)
-#                 np.save(os.path.join(current_dir,"LM Heatmaps Back",filename),hm)
-            
-# #                 hm = create_hm_w_back(landmarks,image_size,new_dim=256.0,size=30)
-# #                 np.save(os.path.join(current_dir,"LM Heatmaps30",filename),hm)
+        # Get the x and y values for each vertebra
+        x_values = row.iloc[3:29:2].values 
+        y_values = row.iloc[4:29:2].values
 
-#                 # Create ROI Mask, extract ROI of images and femhead masks, and create ROI heatmaps
-            
-#                 # Step 2: Basis
-#                 extract_ROI_from_lm(current_dir,filename,landmarks,image_size,dim=128,
-#                             save_dir="ROI LMs",tl_dir="ROI LM Top-Lefts")
-#                 pb_create_hm(current_dir,filename,landmarks,image_size,save_dir="ROI LM Heatmaps",
-#                      tl_dir="ROI LM Top-Lefts",dim=128,size=5)
-            
-#                 # Step 2: Data augmentation
-#                 extract_ROI_from_lm_aug(current_dir,filename,landmarks,image_size,dim=128,
-#                             save_dir="ROI LMs AUG",tl_dir="ROI LM Top-Lefts AUG")
-#                 pb_create_hm_aug(current_dir,filename,landmarks,image_size,save_dir="ROI LM Heatmaps AUG",
-#                      tl_dir="ROI LM Top-Lefts AUG",dim=128,size=5)
-            
-#                 # Step 2: Double size
-#                 extract_ROI_from_lm(current_dir,filename,landmarks,image_size,dim=256,
-#                             save_dir="ROI LMs Double",tl_dir="ROI LM Top-Lefts Double")
-#                 pb_create_hm(current_dir,filename,landmarks,image_size,save_dir="ROI LM Heatmaps Double",
-#                      tl_dir="ROI LM Top-Lefts Double",dim=256,size=5)
-            
-#                 # Step 2: Data Augmentation 2
-#                 extract_ROI_from_lm_aug2(current_dir,filename,landmarks,image_size,dim=128,
-#                             save_dir="ROI LMs AUG2",tl_dir="ROI LM Top-Lefts AUG2")
-#                 pb_create_hm(current_dir,filename,landmarks,image_size,save_dir="ROI LM Heatmaps AUG2",
-#                      tl_dir="ROI LM Top-Lefts AUG2",dim=128,size=5)
-            
-#                 # Step 2: Data Augmentation 2 + Double Size
-#                 extract_ROI_from_lm_aug2(current_dir,filename,landmarks,image_size,dim=256,
-#                             save_dir="ROI LMs Double AUG2",tl_dir="ROI LM Top-Lefts Double AUG2")
-#                 pb_create_hm(current_dir,filename,landmarks,image_size,save_dir="ROI LM Heatmaps Double AUG2",
-#                      tl_dir="ROI LM Top-Lefts Double AUG2",dim=256,size=5)
-            
-#         for filename in aug_csv_filenames:   
-#             landmarks = pd.read_csv(os.path.join(save_dir,fold_name,"CSVs AUG",filename+'.csv'))
-#             landmarks = np.asarray(landmarks).astype(float).reshape((-1,2))
-#             image_size = landmarks[0,:]
-#             landmarks = landmarks[1:,:]
+        # Combine x and y values and filter out NaN pairs
+        xy_pairs = np.array(list(zip(x_values, y_values)))
 
-#             hm = create_hm(landmarks,image_size,new_dim=256.0,size=15)
-#             np.save(os.path.join(current_dir,"LM Heatmaps AUG",filename),hm)
+        hm = create_hm(xy_pairs,pixel_array.shape,new_dim=256.0,size=15)
+        np.save(os.path.join(output_dir,image_name),hm)
+        np.save(os.path.join(output_dir_2,image_name),pixel_array)
 
-
-def split_data(k=10):
-    '''
-    Splits up the pre-processed images, femoral head masks, and landmark CSV files 
-    into 10 folds. Since there might not be femoral head masks or landmark files for 
-    each image, the data is split by the smallest data type first and the remainder 
-    in each of the other types is split up after.
-    
-    '''
-    
-    root = os.path.abspath(os.path.join(os.getcwd(), os.pardir))
-    
-    # Remove all of previous dataset so no replicas
-    save_dir = os.path.join(root,"Dataset")
-    
-    images = [os.path.normpath(file).split(os.path.sep)[-1].split('.')[0] 
-              for file in glob(os.path.join(save_dir,"Images","*.png"))]
-    masks = [os.path.normpath(file).split(os.path.sep)[-1].split('.')[0] 
-             for file in glob(os.path.join(save_dir,"FemHead Masks","*.png"))]
-    csvs = [os.path.normpath(file).split(os.path.sep)[-1].split('.')[0] 
-            for file in glob(os.path.join(save_dir,"CSVs","*.csv"))]
-    
-    images_set = set(images)
-    masks_set = set(masks)
-    csvs_set = set(csvs)
-    
-    data = sorted([images,masks,csvs],key=len)
-
-    # Split data into datasets based on smallest type first
-    for i in range(len(data)):
-        split = 1/k
-        split_size = int(split * len(data[i]))
-        remain_size = len(data[i]) - k*split_size
-        data[i] = shuffle(data[i])
-        fold_sizes = np.ones(k)*split_size
-        
-        for r in range(remain_size):
-            fold_sizes[r] = fold_sizes[r]+1
-        
-        start = 0
-        # Create the folds
-        for n in range(k):
-            fold = data[i][int(start):int(start+fold_sizes[n])]
-            
-            fold_name = "Fold " + str(n+1)
-            if not os.path.exists(os.path.join(save_dir,fold_name)):
-                os.makedirs(os.path.join(save_dir,fold_name))
-                os.makedirs(os.path.join(save_dir,fold_name,"Images"))
-                os.makedirs(os.path.join(save_dir,fold_name,"FemHead Masks"))
-                os.makedirs(os.path.join(save_dir,fold_name,"CSVs"))
-
-            for file in fold:
-                if os.path.exists(os.path.join(save_dir,"FemHead Masks",file+".png")):
-                    shutil.copy(os.path.join(save_dir,"FemHead Masks",file+".png"),
-                                os.path.join(save_dir,fold_name,"FemHead Masks",file+".png"))
-                    masks.remove(file)
-                if os.path.exists(os.path.join(save_dir,"Images",file+".png")):
-                    shutil.copy(os.path.join(save_dir,"Images",file+".png"),
-                                os.path.join(save_dir,fold_name,"Images",file+".png"))
-                    images.remove(file)
-                if os.path.exists(os.path.join(save_dir,"CSVs",file+".csv")):
-                    shutil.copy(os.path.join(save_dir,"CSVs",file+".csv"),
-                                os.path.join(save_dir,fold_name,"CSVs",file+".csv"))
-                    csvs.remove(file)
-                    
-            start = start + fold_sizes[n]

@@ -103,14 +103,14 @@ class net(nn.Module):
         return torch.sigmoid(out)
     
     
-def train(model, device, loader, optimizer, criterion, params=None, subdir=None, AUG=None):
+def train(model, device, loader, optimizer, criterion, params=None):
     n_steps = len(loader)  
     model.train()
 
     # iterate over batches
     for step, (batch, targets, filenames) in enumerate(loader):
-        batch = batch.to(device)
-        targets = targets.to(device)
+        # batch = batch.to(device)
+        # targets = targets.to(device)
         optimizer.zero_grad() # clear previous gradient computation
         predictions = model(batch) # forward propagation  
         loss = criterion(predictions, targets) # calculate the loss
@@ -121,7 +121,7 @@ def train(model, device, loader, optimizer, criterion, params=None, subdir=None,
         yield step, n_steps, float(loss)
         
         
-def val(model, device, loader, criterion, eval_metric, params, subdir="Fold 1", checkpoint=None, AUG=False):
+def val(model, loader, criterion, eval_metric, params, checkpoint=None):
     if checkpoint is not None:
 #         load_checkpoint(optimizer=None, model, checkpoint)
         model_state = torch.load(checkpoint)
@@ -135,24 +135,23 @@ def val(model, device, loader, criterion, eval_metric, params, subdir="Fold 1", 
     # Don't need gradients for validation, so wrap in no_grad to save memory
     with torch.no_grad(): # prevent tracking history (and using memory)
         for step, (batch, targets, full_filenames) in enumerate(loader):
-            batch = batch.to(device)
-            targets = targets.to(device)
+            # batch = batch.to(device)
+            # targets = targets.to(device)
             predictions = model(batch) # forward propagation
             loss = criterion(predictions, targets) # calculate the loss
             valid_loss.update(loss) # update running loss value
             
             # Get filename
-            filenames = full_filenames[0][:-4]
+            filenames = full_filenames[0]
             filename = filenames.split("\\")[-1]
-            subdir = filenames.split("\\")[-3]
-            metric_avg = eval_metric(targets,predictions,filename,params,subdir,AUG)
+            metric_avg = eval_metric(targets,predictions,filename,params)
             metrics.append(metric_avg)
     acc = sum(metrics)/len(metrics)
     return valid_loss.value, acc
 
 
-def test(model, device, loader, eval_metric, params, checkpoint=None, name=None, extra=None,
-         prediction_dir=None, AUG=False):
+def test(model, loader, eval_metric, params, checkpoint=None, name=None, extra=None,
+         prediction_dir=None):
     if checkpoint is not None:
         model_state = torch.load(checkpoint)
         model.load_state_dict(model_state['model']) 

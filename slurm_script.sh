@@ -11,7 +11,7 @@
 # ----- Load the modules -----
 module purge
 module load Python/3.9.5-GCCcore-10.3.0
-# replace with required python version! (check with module avail which versions are available)
+import utils
 
 # If you need to read/write many files quickly in tmp directory use:
 source "/tmp/${SLURM_JOB_USER}.${SLURM_JOB_ID}/prolog.env"
@@ -19,7 +19,6 @@ source "/tmp/${SLURM_JOB_USER}.${SLURM_JOB_ID}/prolog.env"
 # ----- Activate virtual environment -----
 # Do this after loading python module
 source /trinity/home/r094879/vertebra-identification/bin/activate
-# replace the above path with your own virtualenv!
 
 # ----- Your tasks -----
 python main.py

@@ -103,7 +103,7 @@ class net(nn.Module):
         return torch.sigmoid(out)
     
     
-def train(model, device, loader, optimizer, criterion, params=None):
+def train(model, loader, optimizer, criterion, params=None):
     n_steps = len(loader)  
     model.train()
 
@@ -121,7 +121,7 @@ def train(model, device, loader, optimizer, criterion, params=None):
         yield step, n_steps, float(loss)
         
         
-def val(model, loader, criterion, eval_metric, params, checkpoint=None):
+def val(model, criterion, eval_metric, params, checkpoint=None):
     if checkpoint is not None:
 #         load_checkpoint(optimizer=None, model, checkpoint)
         model_state = torch.load(checkpoint)

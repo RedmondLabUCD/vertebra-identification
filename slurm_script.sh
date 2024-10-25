@@ -20,5 +20,4 @@ source "/tmp/${SLURM_JOB_USER}.${SLURM_JOB_ID}/prolog.env"
 source /trinity/home/r094879/vertebra-detection/bin/activate
 
 # ----- Your tasks -----
-python main.py
 python final_training.py UNet_LM_CL --custom_loss True

@@ -70,7 +70,7 @@ def main():
     metrics = eval_metric()
 
     # Get root for dataset
-    root = '//data/scratch/r094879/data/'
+    root = '//data/scratch/r094879/data'
 
     csv_file = os.path.join(root,'annotations/annotations.csv')
     csv_df = pd.read_csv(csv_file)
@@ -106,6 +106,8 @@ def main():
         
     # Calculate mean and std for dataset normalization 
     norm_mean,norm_std = final_mean_and_std(root,params)
+    print(norm_mean)
+    print(norm_std)
 
     # Define transform for images
     transform=transforms.Compose([transforms.Resize((params.input_size,params.input_size)),
@@ -141,7 +143,7 @@ def main():
     train_accs = []
 
     # Initialize early stopping
-    early_stopping = EarlyStopping(verbose=True, patience=10, up=params.early_stopping_up, path=params.checkpoint_dir)
+    early_stopping = EarlyStopping(verbose=True, patience=10, up=params.early_stopping_up, path=os.path.join(root,params.checkpoint_dir))
 
     # ==================== TRAIN THE MODEL FOR ONE FOLD ====================
 
@@ -155,7 +157,7 @@ def main():
         train_loss_decay = run_train_generator(train_generator)
 
         # Evaluate on both the training and validation set.
-        val_loss, val_acc = val(model, val_loader_eval, criterion, metrics, params)
+        val_loss, val_acc = val(model, criterion, val_loader_eval, metrics, params)
 
         # Collect some data for logging purposes. 
         val_losses.append(float(val_loss))

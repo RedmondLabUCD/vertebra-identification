@@ -157,7 +157,7 @@ def main():
         train_loss_decay = run_train_generator(train_generator)
 
         # Evaluate on both the training and validation set.
-        val_loss, val_acc = val(model, criterion, val_loader_eval, metrics, params)
+        val_loss, val_acc = val(model, val_loader_eval, criterion, metrics, params)
 
         # Collect some data for logging purposes. 
         val_losses.append(float(val_loss))

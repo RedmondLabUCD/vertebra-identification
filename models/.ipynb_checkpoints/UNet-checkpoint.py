@@ -121,7 +121,7 @@ def train(model, loader, optimizer, criterion, params=None):
         yield step, n_steps, float(loss)
         
         
-def val(model, criterion, eval_metric, params, checkpoint=None):
+def val(model, loader, criterion, eval_metric, params, checkpoint=None):
     if checkpoint is not None:
 #         load_checkpoint(optimizer=None, model, checkpoint)
         print(checkpoint)

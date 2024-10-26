@@ -142,7 +142,7 @@ def val(model, loader, criterion, eval_metric, params, checkpoint=None):
             valid_loss.update(loss) # update running loss value
             
             # Get filename
-            filenames = full_filenames[0][:-4]
+            filenames = full_filenames[0]
             filename = filenames.split("\\")[-1]
             metric_avg = eval_metric(targets,predictions,filename,params)
             metrics.append(metric_avg)
@@ -171,7 +171,7 @@ def test(model, loader, eval_metric, params, checkpoint=None, name=None, extra=N
             inputs = inputs.to(device)
             targets = targets.to(device)
             predictions = model(inputs)
-            filenames = full_filenames[0][:-4]
+            filenames = full_filenames[0]
             filename = filenames.split("\\")[-1]
             metric_avg = eval_metric(targets,predictions,filename,params,square=False)
             metrics.append(metric_avg)

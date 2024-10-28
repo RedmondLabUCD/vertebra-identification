@@ -187,6 +187,7 @@ def view_heatmaps():
     
     # Initialize an array to store the sums of each slice
     cumulative_sum = np.zeros(data.shape[1:], dtype=data.dtype)
+    print(data.shape)
     
     # Iterate through each slice in the 3D array
     for i in range(data.shape[0]):

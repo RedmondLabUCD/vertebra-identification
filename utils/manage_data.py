@@ -166,7 +166,7 @@ def create_dataset():
         # Combine x and y values and filter out NaN pairs
         xy_pairs = np.array(list(zip(x_values, y_values)))
 
-        hm = create_hm(xy_pairs,pixel_array.shape,new_dim=256.0,size=15)
+        hm = create_hm(xy_pairs,pixel_array.shape,new_dim=256.0,size=5)
         np.save(os.path.join(output_dir,image_name),hm)
 
         image = Image.fromarray(pixel_array)

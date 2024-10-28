@@ -112,7 +112,7 @@ class pb_mse_metric(nn.Module):
     def __init__(self):
         super(pb_mse_metric, self).__init__()
     
-    def forward(self,target,prediction,filename,params,square=True):
+    def forward(self,target,prediction,filename,params):
         prediction = prediction.cpu().detach().numpy()
         lm_pred = np.zeros((params.num_classes,2))
         root = '//data/scratch/r094879/data/'
@@ -151,7 +151,7 @@ class pb_mse_metric(nn.Module):
         lm_targets = xy_pairs.reshape((-1,2))
         lm_targets = np.nan_to_num(lm_targets)
 
-        mse = mean_squared_error(lm_targets, lm_pred, squared=square)
+        mse = mean_squared_error(lm_targets, lm_pred)
 
         return mse
     

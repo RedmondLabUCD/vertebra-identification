@@ -143,7 +143,6 @@ def create_dataset():
     output_dir = '//data/scratch/r094879/data/heatmaps'
     output_dir_2 = '//data/scratch/r094879/data/imgs'
     
-
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
 
@@ -172,4 +171,39 @@ def create_dataset():
 
         image = Image.fromarray(pixel_array)
         image.save(os.path.join(output_dir_2,image_name+'.png'))
+
+
+def view_heatmaps():
+    
+    file_path = '//data/scratch/r094879/data/heatmaps/1.2.392.200036.9125.9.0.68100090.749932288.3927965275.npy'
+
+    data = np.load(file_path)
+
+    # Ensure the output directories exist
+    os.makedirs("//data/scratch/r094879/data/data_check/", exist_ok=True)
+    
+    # Initialize an array to store the sums of each slice
+    cumulative_sum = np.zeros(data.shape[1:], dtype=data.dtype)
+    
+    # Iterate through each slice in the 3D array
+    for i in range(data.shape[0]):
+        slice_data = data[i]
+        
+        # Plot the slice
+        plt.imshow(slice_data, cmap='gray')
+        
+        # Save each slice as a .png
+        plt.savefig(f"//data/scratch/r094879/data/data_check/slice_{i}.png")
+        plt.close()  # Close the plot to free memory
+        
+        # Calculate the sum of the slice
+        cumulative_sum += slice_data
+    
+    # Plot and save the cumulative sum as a .png
+    plt.imshow(cumulative_sum, cmap='gray')
+    plt.colorbar()
+    plt.title("Cumulative Sum of All Slices")
+    plt.savefig("//data/scratch/r094879/data/data_check/cumulative_sum.png")
+    plt.close()
+
 

@@ -179,8 +179,11 @@ def view_heatmaps():
 
     data = np.load(file_path)
 
+    save_path = '//data/scratch/r094879/data/data_check'
+
     # Ensure the output directories exist
-    os.makedirs("//data/scratch/r094879/data/data_check/", exist_ok=True)
+    if not os.path.exists(save_path):
+        os.makedirs(save_path)
     
     # Initialize an array to store the sums of each slice
     cumulative_sum = np.zeros(data.shape[1:], dtype=data.dtype)
@@ -201,7 +204,6 @@ def view_heatmaps():
     
     # Plot and save the cumulative sum as a .png
     plt.imshow(cumulative_sum, cmap='gray')
-    plt.colorbar()
     plt.title("Cumulative Sum of All Slices")
     plt.savefig("//data/scratch/r094879/data/data_check/cumulative_sum.png")
     plt.close()

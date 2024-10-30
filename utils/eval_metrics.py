@@ -148,12 +148,14 @@ class pb_mse_metric(nn.Module):
         # Combine x and y values and filter out NaN pairs
         xy_pairs = np.array(list(zip(x_values, y_values)))
 
+        lm_targets = xy_pairs.reshape((-1,2))
         lm_targets = np.nan_to_num(xy_pairs)
 
         mse = mean_squared_error(lm_targets, lm_pred)
 
         print('new image')
         print('targets')
+        print(xy_pairs)
         print(lm_targets)
         print('predictions')
         print(lm_pred)

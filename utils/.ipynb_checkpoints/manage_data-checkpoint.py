@@ -166,6 +166,7 @@ def create_dataset():
         # Combine x and y values and filter out NaN pairs
         xy_pairs = np.array(list(zip(x_values, y_values)))
 
+        print(row)
         print(xy_pairs)
         print(image_name)
         print(pixel_array.shape)

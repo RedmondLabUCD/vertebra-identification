@@ -108,7 +108,7 @@ def main():
     test_loader = DataLoader(test_data, batch_size=1, shuffle=False, pin_memory=False)
     
     # Define model
-    model = model_module.net(params.num_classes).to(device)
+    model = model_module.net(params.num_classes)
     
     # Grap test function for your network.
     test = model_module.test

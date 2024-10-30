@@ -151,12 +151,15 @@ class pb_mse_metric(nn.Module):
         lm_targets = xy_pairs.reshape((-1,2))
         lm_targets = np.nan_to_num(lm_targets)
 
-        for i in range(len(lm_targets)-1, 0, -1):
+        lm_tars = np.array()
+        lm_preds = np.array()
+
+        for i in range(len(lm_targets)):
             print(lm_targets)
-            if int(lm_targets[i][0]) == 0:
-                lm_targets = np.delete(lm_targets,i,axis=1)
-                print(lm_targets)
-                lm_pred = np.delete(lm_pred,i)
+            if int(lm_targets[i][0]) != 0:
+                lm_tars = np.concatenate(lm_tars,lm_targets[i])
+                print(lm_tars)
+                lm_preds = np.concatenate(lm_preds,lm_pred[i])
 
         mse = mean_squared_error(lm_targets, lm_pred)
 

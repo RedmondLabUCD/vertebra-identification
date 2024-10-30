@@ -56,6 +56,12 @@ class mse_metric(nn.Module):
 
         mse = mean_squared_error(lm_targets, lm_pred, squared=square)
 
+        print('new image')
+        print('targets')
+        print(lm_targets)
+        print('predictions')
+        print(lm_pred)
+
         return mse
 
 

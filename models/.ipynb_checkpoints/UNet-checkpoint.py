@@ -155,16 +155,15 @@ def test(model, loader, eval_metric, params, checkpoint=None, name=None, extra=N
     if checkpoint is not None:
         model_state = torch.load(checkpoint)
         model.load_state_dict(model_state['model']) 
-        model.to(device)
         
     model.eval()
     metrics = []
     
-    root = os.path.abspath(os.path.join(os.getcwd(), os.pardir))
-    data_dir = os.path.join(root,"Results","Statistics") 
+    # root = os.path.abspath(os.path.join(os.getcwd(), os.pardir))
+    # data_dir = os.path.join(root,"Results","Statistics") 
     
-    csv_name = None
-    count = [0,0,0,0]
+    # csv_name = None
+    # count = [0,0,0,0]
     
     with torch.no_grad():
         for batch_idx, (inputs, targets, full_filenames) in enumerate(loader):
@@ -173,20 +172,20 @@ def test(model, loader, eval_metric, params, checkpoint=None, name=None, extra=N
             predictions = model(inputs)
             filenames = full_filenames[0]
             filename = filenames.split("\\")[-1]
-            metric_avg = eval_metric(targets,predictions,filename,params,square=False)
+            metric_avg = eval_metric(targets,predictions,filename,params)
             metrics.append(metric_avg)
-            if prediction_dir is not None:
-                if "ROI_LM" in str(name):
-                    csv_name = roi_lm_post_process(name,extra,root,data_dir,params,prediction_dir,
-                                                   predictions,filename,fold_num,metric_avg,csv_name)
-                elif "LM" in str(name):
-                    count = lm_post_process(name,extra,root,data_dir,params,prediction_dir,
-                                            predictions,filename,fold_num,metric_avg,count=count)
-                elif "FemHead" or "UNet_ROI" in str(name): 
-#                     dice_post_process(name,extra,root,data_dir,params,prediction_dir,
-#                                       predictions,filename,fold_num,metric_avg)
-                    test_dice_post_process(name,extra,root,data_dir,params,prediction_dir,
-                                      predictions,filename,metric_avg)
+#             if prediction_dir is not None:
+#                 if "ROI_LM" in str(name):
+#                     csv_name = roi_lm_post_process(name,extra,root,data_dir,params,prediction_dir,
+#                                                    predictions,filename,fold_num,metric_avg,csv_name)
+#                 elif "LM" in str(name):
+#                     count = lm_post_process(name,extra,root,data_dir,params,prediction_dir,
+#                                             predictions,filename,fold_num,metric_avg,count=count)
+#                 elif "FemHead" or "UNet_ROI" in str(name): 
+# #                     dice_post_process(name,extra,root,data_dir,params,prediction_dir,
+# #                                       predictions,filename,fold_num,metric_avg)
+#                     test_dice_post_process(name,extra,root,data_dir,params,prediction_dir,
+#                                       predictions,filename,metric_avg)
 
     acc = sum(metrics)/len(metrics)        
     return acc

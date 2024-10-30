@@ -37,7 +37,6 @@ def main():
     parser.add_argument("--lr",required=False,type=float,default=0.0001,help="Specify new learning rate")
     parser.add_argument("--k",required=False,type=int,default=10,help="Number of times to train and evaluate model")
     parser.add_argument("--roi",required=False,type=str,default=None,help="Uses ROI predictions as base.")
-    parser.add_argument("--dice",required=False,type=str,default=None,help="Saves dice scores in csv file if true.")
     parser.add_argument("--custom_loss",required=False,default=False,help="Use custom loss function.")
     args = parser.parse_args()
     

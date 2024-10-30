@@ -155,8 +155,8 @@ class pb_mse_metric(nn.Module):
             print(lm_targets[i])
             print(int(lm_targets[i][0]))
             if int(lm_targets[i][0]) == 0:
-                lm_targets = np.delete(lm_targets,i)
-                lm_pred = np.delete(lm_pred,i)
+                # lm_targets = np.delete(lm_targets,i)
+                # lm_pred = np.delete(lm_pred,i)
 
         mse = mean_squared_error(lm_targets, lm_pred)
 

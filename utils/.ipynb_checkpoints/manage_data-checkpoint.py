@@ -39,6 +39,14 @@ def prep_data():
         create_data_file(row,df)
 
     df2 = df.replace('', np.nan, regex=True)
+    imgs_to_delete = df2['image'][df2['group'].isna()].tolist()
+
+    count = 0
+    for img_to_delete in imgs_to_delete:
+        os.remove(os.path.join('//data/scratch/r094879/data/images',img_to_delete+'.dcm'))
+        count = count + 1
+    print(count)
+    df2 = df2.dropna(subset=['group'])
     df2.to_csv('//data/scratch/r094879/data/annotations/annotations.csv',index=False)
 
 
@@ -166,11 +174,10 @@ def create_dataset():
         # Combine x and y values and filter out NaN pairs
         xy_pairs = np.array(list(zip(x_values, y_values)))
 
-        print(row)
         print(xy_pairs)
         print(image_name)
         print(pixel_array.shape)
-        hm = create_hm(xy_pairs,pixel_array.shape,new_dim=256.0,size=3)
+        hm = create_hm(xy_pairs,pixel_array.shape,new_dim=256.0,size=5)
         np.save(os.path.join(output_dir,image_name),hm)
 
         image = Image.fromarray(pixel_array)

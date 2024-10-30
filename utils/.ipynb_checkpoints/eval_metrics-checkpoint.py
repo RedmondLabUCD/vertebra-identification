@@ -131,6 +131,8 @@ class pb_mse_metric(nn.Module):
         img = Image.open(os.path.join(root,image_dir,filename+".png"))
         img_size = img.size
         img_size = np.asarray(img_size).astype(float)
+        print(img_size)
+        print(lm_pred)
         
         lm_pred[:,0] = lm_pred[:,0] * img_size[0]/float(params.input_size)
         lm_pred[:,1] = lm_pred[:,1] * img_size[1]/float(params.input_size)
@@ -151,14 +153,12 @@ class pb_mse_metric(nn.Module):
         lm_targets = xy_pairs.reshape((-1,2))
         lm_targets = np.nan_to_num(lm_targets)
 
-        mse = mean_squared_error(lm_targets, lm_pred)
+        for i in range(len(lm_targets)-1, 0, -1):
+            if lm_targets[i][0] == 0:
+                lm_targets = np.delete(lm_targets,i)
+                lm_pred = np.delete(lm_pred,i)
 
-        print('new image')
-        print('targets')
-        print(xy_pairs)
-        print(lm_targets)
-        print('predictions')
-        print(lm_pred)
+        mse = mean_squared_error(lm_targets, lm_pred)
 
         return mse
     

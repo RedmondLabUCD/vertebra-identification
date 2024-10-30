@@ -5,4 +5,3 @@ if __name__ == '__main__':
 
     prep_data()
     create_dataset()
-    view_heatmaps()

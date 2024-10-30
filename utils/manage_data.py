@@ -178,15 +178,11 @@ def create_dataset():
         # Combine x and y values and filter out NaN pairs
         xy_pairs = np.array(list(zip(x_values, y_values)))
 
-        print(xy_pairs)
-        print(image_name)
-        print(pixel_array.shape)
         hm = create_hm(xy_pairs,pixel_array.shape,new_dim=256.0,size=5)
         np.save(os.path.join(output_dir,image_name),hm)
 
         image = Image.fromarray(pixel_array)
         image.save(os.path.join(output_dir_2,image_name+'.png'))
-        break
 
 
 def view_heatmaps():

@@ -149,7 +149,7 @@ class pb_mse_metric(nn.Module):
         xy_pairs = np.array(list(zip(x_values, y_values)))
 
         lm_targets = xy_pairs.reshape((-1,2))
-        lm_targets = np.nan_to_num(xy_pairs)
+        lm_targets = np.nan_to_num(lm_targets)
 
         mse = mean_squared_error(lm_targets, lm_pred)
 

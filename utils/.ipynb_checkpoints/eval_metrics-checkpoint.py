@@ -142,8 +142,8 @@ class pb_mse_metric(nn.Module):
 
         filtered_row = csv_df[csv_df['image'] == filename]
 
-        x_values = filtered_row.iloc[:,3:29:2].values.asarray() 
-        y_values = filtered_row.iloc[:,4:29:2].values.asarray()
+        x_values = np.array(filtered_row.iloc[:,3:29:2].values)
+        y_values = np.array(filtered_row.iloc[:,4:29:2].values)
 
         # Combine x and y values and filter out NaN pairs
         xy_pairs = np.concatenate([x_values,y_values],axis=1)

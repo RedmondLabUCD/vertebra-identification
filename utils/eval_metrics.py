@@ -154,7 +154,7 @@ class pb_mse_metric(nn.Module):
         lm_targets = np.nan_to_num(lm_targets)
 
         for i in range(len(lm_targets)-1, 0, -1):
-            if lm_targets[i][0] == 0:
+            if int(lm_targets[i][0]) == 0:
                 lm_targets = np.delete(lm_targets,i)
                 lm_pred = np.delete(lm_pred,i)
 

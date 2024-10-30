@@ -56,12 +56,6 @@ class mse_metric(nn.Module):
 
         mse = mean_squared_error(lm_targets, lm_pred, squared=square)
 
-        print('new image')
-        print('targets')
-        print(lm_targets)
-        print('predictions')
-        print(lm_pred)
-
         return mse
 
 
@@ -108,7 +102,7 @@ class pb_mse_metric_back(nn.Module):
         lm_targets[:,1] = pixel_to_mm(filename,lm_targets[:,1])
         lm_pred[:,0] = pixel_to_mm(filename,lm_pred[:,0])
         lm_pred[:,1] = pixel_to_mm(filename,lm_pred[:,1])
-
+        
         mse = mean_squared_error(lm_targets, lm_pred, squared=square)
 
         return mse
@@ -158,6 +152,12 @@ class pb_mse_metric(nn.Module):
         lm_targets = np.nan_to_num(lm_targets)
 
         mse = mean_squared_error(lm_targets, lm_pred)
+
+        print('new image')
+        print('targets')
+        print(lm_targets)
+        print('predictions')
+        print(lm_pred)
 
         return mse
     

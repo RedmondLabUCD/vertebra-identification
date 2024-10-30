@@ -167,8 +167,8 @@ def test(model, loader, eval_metric, params, checkpoint=None, name=None, extra=N
     
     with torch.no_grad():
         for batch_idx, (inputs, targets, full_filenames) in enumerate(loader):
-            inputs = inputs.to(device)
-            targets = targets.to(device)
+            # inputs = inputs.to(device)
+            # targets = targets.to(device)
             predictions = model(inputs)
             filenames = full_filenames[0]
             filename = filenames.split("\\")[-1]

@@ -146,7 +146,7 @@ class pb_mse_metric(nn.Module):
         y_values = np.array(filtered_row.iloc[:,4:29:2].values)
 
         # Combine x and y values and filter out NaN pairs
-        xy_pairs = np.concatenate([x_values,y_values],axis=1)
+        xy_pairs = np.concatenate([x_values,y_values],axis=0)
 
         lm_targets = xy_pairs.reshape((-1,2))
         lm_targets = np.nan_to_num(lm_targets)

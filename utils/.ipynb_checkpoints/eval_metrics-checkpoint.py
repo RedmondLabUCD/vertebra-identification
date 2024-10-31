@@ -118,8 +118,8 @@ class pb_mse_metric(nn.Module):
         lm_pred = np.zeros((params.num_classes,2))
         root = '//data/scratch/r094879/data/'
 
-        cumulative_sum = np.zeros(prediction.shape[2:])
-        print(prediction.shape)
+        # cumulative_sum = np.zeros(prediction.shape[2:])
+        # print(prediction.shape)
         # Get most likely landmark locations based on heatmap predictions
         for i in range(params.num_classes):
             lm_preds = np.unravel_index(prediction[0,i,:,:].argmax(),
@@ -127,12 +127,12 @@ class pb_mse_metric(nn.Module):
             lm_preds = np.asarray(lm_preds).astype(float)
             lm_pred[i,0] = lm_preds[0]
             lm_pred[i,1] = lm_preds[1]
-            cumulative_sum += prediction[0,i,:,:]
+            # cumulative_sum += prediction[0,i,:,:]
 
-        plt.imshow(cumulative_sum, cmap='gray')
-        plt.title("Cumulative Sum of All Slices")
-        plt.savefig(os.path.join("//data/scratch/r094879/data/data_check",filename+'.png'))
-        plt.close()
+        # plt.imshow(cumulative_sum, cmap='gray')
+        # plt.title("Cumulative Sum of All Slices")
+        # plt.savefig(os.path.join("//data/scratch/r094879/data/data_check",filename+'.png'))
+        # plt.close()
     
         # Use input image to resize predictions
         image_dir = params.image_dir

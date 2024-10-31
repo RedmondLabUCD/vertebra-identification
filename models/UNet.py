@@ -116,8 +116,6 @@ def train(model, loader, optimizer, criterion, params=None):
         loss = criterion(predictions, targets) # calculate the loss
         loss.backward() # backpropagate to compute gradients
         optimizer.step() # update model weights
-        batch.cpu().detach()
-        targets.cpu().detach()
         yield step, n_steps, float(loss)
         
         

@@ -24,10 +24,12 @@ class SpineDataset(Dataset):
             
     def __getitem__(self, index): #getitem method
         filename = self.file_list[index]
-        input_filename = os.path.join(self.input_dir, filename+'.png')
+        input_filename = os.path.join(self.input_dir, filename+'.dcm')
         output_filename = os.path.join(self.output_dir, filename+'.npy')
         # Load target and image
-        input = self.loader(input_filename)
+        dicom_image = dcmread(input_filename)
+        input = dicom_image.pixel_array
+        # input = self.loader(input_filename)
         output = np.load(output_filename)
         # Apply transforms if given
         if self.input_tf is not None: 

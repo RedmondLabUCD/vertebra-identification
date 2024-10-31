@@ -5,7 +5,7 @@ default: &DEFAULT
 UNet_LM_CL:
   <<: *DEFAULT
   model_name: UNet
-  image_dir: "imgs"
+  image_dir: "images"
   target_dir: "heatmaps"
   target_sfx: ".npy"
   checkpoint_dir: "Checkpoints/Test1"

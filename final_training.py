@@ -81,8 +81,14 @@ def main():
     for index, row in csv_df.iterrows():
         image_name = row['image']
 
-        if 'RSI_' in str(row['group']):
+        if 'RSI_1' in str(row['group']):
             train.append(image_name)
+        # if 'RSI_2' in str(row['group']):
+        #     train.append(image_name)
+        # if 'RSI_3' in str(row['group']):
+        #     train.append(image_name)
+        if 'RSI_4' in str(row['group']):
+            val.append(image_name)
         elif 'RSII_2' in str(row['group']):
             val.append(image_name)
         elif 'RSIII_1' in str(row['group']):

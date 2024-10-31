@@ -37,7 +37,6 @@ def main():
     parser.add_argument("--lr",required=False,type=float,default=0.0001,help="Specify new learning rate")
     parser.add_argument("--k",required=False,type=int,default=10,help="Number of times to train and evaluate model")
     parser.add_argument("--roi",required=False,type=str,default=None,help="Uses ROI predictions as base.")
-    parser.add_argument("--dice",required=False,type=str,default=None,help="Saves dice scores in csv file if true.")
     parser.add_argument("--custom_loss",required=False,default=False,help="Use custom loss function.")
     args = parser.parse_args()
     
@@ -82,8 +81,14 @@ def main():
     for index, row in csv_df.iterrows():
         image_name = row['image']
 
-        if 'RSI_' in str(row['group']):
+        if 'RSI_1' in str(row['group']):
             train.append(image_name)
+        # if 'RSI_2' in str(row['group']):
+        #     train.append(image_name)
+        # if 'RSI_3' in str(row['group']):
+        #     train.append(image_name)
+        if 'RSI_4' in str(row['group']):
+            val.append(image_name)
         elif 'RSII_2' in str(row['group']):
             val.append(image_name)
         elif 'RSIII_1' in str(row['group']):

@@ -38,6 +38,7 @@ def main():
     parser.add_argument("--k",required=False,type=int,default=10,help="Number of times to train and evaluate model")
     parser.add_argument("--roi",required=False,type=str,default=None,help="Uses ROI predictions as base.")
     parser.add_argument("--custom_loss",required=False,default=False,help="Use custom loss function.")
+    parser.add_argument("--ckpt",required=False,type=str,default='Checkpoint/Test1',help="Set a checkpoint folder.")
     args = parser.parse_args()
     
     # Parse our YAML file which has our model parameters. 
@@ -63,6 +64,8 @@ def main():
     else:
         loss_func = getattr(nn, params.loss)
     criterion = loss_func()
+
+    params.checkpoint_dir = str(args.ckpt)
     
     # Define evaluation metric
     eval_metric = getattr(e_metric, params.eval_metric)
@@ -73,6 +76,7 @@ def main():
 
     csv_file = os.path.join(root,'annotations/annotations.csv')
     csv_df = pd.read_csv(csv_file)
+    csv_df = csv_df.sort_values(by=['id'], ascending=True).reset_index(drop=True)
 
     train = []
     val = []
@@ -81,18 +85,25 @@ def main():
     for index, row in csv_df.iterrows():
         image_name = row['image']
 
-        if 'RSI_1' in str(row['group']):
+        if index < int(0.8*len(csv_df)):
             train.append(image_name)
+        elif index < int(0.9*len(csv_df)):
+            val.append(image_name)
+        elif index >= int(0.9*len(csv_df)):
+            test.append(image_name)
+
+        # if 'RSI_1' in str(row['group']):
+        #     train.append(image_name)
         # if 'RSI_2' in str(row['group']):
         #     train.append(image_name)
         # if 'RSI_3' in str(row['group']):
         #     train.append(image_name)
-        if 'RSI_4' in str(row['group']):
-            val.append(image_name)
-        elif 'RSII_2' in str(row['group']):
-            val.append(image_name)
-        elif 'RSIII_1' in str(row['group']):
-            test.append(image_name)
+        # if 'RSI_4' in str(row['group']):
+        #     train.append(image_name)
+        # elif 'RSII_2' in str(row['group']):
+        #     val.append(image_name)
+        # elif 'RSIII_1' in str(row['group']):
+        #     test.append(image_name)
     
     Dataset = getattr(datasets,params.dataset_class)
     

@@ -168,8 +168,12 @@ def create_dataset():
         # Read the DICOM file
         dicom_image = dcmread(dicom_file_path)
 
-        # Extract pixel array from the DICOM file
-        pixel_array = dicom_image.pixel_array
+        # Extract pixel array from the DICOM file and convert to .png
+        new_img = dicom_image.pixel_array.astype(float)
+        scaled_image = (np.maximum(new_img, 0) / new_img.max()) * 255.0
+        scaled_image = np.uint8(scaled_image)
+        final_image = Image.fromarray(scaled_image)
+        final_image.save(os.path.join(output_dir_2,image_name+'.png'))
 
         # Get the x and y values for each vertebra
         x_values = row.iloc[3:29:2].values 
@@ -178,11 +182,8 @@ def create_dataset():
         # Combine x and y values and filter out NaN pairs
         xy_pairs = np.array(list(zip(x_values, y_values)))
 
-        hm = create_hm(xy_pairs,pixel_array.shape,new_dim=256.0,size=5)
+        hm = create_hm(xy_pairs,scaled_image.shape,new_dim=256.0,size=5)
         np.save(os.path.join(output_dir,image_name),hm)
-
-        image = Image.fromarray(pixel_array)
-        image.save(os.path.join(output_dir_2,image_name+'.png'))
 
 
 def view_heatmaps():

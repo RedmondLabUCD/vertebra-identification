@@ -6,6 +6,7 @@ from PIL import Image
 from torchvision.datasets.folder import pil_loader
 from torchvision.datasets.utils import list_files
 import random
+from pydicom import dcmread
 
 
 class SpineDataset(Dataset):

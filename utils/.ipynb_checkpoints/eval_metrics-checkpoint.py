@@ -10,6 +10,7 @@ from sklearn.metrics import mean_squared_error
 from PIL import Image
 from utils.landmark_prep import prep_landmarks, prep_landmarks_no_femur
 from utils.process_predictions import pixel_to_mm
+import matplotlib.pyplot as plt
     
 
 class mse_metric(nn.Module):

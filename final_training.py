@@ -121,7 +121,7 @@ def main():
     best_epochs = []
         
     # Calculate mean and std for dataset normalization 
-    norm_mean,norm_std = final_mean_and_std(root,params)
+    # norm_mean,norm_std = final_mean_and_std(root,params)
     # norm_mean = [np.float32(0.99997693),np.float32(0.99997693),np.float32(0.99997693)]
     # norm_std = [np.float32(0.0009455526),np.float32(0.0009455526),np.float32(0.0009455526)]
 
@@ -129,6 +129,10 @@ def main():
     transform=transforms.Compose([transforms.Resize((params.input_size,params.input_size)),
                                   transforms.ToTensor(),
                                   transforms.Normalize(mean=norm_mean,std=norm_std)
+                                  ])
+
+    transform=transforms.Compose([transforms.Resize((params.input_size,params.input_size)),
+                                  transforms.ToTensor()
                                   ])
 
     # Set up transforms for targets

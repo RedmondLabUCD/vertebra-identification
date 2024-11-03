@@ -6,7 +6,8 @@ from PIL import Image
 from torchvision.datasets.folder import pil_loader
 from torchvision.datasets.utils import list_files
 import random
-from pydicom import dcmread
+from pydicom import dcmread, apply_voi_lut
+import cv2
 
 
 class SpineDataset(Dataset):
@@ -29,10 +30,19 @@ class SpineDataset(Dataset):
         output_filename = os.path.join(self.output_dir, filename+'.npy')
         # Load target and image
         dicom_image = dcmread(input_filename)
-        input = dicom_image.pixel_array
-        # input = self.loader(input_filename)
-        output = np.load(output_filename)
+        img = apply_voi_lut(dicom_image.pixel_array, dicom_image)
+        # Normalisation
+        img = (img - img.min())/(img.max() - img.min()) 
+        img = cv2.resize(img, (self.size,self.size))
+        image = (img * 255).astype(np.float32)
+        image = image[np.newaxis]# Add channel dimension
+        input = torch.from_numpy(image)
+        
+        # input = dicom_image.pixel_array
+        # # input = self.loader(input_filename)
+        # output = np.load(output_filename)
         # Apply transforms if given
+        
         if self.input_tf is not None: 
             input = self.input_tf(input)
         if self.output_tf is not None:

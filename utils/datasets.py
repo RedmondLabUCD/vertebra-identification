@@ -6,7 +6,7 @@ from PIL import Image
 from torchvision.datasets.folder import pil_loader
 from torchvision.datasets.utils import list_files
 import random
-from pydicom import dcmread, pixels
+import pydicom
 import cv2
 
 
@@ -30,7 +30,7 @@ class SpineDataset(Dataset):
         output_filename = os.path.join(self.output_dir, filename+'.npy')
         # Load target and image
         dicom_image = dcmread(input_filename)
-        img = pixels.apply_voi_lut(dicom_image.pixel_array, dicom_image)
+        img = apply_voi_lut(dicom_image.pixel_array, dicom_image)
         # Normalisation
         img = (img - img.min())/(img.max() - img.min()) 
         img = cv2.resize(img, (self.size,self.size))

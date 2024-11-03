@@ -30,7 +30,7 @@ class SpineDataset(Dataset):
         output_filename = os.path.join(self.output_dir, filename+'.npy')
         # Load target and image
         dicom_image = pydicom.dcmread(input_filename)
-        img = pydicom.pixels.apply_voi_lut(dicom_image.pixel_array, dicom_image)
+        img = apply_voi_lut(dicom_image.pixel_array, dicom_image)
         # Normalisation
         img = (img - img.min())/(img.max() - img.min()) 
         img = cv2.resize(img, (self.size,self.size))

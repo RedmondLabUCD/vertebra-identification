@@ -172,12 +172,12 @@ def create_dataset():
         # Extract pixel array from the DICOM file and convert to .png
         img = dicom_image.pixel_array
         img = cv.bitwise_not(img)
-        img.save(os.path.join(output_dir_2,image_name+'.png'))
+        # img.save(os.path.join(output_dir_2,image_name+'.png'))
         
-        # scaled_image = (np.maximum(new_img, 0) / new_img.max()) * 255.0
-        # scaled_image = np.uint8(scaled_image)
-        # final_image = Image.fromarray(scaled_image)
-        # final_image.save(os.path.join(output_dir_2,image_name+'.png'))
+        scaled_image = (np.maximum(img, 0) / img.max()) * 255.0
+        scaled_image = np.uint8(scaled_image)
+        final_image = Image.fromarray(scaled_image)
+        final_image.save(os.path.join(output_dir_2,image_name+'.png'))
 
         # Get the x and y values for each vertebra
         x_values = row.iloc[3:29:2].values 

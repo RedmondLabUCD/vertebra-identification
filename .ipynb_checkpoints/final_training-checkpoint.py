@@ -126,14 +126,14 @@ def main():
     # norm_std = [np.float32(0.0009455526),np.float32(0.0009455526),np.float32(0.0009455526)]
 
     # Define transform for images
-    # transform=transforms.Compose([transforms.Resize((params.input_size,params.input_size)),
-    #                               transforms.ToTensor(),
-    #                               transforms.Normalize(mean=norm_mean,std=norm_std)
-    #                               ])
-
     transform=transforms.Compose([transforms.Resize((params.input_size,params.input_size)),
-                                  transforms.ToTensor()
+                                  transforms.ToTensor(),
+                                  transforms.Normalize(mean=norm_mean,std=norm_std)
                                   ])
+
+    # transform=transforms.Compose([transforms.Resize((params.input_size,params.input_size)),
+    #                               transforms.ToTensor()
+    #                               ])
 
     # Set up transforms for targets
     target_transform = transforms.ToTensor()

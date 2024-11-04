@@ -26,22 +26,23 @@ class SpineDataset(Dataset):
             
     def __getitem__(self, index): #getitem method
         filename = self.file_list[index]
-        input_filename = os.path.join(self.input_dir, filename+'.dcm')
+        input_filename = os.path.join(self.input_dir, filename+'.png')
         output_filename = os.path.join(self.output_dir, filename+'.npy')
-        # Load target and image
-        dicom_image = pydicom.dcmread(input_filename)
-        img = apply_voi_lut(dicom_image.pixel_array, dicom_image)
-        # Normalisation
-        img = (img - img.min())/(img.max() - img.min()) 
-        img = cv2.resize(img, (self.size,self.size))
-        image = (img * 255).astype(np.float32)
-        image = image[np.newaxis]# Add channel dimension
-        input = torch.from_numpy(image)
+        
+        # # Load target and image
+        # dicom_image = pydicom.dcmread(input_filename)
+        # img = apply_voi_lut(dicom_image.pixel_array, dicom_image)
+        # # Normalisation
+        # img = (img - img.min())/(img.max() - img.min()) 
+        # img = cv2.resize(img, (self.size,self.size))
+        # image = (img * 255).astype(np.float32)
+        # image = image[np.newaxis]# Add channel dimension
+        # input = torch.from_numpy(image)
         
         # input = dicom_image.pixel_array
-        # # input = self.loader(input_filename)
-        # output = np.load(output_filename)
-        # Apply transforms if given
+        input = self.loader(input_filename)
+        output = np.load(output_filename)
+        Apply transforms if given
         
         if self.input_tf is not None: 
             input = self.input_tf(input)

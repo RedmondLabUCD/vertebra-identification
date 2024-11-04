@@ -18,6 +18,7 @@ from pydicom import dcmread
 from utils.roi_functions import create_ROI_mask, extract_ROI, resize_roi_lm, extract_ROI_from_lm, extract_ROI_from_lm_aug, extract_ROI_from_lm_aug2
 from utils.heatmaps import create_hm
 from utils.feature_extraction import extract_image_size
+import cv2 as cv
     
 
 def prep_data():
@@ -170,7 +171,7 @@ def create_dataset():
 
         # Extract pixel array from the DICOM file and convert to .png
         pixel_array = dicom_image.pixel_array
-        img = cv2.bitwise_not(img)
+        img = cv.bitwise_not(img)
         img.save(os.path.join(output_dir_2,image_name+'.png'))
         
         # scaled_image = (np.maximum(new_img, 0) / new_img.max()) * 255.0

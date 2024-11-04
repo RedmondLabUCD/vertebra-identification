@@ -171,10 +171,10 @@ def create_dataset():
 
         # Extract pixel array from the DICOM file and convert to .png
         pixel_array = dicom_image.pixel_array
-        img = cv.bitwise_not(pixel_array)
+        # img = cv.bitwise_not(pixel_array)
         # img.save(os.path.join(output_dir_2,image_name+'.png'))
         
-        scaled_image = (np.maximum(img, 0) / img.max()) * 255.0
+        scaled_image = (np.maximum(pixel_array, 0) / pixel_array.max()) * 255.0
         scaled_image = np.uint8(scaled_image)
         final_image = Image.fromarray(scaled_image)
         final_image.save(os.path.join(output_dir_2,image_name+'.png'))

@@ -19,6 +19,7 @@ from utils.roi_functions import create_ROI_mask, extract_ROI, resize_roi_lm, ext
 from utils.heatmaps import create_hm
 from utils.feature_extraction import extract_image_size
 import cv2 as cv
+from pydicom.pixel_data_handlers.util import apply_voi_lut
     
 
 def prep_data():
@@ -169,25 +170,35 @@ def create_dataset():
         # Read the DICOM file
         dicom_image = dcmread(dicom_file_path)
 
-        # Extract pixel array from the DICOM file and convert to .png
-        pixel_array = dicom_image.pixel_array
-        # img = cv.bitwise_not(pixel_array)
-        # img.save(os.path.join(output_dir_2,image_name+'.png'))
-        
-        scaled_image = (np.maximum(pixel_array, 0) / pixel_array.max()) * 255.0
-        scaled_image = np.uint8(scaled_image)
-        final_image = Image.fromarray(scaled_image)
+        img = apply_voi_lut(dicom_image.pixel_array, dicom_image)
+        # Normalisation
+        img = (img - img.min())/(img.max() - img.min()) 
+        if image_file.PhotometricInterpretation == "MONOCHROME1":
+            img = 1 - img # some images are inverted
+        # img = cv2.resize(img, (self.size,self.size))
+        image_2 = (img * 255).astype(np.float32)
+        final_image = Image.fromarray(image_2)
         final_image.save(os.path.join(output_dir_2,image_name+'.png'))
 
-        # Get the x and y values for each vertebra
-        x_values = row.iloc[3:29:2].values 
-        y_values = row.iloc[4:29:2].values
+        # # Extract pixel array from the DICOM file and convert to .png
+        # pixel_array = dicom_image.pixel_array
+        # # img = cv.bitwise_not(pixel_array)
+        # # img.save(os.path.join(output_dir_2,image_name+'.png'))
+        
+        # scaled_image = (np.maximum(pixel_array, 0) / pixel_array.max()) * 255.0
+        # scaled_image = np.uint8(scaled_image)
+        # final_image = Image.fromarray(scaled_image)
+        # final_image.save(os.path.join(output_dir_2,image_name+'.png'))
 
-        # Combine x and y values and filter out NaN pairs
-        xy_pairs = np.array(list(zip(x_values, y_values)))
+        # # Get the x and y values for each vertebra
+        # x_values = row.iloc[3:29:2].values 
+        # y_values = row.iloc[4:29:2].values
 
-        hm = create_hm(xy_pairs,pixel_array.shape,new_dim=256.0,size=5)
-        np.save(os.path.join(output_dir,image_name),hm)
+        # # Combine x and y values and filter out NaN pairs
+        # xy_pairs = np.array(list(zip(x_values, y_values)))
+
+        # hm = create_hm(xy_pairs,pixel_array.shape,new_dim=256.0,size=5)
+        # np.save(os.path.join(output_dir,image_name),hm)
 
 
 def view_heatmaps():

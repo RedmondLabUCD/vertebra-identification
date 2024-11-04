@@ -169,17 +169,24 @@ def create_dataset():
 
         # Read the DICOM file
         dicom_image = dcmread(dicom_file_path)
+        img = apply_voi_lut(dicom_image.pixel_array, dicom_image, index=0)
+        img = lin_stretch_img(img, 0.1, 99.9)  # Apply "linear stretching" (lower percentile 0.1 goes to 0, and percentile 99.9 to 255).
 
-        img = apply_voi_lut(dicom_image.pixel_array, dicom_image)
-        # Normalisation
-        img = (img - img.min())/(img.max() - img.min()) 
-        if dicom_image.PhotometricInterpretation == "MONOCHROME1":
-            img = 1 - img # some images are inverted
-        # img = cv2.resize(img, (self.size,self.size))
-        image_2 = (img * 255).astype(np.float32)
-        scaled_image = np.uint8(image_2)
-        final_image = Image.fromarray(scaled_image)
-        final_image.save(os.path.join(output_dir_2,image_name+'.png'))
+        # https://dicom.innolitics.com/ciods/rt-dose/image-pixel/00280004
+        if dicom_image[0x0028, 0x0004].value == 'MONOCHROME1':
+            img = 255-img 
+
+        cv.imwrite(os.path.join(output_dir_2,image_name+'.png'), img)
+        
+        # # Normalisation
+        # img = (img - img.min())/(img.max() - img.min()) 
+        # if dicom_image.PhotometricInterpretation == "MONOCHROME1":
+        #     img = 1 - img # some images are inverted
+        # # img = cv2.resize(img, (self.size,self.size))
+        # image_2 = (img * 255).astype(np.float32)
+        # scaled_image = np.uint8(image_2)
+        # final_image = Image.fromarray(scaled_image)
+        # final_image.save(os.path.join(output_dir_2,image_name+'.png'))
 
         # # Extract pixel array from the DICOM file and convert to .png
         # pixel_array = dicom_image.pixel_array
@@ -237,4 +244,31 @@ def view_heatmaps():
     plt.savefig("//data/scratch/r094879/data/data_check/cumulative_sum.png")
     plt.close()
 
+
+def lin_stretch_img(img, low_prc, high_prc, do_ignore_minmax=True):
+    """ 
+    Apply linear "stretch" - low_prc percentile goes to 0, 
+    and high_prc percentile goes to 255.
+    The result is clipped to [0, 255] and converted to np.uint8
+
+    Additional feature:
+    When computing high and low percentiles, ignore the minimum and maximum intensities (assumed to be outliers).
+    """
+    # For ignoring the outliers, replace them with the median value
+    if do_ignore_minmax:
+        tmp_img = img.copy()
+        med = np.median(img)  # Compute median
+        tmp_img[img == img.min()] = med
+        tmp_img[img == img.max()] = med
+    else:
+        tmp_img = img
+
+    lo, hi = np.percentile(tmp_img, (low_prc, high_prc))  # Example: 1% - Low percentile, 99% - High percentile
+
+    if lo == hi:
+        return np.full(img.shape, 128, np.uint8)  # Protection: return gray image if lo = hi.
+
+    stretch_img = (img.astype(float) - lo) * (255/(hi-lo))  # Linear stretch: lo goes to 0, hi to 255.
+    stretch_img = stretch_img.clip(0, 255).astype(np.uint8)  # Clip range to [0, 255] and convert to uint8
+    return stretch_img
 

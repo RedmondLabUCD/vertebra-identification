@@ -177,7 +177,8 @@ def create_dataset():
             img = 1 - img # some images are inverted
         # img = cv2.resize(img, (self.size,self.size))
         image_2 = (img * 255).astype(np.float32)
-        final_image = Image.fromarray(image_2)
+        scaled_image = np.uint8(image_2)
+        final_image = Image.fromarray(scaled_image)
         final_image.save(os.path.join(output_dir_2,image_name+'.png'))
 
         # # Extract pixel array from the DICOM file and convert to .png

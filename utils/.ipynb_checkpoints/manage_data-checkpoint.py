@@ -170,7 +170,7 @@ def create_dataset():
         dicom_image = dcmread(dicom_file_path)
 
         # Extract pixel array from the DICOM file and convert to .png
-        pixel_array = dicom_image.pixel_array
+        img = dicom_image.pixel_array
         img = cv.bitwise_not(img)
         img.save(os.path.join(output_dir_2,image_name+'.png'))
         

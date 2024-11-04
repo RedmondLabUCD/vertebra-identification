@@ -173,7 +173,7 @@ def create_dataset():
         img = apply_voi_lut(dicom_image.pixel_array, dicom_image)
         # Normalisation
         img = (img - img.min())/(img.max() - img.min()) 
-        if image_file.PhotometricInterpretation == "MONOCHROME1":
+        if dicom_image.PhotometricInterpretation == "MONOCHROME1":
             img = 1 - img # some images are inverted
         # img = cv2.resize(img, (self.size,self.size))
         image_2 = (img * 255).astype(np.float32)

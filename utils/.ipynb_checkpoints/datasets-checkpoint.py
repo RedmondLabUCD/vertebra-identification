@@ -39,11 +39,8 @@ class SpineDataset(Dataset):
         # image = image[np.newaxis]# Add channel dimension
         # input = torch.from_numpy(image)
         
-        # input = dicom_image.pixel_array
         input = self.loader(input_filename)
-        output = np.load(output_filename)
-        Apply transforms if given
-        
+        output = np.load(output_filename)  
         if self.input_tf is not None: 
             input = self.input_tf(input)
         if self.output_tf is not None:

@@ -169,7 +169,7 @@ def create_dataset():
 
         # Read the DICOM file
         dicom_image = dcmread(dicom_file_path)
-        pix = dicom_image.pixel_array.shape
+        print(dicom_image.pixel_array.shape)
         # img = apply_voi_lut(dicom_image.pixel_array, dicom_image, index=0)
         # img = lin_stretch_img(img, 0.1, 99.9)  # Apply "linear stretching" (lower percentile 0.1 goes to 0, and percentile 99.9 to 255).
 

@@ -1,4 +1,4 @@
-from utils.manage_data import prep_data, plot_images_with_points, create_dataset, view_heatmaps
+from utils.manage_data import prep_data, plot_images_with_points, create_dataset, view_heatmaps, plot_images_with_points_256
 
 
 if __name__ == '__main__':

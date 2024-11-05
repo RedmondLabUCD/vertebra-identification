@@ -20,6 +20,7 @@ from utils.heatmaps import create_hm
 from utils.feature_extraction import extract_image_size
 import cv2 as cv
 from pydicom.pixel_data_handlers.util import apply_voi_lut
+import h5py
     
 
 def prep_data():
@@ -146,6 +147,39 @@ def plot_images_with_points():
             print(f"No valid points to plot for {image_name}")
 
     print("All images have been processed and saved as PNG files.")
+
+
+def plot_images_with_points_256():
+
+    csv_file = '//data/scratch/r094879/data/annotations/annotations.csv' 
+    df = pd.read_csv(csv_file)
+
+    img_dir = '//data/scratch/r094879/data/imgs'
+    hm_dir = '//data/scratch/r094879/data/heatmaps'
+    output_dir = '//data/scratch/r094879/data/images_with_points'
+
+    if not os.path.exists(output_dir):
+        os.makedirs(output_dir)
+
+    for index, row in df.iterrows():
+        image_name = row['image']  # Get the DICOM image name from the 'image' column
+        output_file_path = os.path.join(output_dir,image_name+'.png')
+        img_file_path = os.path.join(img_dir,image_name+'.png')
+
+        img = Image.open(img_file_path)
+
+        lm_pred = np.zeros((params.num_classes,2))
+        hm = np.load(os.path.join(hm_dir, image_name+'.npy'))
+        
+        for i in range(13):
+            lm_preds = np.unravel_index(hm[i,:,:].argmax(),(256,256))
+            lm_preds = np.asarray(lm_preds).astype(float)
+            lm_pred[i,0] = lm_preds[1]
+            lm_pred[i,1] = lm_preds[0]
+
+        plt.imshow(img)
+        plt.scatter(lm_pred[:,0], lm_pred[:,1], c='red', s=5, marker='o')
+        plt.savefig(output_file_path)
             
 
 def create_dataset():
@@ -169,7 +203,18 @@ def create_dataset():
 
         # Read the DICOM file
         dicom_image = dcmread(dicom_file_path)
-        print(dicom_image.pixel_array.shape)
+        img = dicom.pixel_array
+
+        # Resize to 256x256
+        img_pil = Image.fromarray(img)
+        img_resized = img_pil.resize((256,256), PIL.Image.Resampling.LANCZOS)
+    
+        # Convert to numpy array and add a channel dimension
+        img_array = np.array(img_resized)[..., np.newaxis]
+        final_img = Image.fromarray(img_array)
+        final_img.save(os.path.join(output_dir_2,image_name+'.png'))
+        
+        
         # img = apply_voi_lut(dicom_image.pixel_array, dicom_image, index=0)
         # img = lin_stretch_img(img, 0.1, 99.9)  # Apply "linear stretching" (lower percentile 0.1 goes to 0, and percentile 99.9 to 255).
 
@@ -273,3 +318,70 @@ def lin_stretch_img(img, low_prc, high_prc, do_ignore_minmax=True):
     stretch_img = stretch_img.clip(0, 255).astype(np.uint8)  # Clip range to [0, 255] and convert to uint8
     return stretch_img
 
+
+
+
+output_filename_prefix = 'volume_data'
+
+def write_tensor_label_hdf5(mat_filelist):
+    """ We will use constant label (class 0) for the test data """
+    tensor_filenames = [line.rstrip() for line in open(mat_filelist, 'r')]
+    img_size=256
+
+    N = len(tensor_filenames)
+
+    # =============================================================================
+    # Specify what data and label to write, CHNAGE this according to your needs...
+    data_dim = [img_size,img_size,1]
+    hm_dim = [img_size,img_size,13]
+    data_dtype = 'uint8'
+    label_dtype = 'uint8'
+    # =============================================================================
+    
+    h5_batch_size = N
+    
+    # set batch buffer
+    batch_data_dim = [N] + data_dim
+    batch_hm_dim = [N] + hm_dim
+    h5_batch_data = np.zeros(batch_data_dim)
+    h5_batch_hm = np.zeros(batch_hm_dim)
+    
+    for k in range(N):
+        mat = sio.loadmat(tensor_filenames[k])
+        d = mat[mat.keys()[0]]
+        l = labels[k]
+
+        h5_batch_data[k, ...] = d
+        h5_batch_hm[k, ...] = l
+        
+        if (k+1)%h5_batch_size == 0 or k==N-1:
+            print '[%s] %d/%d' % (datetime.datetime.now(), k+1, N)
+            print 'batch data shape: ', h5_batch_data.shape
+            h5_filename = output_filename_prefix+str(k/h5_batch_size)+'.h5'
+            print h5_filename
+            print np.shape(h5_batch_data)
+            print np.shape(h5_batch_label)
+            begidx = 0
+            endidx = min(h5_batch_size, (k%h5_batch_size)+1) 
+            print h5_filename, data_dtype, label_dtype
+            save_h5(h5_filename, h5_batch_data[begidx:endidx,:,:,:,:], h5_batch_label[begidx:endidx,:], data_dtype, label_dtype) 
+
+
+write_tensor_label_hdf5('mat_filelist.txt', 26, 3)
+(d,l) = load_h5(output_filename_prefix+'0.h5')
+print d.shape
+print l.shape
+
+def save_h5(h5_filename, data, label, data_dtype='uint8', label_dtype='uint8'):
+    h5_fout = h5py.File(h5_filename)
+    h5_fout.create_dataset(
+            'images', data=data,
+            compression='gzip', compression_opts=4,
+            dtype=data_dtype,
+    )
+    h5_fout.create_dataset(
+            'heatmaps', data=label,
+            compression='gzip', compression_opts=1,
+            dtype=label_dtype,
+    )
+    h5_fout.close()

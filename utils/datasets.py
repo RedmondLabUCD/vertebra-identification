@@ -40,7 +40,7 @@ class SpineDataset(Dataset):
         # input = torch.from_numpy(image)
         
         input = self.loader(input_filename)
-        output = np.load(output_filename)  
+        output = np.load(output_filename) 
         if self.input_tf is not None: 
             input = self.input_tf(input)
         if self.output_tf is not None:

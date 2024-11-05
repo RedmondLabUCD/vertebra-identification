@@ -169,14 +169,15 @@ def create_dataset():
 
         # Read the DICOM file
         dicom_image = dcmread(dicom_file_path)
-        img = apply_voi_lut(dicom_image.pixel_array, dicom_image, index=0)
-        img = lin_stretch_img(img, 0.1, 99.9)  # Apply "linear stretching" (lower percentile 0.1 goes to 0, and percentile 99.9 to 255).
+        pix = dicom_image.pixel_array.shape
+        # img = apply_voi_lut(dicom_image.pixel_array, dicom_image, index=0)
+        # img = lin_stretch_img(img, 0.1, 99.9)  # Apply "linear stretching" (lower percentile 0.1 goes to 0, and percentile 99.9 to 255).
 
-        # https://dicom.innolitics.com/ciods/rt-dose/image-pixel/00280004
-        if dicom_image[0x0028, 0x0004].value == 'MONOCHROME1':
-            img = 255-img 
+        # # https://dicom.innolitics.com/ciods/rt-dose/image-pixel/00280004
+        # if dicom_image[0x0028, 0x0004].value == 'MONOCHROME1':
+        #     img = 255-img 
 
-        cv.imwrite(os.path.join(output_dir_2,image_name+'.png'), img)
+        # cv.imwrite(os.path.join(output_dir_2,image_name+'.png'), img)
         
         # # Normalisation
         # img = (img - img.min())/(img.max() - img.min()) 

@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import pandas as pd 
 import os
 from PIL import Image
+import PIL
 import itertools
 import math
 from glob import glob

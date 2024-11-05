@@ -208,7 +208,7 @@ def create_dataset():
 
         # Resize to 256x256
         img_pil = Image.fromarray(img)
-        img_resized = img_pil.resize((256,256,1))
+        img_resized = img_pil.resize((256,256))
     
         # Convert to numpy array and add a channel dimension
         # img_array = np.array(img_resized)[..., np.newaxis]

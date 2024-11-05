@@ -321,67 +321,67 @@ def lin_stretch_img(img, low_prc, high_prc, do_ignore_minmax=True):
 
 
 
-output_filename_prefix = 'volume_data'
+# output_filename_prefix = 'volume_data'
 
-def write_tensor_label_hdf5(mat_filelist):
-    """ We will use constant label (class 0) for the test data """
-    tensor_filenames = [line.rstrip() for line in open(mat_filelist, 'r')]
-    img_size=256
+# def write_tensor_label_hdf5(mat_filelist):
+#     """ We will use constant label (class 0) for the test data """
+#     tensor_filenames = [line.rstrip() for line in open(mat_filelist, 'r')]
+#     img_size=256
 
-    N = len(tensor_filenames)
+#     N = len(tensor_filenames)
 
-    # =============================================================================
-    # Specify what data and label to write, CHNAGE this according to your needs...
-    data_dim = [img_size,img_size,1]
-    hm_dim = [img_size,img_size,13]
-    data_dtype = 'uint8'
-    label_dtype = 'uint8'
-    # =============================================================================
+#     # =============================================================================
+#     # Specify what data and label to write, CHNAGE this according to your needs...
+#     data_dim = [img_size,img_size,1]
+#     hm_dim = [img_size,img_size,13]
+#     data_dtype = 'uint8'
+#     label_dtype = 'uint8'
+#     # =============================================================================
     
-    h5_batch_size = N
+#     h5_batch_size = N
     
-    # set batch buffer
-    batch_data_dim = [N] + data_dim
-    batch_hm_dim = [N] + hm_dim
-    h5_batch_data = np.zeros(batch_data_dim)
-    h5_batch_hm = np.zeros(batch_hm_dim)
+#     # set batch buffer
+#     batch_data_dim = [N] + data_dim
+#     batch_hm_dim = [N] + hm_dim
+#     h5_batch_data = np.zeros(batch_data_dim)
+#     h5_batch_hm = np.zeros(batch_hm_dim)
     
-    for k in range(N):
-        mat = sio.loadmat(tensor_filenames[k])
-        d = mat[mat.keys()[0]]
-        l = labels[k]
+#     for k in range(N):
+#         mat = sio.loadmat(tensor_filenames[k])
+#         d = mat[mat.keys()[0]]
+#         l = labels[k]
 
-        h5_batch_data[k, ...] = d
-        h5_batch_hm[k, ...] = l
+#         h5_batch_data[k, ...] = d
+#         h5_batch_hm[k, ...] = l
         
-        if (k+1)%h5_batch_size == 0 or k==N-1:
-            print '[%s] %d/%d' % (datetime.datetime.now(), k+1, N)
-            print 'batch data shape: ', h5_batch_data.shape
-            h5_filename = output_filename_prefix+str(k/h5_batch_size)+'.h5'
-            print h5_filename
-            print np.shape(h5_batch_data)
-            print np.shape(h5_batch_label)
-            begidx = 0
-            endidx = min(h5_batch_size, (k%h5_batch_size)+1) 
-            print h5_filename, data_dtype, label_dtype
-            save_h5(h5_filename, h5_batch_data[begidx:endidx,:,:,:,:], h5_batch_label[begidx:endidx,:], data_dtype, label_dtype) 
+#         if (k+1)%h5_batch_size == 0 or k==N-1:
+#             print '[%s] %d/%d' % (datetime.datetime.now(), k+1, N)
+#             print 'batch data shape: ', h5_batch_data.shape
+#             h5_filename = output_filename_prefix+str(k/h5_batch_size)+'.h5'
+#             print h5_filename
+#             print np.shape(h5_batch_data)
+#             print np.shape(h5_batch_label)
+#             begidx = 0
+#             endidx = min(h5_batch_size, (k%h5_batch_size)+1) 
+#             print h5_filename, data_dtype, label_dtype
+#             save_h5(h5_filename, h5_batch_data[begidx:endidx,:,:,:,:], h5_batch_label[begidx:endidx,:], data_dtype, label_dtype) 
 
 
-write_tensor_label_hdf5('mat_filelist.txt', 26, 3)
-(d,l) = load_h5(output_filename_prefix+'0.h5')
-print d.shape
-print l.shape
+# write_tensor_label_hdf5('mat_filelist.txt', 26, 3)
+# (d,l) = load_h5(output_filename_prefix+'0.h5')
+# print d.shape
+# print l.shape
 
-def save_h5(h5_filename, data, label, data_dtype='uint8', label_dtype='uint8'):
-    h5_fout = h5py.File(h5_filename)
-    h5_fout.create_dataset(
-            'images', data=data,
-            compression='gzip', compression_opts=4,
-            dtype=data_dtype,
-    )
-    h5_fout.create_dataset(
-            'heatmaps', data=label,
-            compression='gzip', compression_opts=1,
-            dtype=label_dtype,
-    )
-    h5_fout.close()
+# def save_h5(h5_filename, data, label, data_dtype='uint8', label_dtype='uint8'):
+#     h5_fout = h5py.File(h5_filename)
+#     h5_fout.create_dataset(
+#             'images', data=data,
+#             compression='gzip', compression_opts=4,
+#             dtype=data_dtype,
+#     )
+#     h5_fout.create_dataset(
+#             'heatmaps', data=label,
+#             compression='gzip', compression_opts=1,
+#             dtype=label_dtype,
+#     )
+#     h5_fout.close()

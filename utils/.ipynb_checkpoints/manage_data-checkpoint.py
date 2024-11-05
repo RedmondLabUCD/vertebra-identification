@@ -203,7 +203,7 @@ def create_dataset():
 
         # Read the DICOM file
         dicom_image = dcmread(dicom_file_path)
-        img = dicom.pixel_array
+        img = dicom_image.pixel_array
 
         # Resize to 256x256
         img_pil = Image.fromarray(img)

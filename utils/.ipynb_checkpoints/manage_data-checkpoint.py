@@ -176,8 +176,8 @@ def plot_images_with_points_256():
         for i in range(13):
             lm_preds = np.unravel_index(hm[:,:,i].argmax(),(256,256))
             lm_preds = np.asarray(lm_preds).astype(float)
-            lm_pred[i,0] = lm_preds[0]
-            lm_pred[i,1] = lm_preds[1]
+            lm_pred[i,0] = lm_preds[1]
+            lm_pred[i,1] = lm_preds[0]
 
         print(lm_pred)
         fig, ax = plt.subplots()

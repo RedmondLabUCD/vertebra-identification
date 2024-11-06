@@ -224,7 +224,6 @@ def create_dataset():
 
         
         resized_image = cv.resize(img, (256,256))
-
         cv.imwrite(os.path.join(output_dir_2,image_name+'.png'), resized_image)
 
         # img = (img-img.min())/(img.max()-img.min())*255.0
@@ -267,15 +266,15 @@ def create_dataset():
         # final_image = Image.fromarray(scaled_image)
         # final_image.save(os.path.join(output_dir_2,image_name+'.png'))
 
-        # # Get the x and y values for each vertebra
-        # x_values = row.iloc[3:29:2].values 
-        # y_values = row.iloc[4:29:2].values
+        # Get the x and y values for each vertebra
+        x_values = row.iloc[3:29:2].values 
+        y_values = row.iloc[4:29:2].values
 
-        # # Combine x and y values and filter out NaN pairs
-        # xy_pairs = np.array(list(zip(x_values, y_values)))
+        # Combine x and y values and filter out NaN pairs
+        xy_pairs = np.array(list(zip(x_values, y_values)))
 
-        # hm = create_hm(xy_pairs,pixel_array.shape,new_dim=256.0,size=5)
-        # np.save(os.path.join(output_dir,image_name),hm)
+        hm = create_hm(xy_pairs,(img.shape[1],img.shape[0]),new_dim=256.0,size=5)
+        np.save(os.path.join(output_dir,image_name),hm)
 
 
 def view_heatmaps():

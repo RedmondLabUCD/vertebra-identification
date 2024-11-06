@@ -169,7 +169,7 @@ def plot_images_with_points_256():
 
         img = Image.open(img_file_path)
 
-        lm_pred = np.zeros((params.num_classes,2))
+        lm_pred = np.zeros((13,2))
         hm = np.load(os.path.join(hm_dir, image_name+'.npy'))
         
         for i in range(13):
@@ -219,7 +219,6 @@ def create_dataset():
         # img = apply_voi_lut(dicom_image.pixel_array, dicom_image, index=0)
         # img = lin_stretch_img(img, 0.1, 99.9)  # Apply "linear stretching" (lower percentile 0.1 goes to 0, and percentile 99.9 to 255).
 
-        # # https://dicom.innolitics.com/ciods/rt-dose/image-pixel/00280004
         # if dicom_image[0x0028, 0x0004].value == 'MONOCHROME1':
         #     img = 255-img 
 

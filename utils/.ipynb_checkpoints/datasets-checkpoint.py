@@ -34,7 +34,7 @@ class SpineDataset(Dataset):
         input = dicom_image.pixel_array
         input = input.astype(float)
         input = (input-input.min())/(input.max()-input.min())*255.0
-        # input = input.astype(np.uint8)
+        input = input.astype(np.uint8)
         # img_pil = Image.fromarray(img)
         # final_img = img_pil.resize((256,256))
         

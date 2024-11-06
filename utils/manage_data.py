@@ -191,7 +191,11 @@ def create_dataset():
     dicom_dir = '//data/scratch/r094879/data/images'
     output_dir = '//data/scratch/r094879/data/heatmaps'
     output_dir_2 = '//data/scratch/r094879/data/imgs'
+    output_dir_3 = '//data/scratch/r094879/data/test'
     
+    if not os.path.exists(output_dir):
+        os.makedirs(output_dir)
+
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
 
@@ -205,7 +209,12 @@ def create_dataset():
         # Read the DICOM file
         dicom_image = dcmread(dicom_file_path)
         img = dicom_image.pixel_array
-        print(img.dtype)
+        img = img.astype(np.uint16)
+        resized_image = cv2.resize(img, (256,256))
+        print(resized_image.dtype)
+        print(resized_image)
+
+        cv2.imwrite(os.path.join(output_dir_3,'resized_image.jpg'), resized_image)
         break
         img = (img-img.min())/(img.max()-img.min())*255.0
 

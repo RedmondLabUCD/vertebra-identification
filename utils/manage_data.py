@@ -195,13 +195,9 @@ def create_dataset():
     dicom_dir = '//data/scratch/r094879/data/images'
     output_dir = '//data/scratch/r094879/data/heatmaps'
     output_dir_2 = '//data/scratch/r094879/data/imgs'
-    output_dir_3 = '//data/scratch/r094879/data/test'
     
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
-
-    if not os.path.exists(output_dir_3):
-        os.makedirs(output_dir_3)
 
     if not os.path.exists(output_dir_2):
         os.makedirs(output_dir_2)

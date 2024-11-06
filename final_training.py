@@ -137,6 +137,8 @@ def main():
 
     # Set up transforms for targets
     target_transform = transforms.ToTensor()
+    transform = transforms.ToTensor()
+    
 
     val_data = Dataset(root,val,params.image_dir,params.target_dir,target_sfx=params.target_sfx,
                        input_tf=transform,output_tf=target_transform)

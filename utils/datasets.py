@@ -32,9 +32,9 @@ class SpineDataset(Dataset):
         
         dicom_image = dcmread(input_filename)
         input = dicom_image.pixel_array
-        input = input.astype(float)
-        input = (input-input.min())/(input.max()-input.min())*255.0
-        input = input.astype(np.uint8)
+        # input = input.astype(float)
+        # input = (input-input.min())/(input.max()-input.min())*255.0
+        # input = input.astype(np.uint8)
         # img_pil = Image.fromarray(img)
         # final_img = img_pil.resize((256,256))
         
@@ -42,6 +42,7 @@ class SpineDataset(Dataset):
         output = np.load(output_filename) 
         if self.input_tf is not None: 
             input = cv.resize(input, (256,256))
+            input = input.astype(float)
             input = self.output_tf(input)
         if self.output_tf is not None:
             output = self.output_tf(output)

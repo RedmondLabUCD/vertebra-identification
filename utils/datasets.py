@@ -7,7 +7,8 @@ from torchvision.datasets.folder import pil_loader
 from torchvision.datasets.utils import list_files
 import random
 import pydicom
-import cv2
+import cv2 as cv
+from pydicom import dcmread
 
 
 class SpineDataset(Dataset):
@@ -26,8 +27,10 @@ class SpineDataset(Dataset):
             
     def __getitem__(self, index): #getitem method
         filename = self.file_list[index]
-        input_filename = os.path.join(self.input_dir, filename+'.png')
+        input_filename = os.path.join(self.input_dir, filename+'.dcm')
         output_filename = os.path.join(self.output_dir, filename+'.npy')
+        dicom_image = dcmread(input_filename)
+        input = dicom_image.pixel_array
         
         # # Load target and image
         # dicom_image = pydicom.dcmread(input_filename)
@@ -39,10 +42,11 @@ class SpineDataset(Dataset):
         # image = image[np.newaxis]# Add channel dimension
         # input = torch.from_numpy(image)
         
-        input = self.loader(input_filename)
+        # input = self.loader(input_filename)
         output = np.load(output_filename) 
         if self.input_tf is not None: 
-            input = self.input_tf(input)
+            input = cv.resize(img, (256,256))
+            input = self.output_tf(input)
         if self.output_tf is not None:
             output = self.output_tf(output)
         return input, output, filename

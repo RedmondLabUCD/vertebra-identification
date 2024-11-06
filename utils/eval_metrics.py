@@ -11,6 +11,7 @@ from PIL import Image
 from utils.landmark_prep import prep_landmarks, prep_landmarks_no_femur
 from utils.process_predictions import pixel_to_mm
 import matplotlib.pyplot as plt
+from pydicom import dcmread
     
 
 class mse_metric(nn.Module):
@@ -122,7 +123,7 @@ class pb_mse_metric(nn.Module):
         # print(prediction.shape)
         # Get most likely landmark locations based on heatmap predictions
         for i in range(params.num_classes):
-            lm_preds = np.unravel_index(prediction[0,i,:,:].argmax(),
+            lm_preds = np.unravel_index(prediction[0,:,:,i].argmax(),
                                            (params.input_size,params.input_size))
             lm_preds = np.asarray(lm_preds).astype(float)
             lm_pred[i,0] = lm_preds[1]
@@ -137,8 +138,8 @@ class pb_mse_metric(nn.Module):
         # Use input image to resize predictions
         image_dir = params.image_dir
         target_dir = "annotations/"
-        img = Image.open(os.path.join(root,image_dir,filename+".png"))
-        img_size = img.size
+        img = dcmread(os.path.join(root,image_dir,filename+".dcm"))
+        img_size = img.pixel_array.shape
         img_size = np.asarray(img_size).astype(float)
         
         lm_pred[:,0] = lm_pred[:,0] * img_size[0]/float(params.input_size)

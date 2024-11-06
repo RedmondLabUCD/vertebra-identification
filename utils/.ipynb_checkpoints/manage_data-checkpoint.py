@@ -210,11 +210,11 @@ def create_dataset():
         dicom_image = dcmread(dicom_file_path)
         img = dicom_image.pixel_array
         img = img.astype(np.uint16)
-        resized_image = cv2.resize(img, (256,256))
+        resized_image = cv.resize(img, (256,256))
         print(resized_image.dtype)
         print(resized_image)
 
-        cv2.imwrite(os.path.join(output_dir_3,'resized_image.jpg'), resized_image)
+        cv.imwrite(os.path.join(output_dir_3,'resized_image.jpg'), resized_image)
         break
         img = (img-img.min())/(img.max()-img.min())*255.0
 

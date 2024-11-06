@@ -214,7 +214,7 @@ def create_dataset():
         print(resized_image.dtype)
         print(resized_image)
 
-        cv.imwrite(os.path.join(output_dir_3,'resized_image.jpg'), resized_image)
+        cv.imwrite(os.path.join(output_dir_3,'resized_image.png'), resized_image)
         break
         img = (img-img.min())/(img.max()-img.min())*255.0
 

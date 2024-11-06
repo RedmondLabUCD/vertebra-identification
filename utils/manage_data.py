@@ -216,7 +216,7 @@ def create_dataset():
         img_pil = Image.fromarray(img)
         final_img = img_pil.resize((256,256))
 
-        final_img.save(os.path.join(output_dir_3,image_name+'.png'))
+        final_img.save(os.path.join(output_dir_3,'test.png'))
 
         
         # resized_image = cv.resize(img, (256,256))

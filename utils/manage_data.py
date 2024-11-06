@@ -209,12 +209,21 @@ def create_dataset():
         # Read the DICOM file
         dicom_image = dcmread(dicom_file_path)
         img = dicom_image.pixel_array
-        img = img.astype(np.uint16)
-        resized_image = cv.resize(img, (256,256))
-        print(resized_image.dtype)
-        print(resized_image)
+        img = img.astype(np.float)
+        img = (img-img.min())/(img.max()-img.min())*255.0
+        img = img.astype(np.uint8)
 
-        cv.imwrite(os.path.join(output_dir_3,'resized_image.png'), resized_image)
+        img_pil = Image.fromarray(img)
+        final_img = img_pil.resize((256,256))
+
+        final_img.save(os.path.join(output_dir_3,image_name+'.png'))
+
+        
+        # resized_image = cv.resize(img, (256,256))
+        # print(resized_image.dtype)
+        # print(resized_image)
+
+        # cv.imwrite(os.path.join(output_dir_3,'resized_image.png'), resized_image)
         break
         img = (img-img.min())/(img.max()-img.min())*255.0
 

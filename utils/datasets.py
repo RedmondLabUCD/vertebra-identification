@@ -45,7 +45,7 @@ class SpineDataset(Dataset):
         # input = self.loader(input_filename)
         output = np.load(output_filename) 
         if self.input_tf is not None: 
-            input = cv.resize(img, (256,256))
+            input = cv.resize(input, (256,256))
             input = self.output_tf(input)
         if self.output_tf is not None:
             output = self.output_tf(output)

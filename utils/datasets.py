@@ -29,18 +29,14 @@ class SpineDataset(Dataset):
         filename = self.file_list[index]
         input_filename = os.path.join(self.input_dir, filename+'.dcm')
         output_filename = os.path.join(self.output_dir, filename+'.npy')
+        
         dicom_image = dcmread(input_filename)
         input = dicom_image.pixel_array
-        
-        # # Load target and image
-        # dicom_image = pydicom.dcmread(input_filename)
-        # img = apply_voi_lut(dicom_image.pixel_array, dicom_image)
-        # # Normalisation
-        # img = (img - img.min())/(img.max() - img.min()) 
-        # img = cv2.resize(img, (self.size,self.size))
-        # image = (img * 255).astype(np.float32)
-        # image = image[np.newaxis]# Add channel dimension
-        # input = torch.from_numpy(image)
+        input = input.astype(float)
+        input = (input-input.min())/(input.max()-input.min())*255.0
+        # input = input.astype(np.uint8)
+        # img_pil = Image.fromarray(img)
+        # final_img = img_pil.resize((256,256))
         
         # input = self.loader(input_filename)
         output = np.load(output_filename) 

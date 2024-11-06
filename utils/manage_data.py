@@ -180,9 +180,11 @@ def plot_images_with_points_256():
             lm_pred[i,1] = lm_preds[1]
 
         print(lm_pred)
-        plt.imshow(img)
-        plt.scatter(lm_pred[:,0], lm_pred[:,1], c='red', s=5, marker='o')
+        fig, ax = plt.subplots()
+        ax.imshow(img)
+        ax.scatter(lm_pred[:,0], lm_pred[:,1], c='red', s=5, marker='o')
         plt.savefig(output_file_path)
+        plt.close(fig)
             
 
 def create_dataset():

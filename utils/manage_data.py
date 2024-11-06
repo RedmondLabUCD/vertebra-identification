@@ -171,13 +171,15 @@ def plot_images_with_points_256():
 
         lm_pred = np.zeros((13,2))
         hm = np.load(os.path.join(hm_dir, image_name+'.npy'))
+        print(hm.shape)
         
         for i in range(13):
             lm_preds = np.unravel_index(hm[i,:,:].argmax(),(256,256))
             lm_preds = np.asarray(lm_preds).astype(float)
-            lm_pred[i,0] = lm_preds[1]
-            lm_pred[i,1] = lm_preds[0]
+            lm_pred[i,0] = lm_preds[0]
+            lm_pred[i,1] = lm_preds[1]
 
+        print(lm_pred)
         plt.imshow(img)
         plt.scatter(lm_pred[:,0], lm_pred[:,1], c='red', s=5, marker='o')
         plt.savefig(output_file_path)
@@ -209,32 +211,30 @@ def create_dataset():
         # Read the DICOM file
         dicom_image = dcmread(dicom_file_path)
         img = dicom_image.pixel_array
-        img = img.astype(float)
-        img = (img-img.min())/(img.max()-img.min())*255.0
-        img = img.astype(np.uint8)
+        # img = img.astype(float)
+        # img = (img-img.min())/(img.max()-img.min())*255.0
+        # img = img.astype(np.uint8)
 
-        img_pil = Image.fromarray(img)
-        final_img = img_pil.resize((256,256))
+        # img_pil = Image.fromarray(img)
+        # final_img = img_pil.resize((256,256))
 
-        final_img.save(os.path.join(output_dir_3,'test.png'))
+        # final_img.save(os.path.join(output_dir_3,'test.png'))
 
         
-        # resized_image = cv.resize(img, (256,256))
-        # print(resized_image.dtype)
-        # print(resized_image)
+        resized_image = cv.resize(img, (256,256))
 
-        # cv.imwrite(os.path.join(output_dir_3,'resized_image.png'), resized_image)
-        break
-        img = (img-img.min())/(img.max()-img.min())*255.0
+        cv.imwrite(os.path.join(output_dir_2,image_name+'.png'), resized_image)
 
-        # Resize to 256x256
-        img_pil = Image.fromarray(img)
-        final_img = img_pil.resize((256,256))
+        # img = (img-img.min())/(img.max()-img.min())*255.0
+
+        # # Resize to 256x256
+        # img_pil = Image.fromarray(img)
+        # final_img = img_pil.resize((256,256))
     
         # Convert to numpy array and add a channel dimension
         # img_array = np.array(img_resized)[..., np.newaxis]
         # final_img = Image.fromarray(img_resized)
-        final_img.save(os.path.join(output_dir_2,image_name+'.png'))
+        # final_img.save(os.path.join(output_dir_2,image_name+'.png'))
         
         
         # img = apply_voi_lut(dicom_image.pixel_array, dicom_image, index=0)

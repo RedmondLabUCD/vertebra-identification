@@ -196,8 +196,8 @@ def create_dataset():
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
 
-    if not os.path.exists(output_dir):
-        os.makedirs(output_dir)
+    if not os.path.exists(output_dir_3):
+        os.makedirs(output_dir_3)
 
     if not os.path.exists(output_dir_2):
         os.makedirs(output_dir_2)

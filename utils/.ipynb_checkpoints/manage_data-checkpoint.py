@@ -205,7 +205,7 @@ def create_dataset():
         # Read the DICOM file
         dicom_image = dcmread(dicom_file_path)
         img = dicom_image.pixel_array
-        print(img)
+        print(img.dtype)
         break
         img = (img-img.min())/(img.max()-img.min())*255.0
 

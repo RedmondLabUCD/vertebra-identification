@@ -174,7 +174,7 @@ def plot_images_with_points_256():
         print(hm.shape)
         
         for i in range(13):
-            lm_preds = np.unravel_index(hm[i,:,:].argmax(),(256,256))
+            lm_preds = np.unravel_index(hm[:,:,i].argmax(),(256,256))
             lm_preds = np.asarray(lm_preds).astype(float)
             lm_pred[i,0] = lm_preds[0]
             lm_pred[i,1] = lm_preds[1]
@@ -310,35 +310,6 @@ def view_heatmaps():
     plt.title("Cumulative Sum of All Slices")
     plt.savefig("//data/scratch/r094879/data/data_check/cumulative_sum.png")
     plt.close()
-
-
-def lin_stretch_img(img, low_prc, high_prc, do_ignore_minmax=True):
-    """ 
-    Apply linear "stretch" - low_prc percentile goes to 0, 
-    and high_prc percentile goes to 255.
-    The result is clipped to [0, 255] and converted to np.uint8
-
-    Additional feature:
-    When computing high and low percentiles, ignore the minimum and maximum intensities (assumed to be outliers).
-    """
-    # For ignoring the outliers, replace them with the median value
-    if do_ignore_minmax:
-        tmp_img = img.copy()
-        med = np.median(img)  # Compute median
-        tmp_img[img == img.min()] = med
-        tmp_img[img == img.max()] = med
-    else:
-        tmp_img = img
-
-    lo, hi = np.percentile(tmp_img, (low_prc, high_prc))  # Example: 1% - Low percentile, 99% - High percentile
-
-    if lo == hi:
-        return np.full(img.shape, 128, np.uint8)  # Protection: return gray image if lo = hi.
-
-    stretch_img = (img.astype(float) - lo) * (255/(hi-lo))  # Linear stretch: lo goes to 0, hi to 255.
-    stretch_img = stretch_img.clip(0, 255).astype(np.uint8)  # Clip range to [0, 255] and convert to uint8
-    return stretch_img
-
 
 
 

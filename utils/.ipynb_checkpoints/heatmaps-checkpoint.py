@@ -18,7 +18,7 @@ def create_hm(landmarks,old_dim,new_dim,size=3):
     lm = landmarks.copy()
     
     # Rescale landmark coordinates
-    lm = resize_lm(lm, old_dim, new_dim)
+    lm = resize_lm(lm,old_dim,new_dim)
 
     # Create heatmap
     hm = generate_hm(lm,new_dim,s=size)

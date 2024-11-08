@@ -167,19 +167,42 @@ def plot_images_with_points_256():
         output_file_path = os.path.join(output_dir,image_name+'.png')
         img_file_path = os.path.join(img_dir,image_name+'.png')
 
-        img = Image.open(img_file_path)
-
         lm_pred = np.zeros((13,2))
         hm = np.load(os.path.join(hm_dir, image_name+'.npy'))
         print(hm.shape)
+
+        image_dir = params.image_dir
+        target_dir = "annotations/"
+        img = dcmread(os.path.join(root,image_dir,filename+".dcm"))
+        img_size = img.pixel_array.shape
+        img_size = np.asarray(img_size).astype(float)
         
         for i in range(13):
             lm_preds = np.unravel_index(hm[:,:,i].argmax(),(256,256))
             lm_preds = np.asarray(lm_preds).astype(float)
-            lm_pred[i,0] = lm_preds[1]
-            lm_pred[i,1] = lm_preds[0]
+            lm_pred[i,1] = lm_preds[1]
+            lm_pred[i,0] = lm_preds[0]
 
+        lm_pred[:,0] = lm_pred[:,0] * img_size[0]/float(params.input_size)
+        lm_pred[:,1] = lm_pred[:,1] * img_size[1]/float(params.input_size)
+
+        print('prediction')
         print(lm_pred)
+
+        csv_file = os.path.join(root,'annotations/annotations.csv')
+        csv_df = pd.read_csv(csv_file)
+
+        filtered_row = csv_df[csv_df['image'] == filename]
+
+        x_values = np.array(filtered_row.iloc[:,3:29:2].values).reshape((-1,1))
+        y_values = np.array(filtered_row.iloc[:,4:29:2].values).reshape((-1,1))
+
+        # Combine x and y values and filter out NaN pairs
+        xy_pairs = np.concatenate([x_values,y_values],axis=1)
+        print('target')
+        print(xy_pairs)
+
+        img = Image.open(img_file_path)
         fig, ax = plt.subplots()
         ax.imshow(img)
         ax.scatter(lm_pred[:,0], lm_pred[:,1], c='red', s=5, marker='o')
@@ -219,8 +242,8 @@ def create_dataset():
         # final_img.save(os.path.join(output_dir_3,'test.png'))
 
         
-        resized_image = cv.resize(img, (256,256))
-        cv.imwrite(os.path.join(output_dir_2,image_name+'.png'), resized_image)
+        # resized_image = cv.resize(img, (256,256))
+        # cv.imwrite(os.path.join(output_dir_2,image_name+'.png'), resized_image)
 
         # img = (img-img.min())/(img.max()-img.min())*255.0
 
@@ -269,7 +292,7 @@ def create_dataset():
         # Combine x and y values and filter out NaN pairs
         xy_pairs = np.array(list(zip(x_values, y_values)))
 
-        hm = create_hm(xy_pairs,(img.shape[1],img.shape[0]),new_dim=256.0,size=5)
+        hm = create_hm(xy_pairs,(img.shape[0],img.shape[1]),new_dim=256.0,size=5)
         np.save(os.path.join(output_dir,image_name),hm)
 
 

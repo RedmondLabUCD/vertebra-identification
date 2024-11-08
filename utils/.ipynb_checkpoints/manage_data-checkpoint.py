@@ -156,6 +156,7 @@ def plot_images_with_points_256():
     df = pd.read_csv(csv_file)
 
     img_dir = '//data/scratch/r094879/data/imgs'
+    image_dir = '//data/scratch/r094879/data/images'
     hm_dir = '//data/scratch/r094879/data/heatmaps'
     output_dir = '//data/scratch/r094879/data/images_with_points'
 
@@ -171,9 +172,7 @@ def plot_images_with_points_256():
         hm = np.load(os.path.join(hm_dir, image_name+'.npy'))
         print(hm.shape)
 
-        image_dir = "images"
-        target_dir = "annotations/"
-        img = dcmread(os.path.join(root,image_dir,filename+".dcm"))
+        img = dcmread(os.path.join(image_dir,filename+".dcm"))
         img_size = img.pixel_array.shape
         img_size = np.asarray(img_size).astype(float)
         
@@ -189,13 +188,8 @@ def plot_images_with_points_256():
         print('prediction')
         print(lm_pred)
 
-        csv_file = os.path.join(root,'annotations/annotations.csv')
-        csv_df = pd.read_csv(csv_file)
-
-        filtered_row = csv_df[csv_df['image'] == filename]
-
-        x_values = np.array(filtered_row.iloc[:,3:29:2].values).reshape((-1,1))
-        y_values = np.array(filtered_row.iloc[:,4:29:2].values).reshape((-1,1))
+        x_values = np.array(row.iloc[:,3:29:2].values).reshape((-1,1))
+        y_values = np.array(row.iloc[:,4:29:2].values).reshape((-1,1))
 
         # Combine x and y values and filter out NaN pairs
         xy_pairs = np.concatenate([x_values,y_values],axis=1)

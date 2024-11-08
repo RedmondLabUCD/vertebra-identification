@@ -172,7 +172,7 @@ def plot_images_with_points_256():
         hm = np.load(os.path.join(hm_dir, image_name+'.npy'))
         print(hm.shape)
 
-        img = dcmread(os.path.join(image_dir,filename+".dcm"))
+        img = dcmread(os.path.join(image_dir,image_name+".dcm"))
         img_size = img.pixel_array.shape
         img_size = np.asarray(img_size).astype(float)
         

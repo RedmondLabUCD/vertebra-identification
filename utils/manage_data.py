@@ -171,7 +171,7 @@ def plot_images_with_points_256():
         hm = np.load(os.path.join(hm_dir, image_name+'.npy'))
         print(hm.shape)
 
-        image_dir = params.image_dir
+        image_dir = "images"
         target_dir = "annotations/"
         img = dcmread(os.path.join(root,image_dir,filename+".dcm"))
         img_size = img.pixel_array.shape
@@ -183,8 +183,8 @@ def plot_images_with_points_256():
             lm_pred[i,1] = lm_preds[1]
             lm_pred[i,0] = lm_preds[0]
 
-        lm_pred[:,0] = lm_pred[:,0] * img_size[0]/float(params.input_size)
-        lm_pred[:,1] = lm_pred[:,1] * img_size[1]/float(params.input_size)
+        lm_pred[:,0] = lm_pred[:,0] * img_size[0]/256.0
+        lm_pred[:,1] = lm_pred[:,1] * img_size[1]/256.0
 
         print('prediction')
         print(lm_pred)

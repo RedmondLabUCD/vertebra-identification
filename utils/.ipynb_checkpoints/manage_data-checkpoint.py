@@ -179,14 +179,8 @@ def plot_images_with_points_256():
         for i in range(13):
             lm_preds = np.unravel_index(hm[:,:,i].argmax(),(256,256))
             lm_preds = np.asarray(lm_preds).astype(float)
-            lm_pred[i,1] = lm_preds[1]
-            lm_pred[i,0] = lm_preds[0]
-
-        lm_pred[:,0] = lm_pred[:,0] * img_size[0]/256.0
-        lm_pred[:,1] = lm_pred[:,1] * img_size[1]/256.0
-
-        print('prediction')
-        print(lm_pred)
+            lm_pred[i,0] = lm_preds[1]
+            lm_pred[i,1] = lm_preds[0]
 
         x_values = row.iloc[3:29:2].values 
         y_values = row.iloc[4:29:2].values
@@ -204,6 +198,12 @@ def plot_images_with_points_256():
         ax.scatter(lm_pred[:,0], lm_pred[:,1], c='red', s=5, marker='o')
         plt.savefig(output_file_path)
         plt.close(fig)
+
+        lm_pred[:,0] = lm_pred[:,0] * img_size[0]/256.0
+        lm_pred[:,1] = lm_pred[:,1] * img_size[1]/256.0
+
+        print('prediction')
+        print(lm_pred)
             
 
 def create_dataset():

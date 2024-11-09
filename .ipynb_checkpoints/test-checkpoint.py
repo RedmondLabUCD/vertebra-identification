@@ -87,22 +87,22 @@ def main():
     if not os.path.exists(prediction_save): os.makedirs(prediction_save)
     
         
-    # Calculate mean and std for dataset normalization 
-    norm_mean = [np.float32(0.99997693),np.float32(0.99997693),np.float32(0.99997693)]
-    norm_std = [np.float32(0.0009455526),np.float32(0.0009455526),np.float32(0.0009455526)]
+    # # Calculate mean and std for dataset normalization 
+    # norm_mean = [np.float32(0.99997693),np.float32(0.99997693),np.float32(0.99997693)]
+    # norm_std = [np.float32(0.0009455526),np.float32(0.0009455526),np.float32(0.0009455526)]
 
-    # Define transform for images
-    transform=transforms.Compose([transforms.Resize((params.input_size,params.input_size)),
-                                  transforms.ToTensor(),
-                                  transforms.Normalize(mean=norm_mean,std=norm_std)
-                                  ])
+    # # Define transform for images
+    # transform=transforms.Compose([transforms.Resize((params.input_size,params.input_size)),
+    #                               transforms.ToTensor(),
+    #                               transforms.Normalize(mean=norm_mean,std=norm_std)
+    #                               ])
 
     # Set up transforms for targets
     target_transform = transforms.ToTensor()
       
     # Define test dataset
     test_data = Dataset(root,test,params.image_dir,params.target_dir,target_sfx=params.target_sfx,
-                       input_tf=transform,output_tf=target_transform)
+                       input_tf=target_transform,output_tf=target_transform)
            
     # Define dataloaders
     test_loader = DataLoader(test_data, batch_size=1, shuffle=False, pin_memory=False)

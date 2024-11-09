@@ -163,7 +163,7 @@ class pb_mse_metric(nn.Module):
 
         lm_targets = xy_pairs.reshape((-1,2))
         lm_targets = np.nan_to_num(lm_targets)
-        print(targets)
+        print(lm_targets)
 
         lm_tars = []
         lm_preds = []

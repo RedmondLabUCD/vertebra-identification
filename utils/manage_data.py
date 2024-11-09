@@ -199,8 +199,8 @@ def plot_images_with_points_256():
         plt.savefig(output_file_path)
         plt.close(fig)
 
-        lm_pred[:,0] = lm_pred[:,0] * img_size[0]/256.0
-        lm_pred[:,1] = lm_pred[:,1] * img_size[1]/256.0
+        lm_pred[:,0] = lm_pred[:,0] * float(img_size[0])/256.0
+        lm_pred[:,1] = lm_pred[:,1] * float(img_size[1])/256.0
 
         print('prediction')
         print(lm_pred)
@@ -288,7 +288,7 @@ def create_dataset():
         # Combine x and y values and filter out NaN pairs
         xy_pairs = np.array(list(zip(x_values, y_values)))
 
-        hm = create_hm(xy_pairs,(img.shape[0],img.shape[1]),new_dim=256.0,size=5)
+        hm = create_hm(xy_pairs,(float(img.shape[0]),float(img.shape[1])),new_dim=256.0,size=5)
         np.save(os.path.join(output_dir,image_name),hm)
 
 

@@ -199,8 +199,8 @@ def plot_images_with_points_256():
         plt.savefig(output_file_path)
         plt.close(fig)
 
-        lm_pred[:,0] = lm_pred[:,0] * float(img_size[0])/256.0
-        lm_pred[:,1] = lm_pred[:,1] * float(img_size[1])/256.0
+        lm_pred[:,0] = lm_pred[:,0] * float(img_size[1])/256.0
+        lm_pred[:,1] = lm_pred[:,1] * float(img_size[0])/256.0
 
         print('prediction')
         print(lm_pred)

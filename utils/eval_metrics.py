@@ -123,12 +123,12 @@ class pb_mse_metric(nn.Module):
         print(prediction.shape)
         # Get most likely landmark locations based on heatmap predictions
         for i in range(params.num_classes):
-            lm_preds = np.unravel_index(prediction[0,:,:,i].argmax(),
+            lm_preds = np.unravel_index(prediction[0,i,:,:].argmax(),
                                            (params.input_size,params.input_size))
             lm_preds = np.asarray(lm_preds).astype(float)
             lm_pred[i,0] = lm_preds[1]
             lm_pred[i,1] = lm_preds[0]
-            cumulative_sum += prediction[0,:,:,i]
+            cumulative_sum += prediction[0,i,:,:]
 
         plt.imshow(cumulative_sum, cmap='gray')
         plt.title("Cumulative Sum of All Slices")

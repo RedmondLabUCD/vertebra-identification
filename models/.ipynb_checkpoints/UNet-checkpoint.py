@@ -124,7 +124,6 @@ def val(model, loader, criterion, eval_metric, params, checkpoint=None):
 #         load_checkpoint(optimizer=None, model, checkpoint)
         model_state = torch.load(checkpoint)
         model.load_state_dict(model_state['model']) 
-        model.to(device)
         
     model.eval()
     # use a running average to keep track of the average loss

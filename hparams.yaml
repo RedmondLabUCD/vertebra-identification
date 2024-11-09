@@ -8,7 +8,7 @@ UNet_LM_CL:
   image_dir: "images"
   target_dir: "heatmaps"
   target_sfx: ".npy"
-  checkpoint_dir: "Checkpoints/Test1"
+  checkpoint_dir: "Checkpoint/Test1"
   log_dir: 'Logs/Test1'
   dataset_class: "SpineDataset"
   loss: "custom_weighted_loss"

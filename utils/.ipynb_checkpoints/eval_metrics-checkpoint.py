@@ -126,8 +126,8 @@ class pb_mse_metric(nn.Module):
             lm_preds = np.unravel_index(prediction[0,i,:,:].argmax(),
                                            (params.input_size,params.input_size))
             lm_preds = np.asarray(lm_preds).astype(float)
-            lm_pred[i,1] = lm_preds[1]
-            lm_pred[i,0] = lm_preds[0]
+            lm_pred[i,0] = lm_preds[1]
+            lm_pred[i,1] = lm_preds[0]
             # cumulative_sum += prediction[0,i,:,:]
 
         # plt.imshow(cumulative_sum, cmap='gray')
@@ -145,9 +145,15 @@ class pb_mse_metric(nn.Module):
         img_size = np.asarray(img_size).astype(float)
 
         print(img_size)
+
+        print(lm_pred[:,1])
+        print(lm_pred[:,0])
         
-        lm_pred[:,0] = lm_pred[:,1] * float(img_size[1])/float(params.input_size)
-        lm_pred[:,1] = lm_pred[:,0] * float(img_size[0])/float(params.input_size)
+        lm_pred[:,0] = lm_pred[:,0] * float(img_size[0])/float(params.input_size)
+        lm_pred[:,1] = lm_pred[:,1] * float(img_size[1])/float(params.input_size)
+
+        print(lm_pred[:,1])
+        print(lm_pred[:,0])
 
         # Get targets
 

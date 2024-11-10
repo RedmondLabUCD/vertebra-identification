@@ -141,8 +141,8 @@ class pb_mse_metric(nn.Module):
         img_size = img.pixel_array.shape
         img_size = np.asarray(img_size).astype(float)
         
-        lm_pred[:,0] = lm_pred[:,0] * float(img_size[0])/float(params.input_size)
-        lm_pred[:,1] = lm_pred[:,1] * float(img_size[1])/float(params.input_size)
+        lm_pred[:,0] = lm_pred[:,0] * float(img_size[1])/float(params.input_size)
+        lm_pred[:,1] = lm_pred[:,1] * float(img_size[0])/float(params.input_size)
 
         # Get targets
 

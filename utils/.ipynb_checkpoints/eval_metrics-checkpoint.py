@@ -123,7 +123,7 @@ class pb_mse_metric(nn.Module):
         # cumulative_sum = np.zeros(prediction.shape[2:])
         # Get most likely landmark locations based on heatmap predictions
         for i in range(params.num_classes):
-            lm_preds = np.unravel_index(prediction[i,:,:].argmax(),
+            lm_preds = np.unravel_index(prediction[0,i,:,:].argmax(),
                                            (params.input_size,params.input_size))
             lm_preds = np.asarray(lm_preds).astype(float)
             lm_pred[i,1] = lm_preds[1]
@@ -142,8 +142,8 @@ class pb_mse_metric(nn.Module):
         img_size = img.pixel_array.shape
         img_size = np.asarray(img_size).astype(float)
         
-        lm_pred[:,0] = lm_pred[:,0] * float(img_size[1])/float(params.input_size)
-        lm_pred[:,1] = lm_pred[:,1] * float(img_size[0])/float(params.input_size)
+        lm_pred[:,0] = lm_pred[:,1] * float(img_size[1])/float(params.input_size)
+        lm_pred[:,1] = lm_pred[:,0] * float(img_size[0])/float(params.input_size)
 
         # Get targets
 
@@ -160,6 +160,8 @@ class pb_mse_metric(nn.Module):
 
         lm_targets = xy_pairs.reshape((-1,2))
         lm_targets = np.nan_to_num(lm_targets)
+
+        print(lm_pred)
 
         lm_tars = []
         lm_preds = []

@@ -85,11 +85,11 @@ def main():
     for index, row in csv_df.iterrows():
         image_name = row['image']
 
-        if index < int(0.2*len(csv_df)):
+        if index < int(0.1*len(csv_df)):
             train.append(image_name)
-        elif index < int(0.3*len(csv_df)):
+        elif index < int(0.2*len(csv_df)):
             val.append(image_name)
-        elif index >= int(0.3*len(csv_df)):
+        elif index >= int(0.2*len(csv_df)):
             test.append(image_name)
 
         # if 'RSI_1' in str(row['group']):

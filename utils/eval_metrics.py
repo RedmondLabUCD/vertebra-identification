@@ -125,8 +125,8 @@ class pb_mse_metric(nn.Module):
             lm_preds = np.unravel_index(prediction[0,i,:,:].argmax(),
                                            (params.input_size,params.input_size))
             lm_preds = np.asarray(lm_preds).astype(float)
-            lm_pred[i,0] = lm_preds[1]
-            lm_pred[i,1] = lm_preds[0]
+            lm_pred[i,1] = lm_preds[1]
+            lm_pred[i,0] = lm_preds[0]
             # cumulative_sum += prediction[0,i,:,:]
 
         # plt.imshow(cumulative_sum, cmap='gray')
@@ -171,8 +171,8 @@ class pb_mse_metric(nn.Module):
         lm_targets = np.array(lm_tars).reshape((-1,2))
         lm_pred = np.array(lm_preds).reshape((-1,2))
 
-        print(lm_targets)
-        print(lm_pred)
+        # print(lm_targets)
+        # print(lm_pred)
 
         mse = mean_squared_error(lm_targets, lm_pred)
 

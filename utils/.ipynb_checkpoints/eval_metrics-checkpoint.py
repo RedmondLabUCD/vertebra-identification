@@ -134,8 +134,6 @@ class pb_mse_metric(nn.Module):
         # plt.title("Cumulative Sum of All Slices")
         # plt.savefig(os.path.join("//data/scratch/r094879/data/data_check",filename+'.png'))
         # plt.close()
-
-        print(lm_pred)
     
         # Use input image to resize predictions
         image_dir = params.image_dir
@@ -143,17 +141,9 @@ class pb_mse_metric(nn.Module):
         img = dcmread(os.path.join(root,image_dir,filename+".dcm"))
         img_size = img.pixel_array.shape
         img_size = np.asarray(img_size).astype(float)
-
-        print(img_size)
-
-        print(lm_pred[:,1])
-        print(lm_pred[:,0])
         
         lm_pred[:,0] = lm_pred[:,0] * float(img_size[0])/float(params.input_size)
         lm_pred[:,1] = lm_pred[:,1] * float(img_size[1])/float(params.input_size)
-
-        print(lm_pred[:,1])
-        print(lm_pred[:,0])
 
         # Get targets
 
@@ -171,8 +161,6 @@ class pb_mse_metric(nn.Module):
         lm_targets = xy_pairs.reshape((-1,2))
         lm_targets = np.nan_to_num(lm_targets)
 
-        print(lm_pred)
-
         lm_tars = []
         lm_preds = []
 
@@ -183,9 +171,6 @@ class pb_mse_metric(nn.Module):
 
         # lm_targets = np.array(lm_tars).reshape((-1,2))
         # lm_pred = np.array(lm_preds).reshape((-1,2))
-
-        print(lm_targets)
-        print(lm_pred)
 
         mse = mean_squared_error(lm_targets, lm_pred)
 

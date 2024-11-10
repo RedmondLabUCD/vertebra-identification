@@ -119,10 +119,11 @@ class pb_mse_metric(nn.Module):
         lm_pred = np.zeros((params.num_classes,2))
         root = '//data/scratch/r094879/data/'
 
+        print(prediction.shape)
         # cumulative_sum = np.zeros(prediction.shape[2:])
         # Get most likely landmark locations based on heatmap predictions
         for i in range(params.num_classes):
-            lm_preds = np.unravel_index(prediction[0,i,:,:].argmax(),
+            lm_preds = np.unravel_index(prediction[i,:,:].argmax(),
                                            (params.input_size,params.input_size))
             lm_preds = np.asarray(lm_preds).astype(float)
             lm_pred[i,1] = lm_preds[1]
@@ -175,8 +176,6 @@ class pb_mse_metric(nn.Module):
         # print(lm_pred)
 
         mse = mean_squared_error(lm_targets, lm_pred)
-
-        print(mse)
 
         return mse
     

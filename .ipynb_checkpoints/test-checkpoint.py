@@ -63,11 +63,11 @@ def main():
     for index, row in csv_df.iterrows():
         image_name = row['image']
 
-        if 'RSI_' in str(row['group']):
+        if index < int(0.1*len(csv_df)):
             train.append(image_name)
-        elif 'RSII_2' in str(row['group']):
+        elif index < int(0.11*len(csv_df)):
             val.append(image_name)
-        elif 'RSIII_1' in str(row['group']):
+        elif index >= int(0.90*len(csv_df)):
             test.append(image_name)
     
     Dataset = getattr(datasets,params.dataset_class)

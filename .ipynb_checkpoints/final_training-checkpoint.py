@@ -204,7 +204,7 @@ def main():
         "val_accs": val_accs,
         "best_val_epoch": best_val_epoch,
         "lr": args.lr,
-        "batch_size": params.batch_size
+        "batch_size": params.batch_size,
         "norm_mean": norm_mean,
         "norm_std": norm_std
     }

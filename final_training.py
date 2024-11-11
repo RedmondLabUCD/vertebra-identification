@@ -88,19 +88,19 @@ def main():
         if index < int(0.8*len(csv_df)):
             train.append(image_name)
             if index > int(0.78*len(csv_df)):
-                print(image_name)
+                print(row['id'])
         elif index < int(0.9*len(csv_df)):
             val.append(image_name)
             if index < int(0.81*len(csv_df)):
                 print("val")
-                print(image_name)
+                print(row['id'])
             if index > int(0.89*len(csv_df)):
-                print(image_name)
+                print(row['id'])
         elif index >= int(0.9*len(csv_df)):
             test.append(image_name)
             if index < int(0.91*len(csv_df)):
                 print("test")
-                print(image_name)
+                print(row['id'])
 
         # if 'RSI_1' in str(row['group']):
         #     train.append(image_name)

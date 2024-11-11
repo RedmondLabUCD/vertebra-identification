@@ -42,7 +42,6 @@ class SpineDataset(Dataset):
         output = np.load(output_filename) 
         if self.input_tf is not None: 
             input = self.output_tf(input)
-            print(input.shape)
         if self.output_tf is not None:
             output = self.output_tf(output)
         return input, output, filename

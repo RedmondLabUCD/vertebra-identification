@@ -159,6 +159,7 @@ def plot_images_with_points_256():
     image_dir = '//data/scratch/r094879/data/images'
     hm_dir = '//data/scratch/r094879/data/heatmaps'
     output_dir = '//data/scratch/r094879/data/images_with_points'
+    output_dir_2 = '//data/scratch/r094879/data/heatmap_check'
 
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
@@ -166,11 +167,18 @@ def plot_images_with_points_256():
     for index, row in df.iterrows():
         image_name = row['image']  # Get the DICOM image name from the 'image' column
         output_file_path = os.path.join(output_dir,image_name+'.png')
+        output_file_path_2 = os.path.join(output_dir_2,image_name+'.png')
         img_file_path = os.path.join(img_dir,image_name+'.png')
 
         lm_pred = np.zeros((13,2))
         hm = np.load(os.path.join(hm_dir, image_name+'.npy'))
-        print(hm.shape)
+
+        cum_hm = np.sum(hm,axis=2)
+
+        fig, ax = plt.subplots()
+        plt.imshow(cum_hm, cmap='gray')
+        plt.savefig(output_file_path_2)
+        plt.close(fig)
 
         img = dcmread(os.path.join(image_dir,image_name+".dcm"))
         img_size = img.pixel_array.shape
@@ -189,18 +197,16 @@ def plot_images_with_points_256():
         xy_pairs = np.array(list(zip(x_values, y_values)))
 
         # Combine x and y values and filter out NaN pairs
-        print('target')
         print(xy_pairs)
 
-        img = Image.open(img_file_path)
+        lm_pred[:,0] = lm_pred[:,0] * float(img_size[1])/256.0
+        lm_pred[:,1] = lm_pred[:,1] * float(img_size[0])/256.0
+
         fig, ax = plt.subplots()
         ax.imshow(img)
         ax.scatter(lm_pred[:,0], lm_pred[:,1], c='red', s=5, marker='o')
         plt.savefig(output_file_path)
         plt.close(fig)
-
-        lm_pred[:,0] = lm_pred[:,0] * float(img_size[1])/256.0
-        lm_pred[:,1] = lm_pred[:,1] * float(img_size[0])/256.0
 
         print('prediction')
         print(lm_pred)

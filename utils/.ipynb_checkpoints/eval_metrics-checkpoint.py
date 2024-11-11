@@ -128,10 +128,10 @@ class pb_mse_metric(nn.Module):
             lm_pred[i,0] = lm_preds[1]
             lm_pred[i,1] = lm_preds[0]
             # cumulative_sum += prediction[0,i,:,:]
-            plt.imshow(prediction[0,i,:,:], cmap='gray')
-            plt.title("Cumulative Sum of All Slices")
-            plt.savefig(os.path.join("//data/scratch/r094879/data/data_check",filename+'_'+str(i)+'.png'))
-            plt.close()
+            # plt.imshow(prediction[0,i,:,:], cmap='gray')
+            # plt.title("Cumulative Sum of All Slices")
+            # plt.savefig(os.path.join("//data/scratch/r094879/data/data_check",filename+'_'+str(i)+'.png'))
+            # plt.close()
         
 
         # plt.imshow(cumulative_sum, cmap='gray')
@@ -176,8 +176,8 @@ class pb_mse_metric(nn.Module):
         lm_targets = np.array(lm_tars).reshape((-1,2))
         lm_pred = np.array(lm_preds).reshape((-1,2))
 
-        print(lm_targets)
-        print(lm_pred)
+        # print(lm_targets)
+        # print(lm_pred)
 
         mse = mean_squared_error(lm_targets, lm_pred)
 

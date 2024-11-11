@@ -104,16 +104,24 @@ def final_mean_and_std(data_dir, params):
     for index, row in csv_df.iterrows():
         image_name = row['image']
 
-        if 'RSI_' in str(row['group']):
+        if index < int(0.8*len(csv_df)):
             train.append(image_name)
-        elif 'RSII_2' in str(row['group']):
-            val.append(image_name)
-        elif 'RSIII_1' in str(row['group']):
-            test.append(image_name)
+            train_id = row['id']
+        elif index < int(0.9*len(csv_df)):
+            if int(row['id']) == int(train_id):
+                train.append(image_name)
+            else:
+                val.append(image_name)
+                val_id = row['id']
+        elif index >= int(0.9*len(csv_df)):
+            if int(row['id']) == int(val_id):
+                val.append(image_name)
+            else:
+                test.append(image_name)
 
     # Define and load training dataset
     train_data = Dataset(data_dir,train,params.image_dir,params.target_dir,target_sfx=params.target_sfx,
-                                input_tf=transform,output_tf=target_transform)
+                                input_tf=transform,output_tf=transform)
 
     loader = DataLoader(train_data,batch_size=params.batch_size,shuffle=False)
     

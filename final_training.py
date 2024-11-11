@@ -82,38 +82,26 @@ def main():
     val = []
     test = []
 
+    train_id = 0
+    val_id = 0
+
     for index, row in csv_df.iterrows():
         image_name = row['image']
 
         if index < int(0.8*len(csv_df)):
             train.append(image_name)
-            if index > int(0.78*len(csv_df)):
-                print(row['id'])
+            train_id = row['id']
         elif index < int(0.9*len(csv_df)):
-            val.append(image_name)
-            if index < int(0.81*len(csv_df)):
-                print("val")
-                print(row['id'])
-            if index > int(0.89*len(csv_df)):
-                print(row['id'])
+            if int(row['id']) == int(train_id):
+                train.append(image_name)
+            else:
+                val.append(image_name)
+                val_id = row['id']
         elif index >= int(0.9*len(csv_df)):
-            test.append(image_name)
-            if index < int(0.91*len(csv_df)):
-                print("test")
-                print(row['id'])
-
-        # if 'RSI_1' in str(row['group']):
-        #     train.append(image_name)
-        # if 'RSI_2' in str(row['group']):
-        #     train.append(image_name)
-        # if 'RSI_3' in str(row['group']):
-        #     train.append(image_name)
-        # if 'RSI_4' in str(row['group']):
-        #     train.append(image_name)
-        # elif 'RSII_2' in str(row['group']):
-        #     val.append(image_name)
-        # elif 'RSIII_1' in str(row['group']):
-        #     test.append(image_name)
+            if int(row['id']) == int(val_id):
+                val.append(image_name)
+            else:
+                test.append(image_name)
     
     Dataset = getattr(datasets,params.dataset_class)
     
@@ -131,24 +119,17 @@ def main():
     best_epochs = []
         
     # Calculate mean and std for dataset normalization 
-    # norm_mean,norm_std = final_mean_and_std(root,params)
+    norm_mean,norm_std = final_mean_and_std(root,params)
     # norm_mean = [np.float32(0.99997693),np.float32(0.99997693),np.float32(0.99997693)]
     # norm_std = [np.float32(0.0009455526),np.float32(0.0009455526),np.float32(0.0009455526)]
 
-    # # Define transform for images
-    # transform=transforms.Compose([transforms.Resize((params.input_size,params.input_size)),
-    #                               transforms.ToTensor(),
-    #                               transforms.Normalize(mean=norm_mean,std=norm_std)
-    #                               ])
-
-    # transform=transforms.Compose([transforms.Resize((params.input_size,params.input_size)),
-    #                               transforms.ToTensor()
-    #                               ])
+    # Define transform for images
+    transform=transforms.Compose([transforms.ToTensor(),
+                                  transforms.Normalize(mean=norm_mean,std=norm_std)
+                                  ])
 
     # Set up transforms for targets
     target_transform = transforms.ToTensor()
-    transform = transforms.ToTensor()
-    
 
     val_data = Dataset(root,val,params.image_dir,params.target_dir,target_sfx=params.target_sfx,
                        input_tf=transform,output_tf=target_transform)
@@ -224,8 +205,8 @@ def main():
         "best_val_epoch": best_val_epoch,
         "lr": args.lr,
         "batch_size": params.batch_size
-        # "norm_mean": norm_mean,
-        # "norm_std": norm_std
+        "norm_mean": norm_mean,
+        "norm_std": norm_std
     }
 
     with open(os.path.join(root,params.log_dir,"{}{}.json".format(args.model_name, extra)), 'w') as f:

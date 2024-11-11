@@ -140,10 +140,10 @@ def final_mean_and_std(data_dir, params):
     std = (channels_squared_sum / num_batches - mean ** 2) ** 0.5
     
     mean = mean.cpu().numpy()
-    mean2 = [1.*mean[0],1.*mean[1],1.*mean[2]]
+    mean2 = 1.*mean[0]
     
     std = std.cpu().numpy()
-    std2 = [1.*std[0],1.*std[1],1.*std[2]]
+    std2 = 1.*std[0]
 
     return mean2, std2
 

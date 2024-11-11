@@ -203,7 +203,7 @@ def plot_images_with_points_256():
         lm_pred[:,1] = lm_pred[:,1] * float(img_size[0])/256.0
 
         fig, ax = plt.subplots()
-        ax.imshow(img)
+        ax.imshow(img.pixel_array)
         ax.scatter(lm_pred[:,0], lm_pred[:,1], c='red', s=5, marker='o')
         plt.savefig(output_file_path)
         plt.close(fig)

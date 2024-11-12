@@ -215,11 +215,11 @@ def create_mask(image_name,xy_pairs):
     if os.path.isfile(mask_file_path):
         mask = Image.open(mask_file_path)
     else: 
-        mask = np.zeros((int(img_size[0]),int(img_size[1])), dtype=np.uint8)
+        mask = np.zeros((int(img_size[0]),int(img_size[1]),3), dtype=np.uint8)
 
-    cv.fillPoly(mask,pts=[points],1)
+    cv.fillPoly(mask,pts=[points],color=(255,255,255))
 
-    mask = Image.fromarray(mask*255)
+    mask = Image.fromarray(mask)
 
     mask.save(mask_file_path)
 

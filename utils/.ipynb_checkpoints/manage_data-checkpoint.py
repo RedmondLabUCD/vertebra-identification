@@ -225,12 +225,11 @@ def create_mask(image_name,bx_all,by_all):
         
     img = dcmread(os.path.join(image_dir,image_name+".dcm"))
     img_size = img.pixel_array.shape
-    img_size = np.asarray(img_size).astype(float)
 
     if os.path.isfile(mask_file_path):
         mask = Image.open(mask_file_path)
     else: 
-        mask = np.zeros((img_size[0],img_size[1]), dtype=np.uint8)
+        mask = np.zeros((int(img_size[0]),int(img_size[1])), dtype=np.uint8)
 
     cv.fillPoly(mask,[xy_pairs],1)
 

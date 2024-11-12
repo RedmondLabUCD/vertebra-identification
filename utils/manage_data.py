@@ -188,6 +188,10 @@ def gather_boundaries(row,df):
             df.loc[df["image"]==img,str(vertebra)+'x'+str(i)] = bx
             df.loc[df["image"]==img,str(vertebra)+'y'+str(i)] = by
 
+            df.to_csv('//data/scratch/r094879/data/annotations/annotations.csv',index=False)
+            df = pd.read_csv('//data/scratch/r094879/data/annotations/annotations.csv')
+            
+
         df.loc[df["image"]==img,str(vertebra)+'x'] = x
         df.loc[df["image"]==img,str(vertebra)+'y'] = y
         df.loc[df["image"]==img,'id'] = id
@@ -224,6 +228,8 @@ def create_mask():
         mask = np.zeros((img_size[0],img_size[1]), dtype=np.uint8)
 
         for vertebra in vertebra_list:
+            x_values = row.iloc[29:187:2].values 
+            y_values = row.iloc[30:187:2].values
             points_x = np.array(row[str(vertebra)+'bx'])
             points_y = p.array(row[str(vertebra)+'by'])
             xy_pairs = np.array(list(zip(points_x,points_y)))

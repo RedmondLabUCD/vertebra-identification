@@ -194,7 +194,7 @@ def gather_boundaries(row):
                 xy_pairs.append([int(bx),int(by)])
             
             if len(xy_pairs) != 0:   
-                create_mask(img,xy_pairs)
+                create_mask(image_name,xy_pairs)
 
 
 def create_mask(image_name,xy_pairs):

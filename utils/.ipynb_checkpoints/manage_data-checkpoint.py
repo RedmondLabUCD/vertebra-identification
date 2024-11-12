@@ -45,6 +45,7 @@ def prep_data():
     for index, row in df_x.iterrows():
         # create_data_file(row,df)
         gather_boundaries(row)
+        break
 
     # df2 = df.replace('', np.nan, regex=True)
 

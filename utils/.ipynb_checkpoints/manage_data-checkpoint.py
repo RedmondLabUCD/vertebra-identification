@@ -183,12 +183,12 @@ def gather_boundaries(row):
 
             xy_pairs = []
             
-            for i in range(49):
-                num_x = 18002 + (2*i)
-                num_y = 18002 + (2*i) + 1
-                # if int(num_x) >= 18100:
-                #     num_x = num_x + 16
-                #     num_y = num_y + 16
+            for i in range(94):
+                num_x = 18010 + (2*i)
+                num_y = 18010 + (2*i) + 1
+                if int(num_x) >= 18100:
+                    num_x = num_x + 16
+                    num_y = num_y + 16
                 bx = spss_row[variable_names[group]+'_'+str(num_x)+'.'+str(vertebra)].values[0]
                 by = spss_row[variable_names[group]+'_'+str(num_y)+'.'+str(vertebra)].values[0]
                 xy_pairs.append([int(bx),int(by)])

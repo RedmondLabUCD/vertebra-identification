@@ -218,6 +218,8 @@ def create_mask(image_name,bx_all,by_all):
 
     xy_pairs = np.array(list(zip(bx_all,by_all)))
 
+    print(xy_pairs)
+
     mask_file_path = os.path.join(mask_dir,image_name+'.png')
 
     if not os.path.exists(mask_dir):

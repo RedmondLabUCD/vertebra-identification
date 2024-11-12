@@ -232,7 +232,7 @@ def create_mask(image_name,xy_pairs):
     ax.plot(xy_pairs[30:40,0],xy_pairs[30:40,1],color='y')
     ax.plot(xy_pairs[40:50,0],xy_pairs[40:50,1],color='m')
     ax.plot(xy_pairs[50:,0],xy_pairs[50:,1],color='c')
-    plt.save(os.path.join(mask_dir,"test.png")
+    plt.save(os.path.join(mask_dir,"test.png"))
 
 
 def smooth_masks():

@@ -26,37 +26,40 @@ from pydicom.pixel_data_handlers.util import apply_voi_lut
 
 def prep_data():
 
-    df = pd.DataFrame(columns = ['image','id','group','T4x','T4y','T5x','T5y','T6x','T6y','T7x','T7y','T8x','T8y','T9x','T9y',
-                             'T10x','T10y','T11x','T11y','T12x','T12y','L1x','L1y','L2x','L2y','L3x','L3y','L4x','L4y'])
+    # df = pd.DataFrame(columns = ['image','id','group','T4x','T4y','T5x','T5y','T6x','T6y','T7x','T7y','T8x','T8y','T9x','T9y',
+    #                          'T10x','T10y','T11x','T11y','T12x','T12y','L1x','L1y','L2x','L2y','L3x','L3y','L4x','L4y'])
 
-    filenames = [os.path.normpath(file).split(os.path.sep)[-1][:-4]
-                     for file in glob('//data/scratch/r094879/data/images/*.dcm')]
+    # filenames = [os.path.normpath(file).split(os.path.sep)[-1][:-4]
+    #                  for file in glob('//data/scratch/r094879/data/images/*.dcm')]
 
-    df['image'] = filenames
+    # df['image'] = filenames
 
-    # Read the Excel file
-    mappings_file = '//data/scratch/r094879/data/annotations/mappings.csv' 
-    df_x = pd.read_csv(mappings_file)
+    # # Read the Excel file
+    # mappings_file = '//data/scratch/r094879/data/annotations/mappings.csv' 
+    # df_x = pd.read_csv(mappings_file)
+
+    annotations_file = '//data/scratch/r094879/data/annotations/annotations.csv' 
+    df_x = pd.read_csv(annotations_file)
 
     # Loop through each row in the Excel file and process
     for index, row in df_x.iterrows():
-        create_data_file(row,df)
-        # gather_boundaries(row,df)
+        # create_data_file(row,df)
+        gather_boundaries(row,df)
 
-    df2 = df.replace('', np.nan, regex=True)
+    # df2 = df.replace('', np.nan, regex=True)
 
-    annotations_file = '//data/scratch/r094879/data/annotations/annotations.csv' 
-    df2 = pd.read_csv(annotations_file)
+    # annotations_file = '//data/scratch/r094879/data/annotations/annotations.csv' 
+    # df2 = pd.read_csv(annotations_file)
     
-    imgs_to_delete = df2['image'][df2['group'].isna()].tolist()
+    # imgs_to_delete = df2['image'][df2['group'].isna()].tolist()
 
-    count = 0
-    for img_to_delete in imgs_to_delete:
-        os.remove(os.path.join('//data/scratch/r094879/data/images',img_to_delete+'.dcm'))
-        count = count + 1
-    print(count)
-    df2 = df2.dropna(subset=['group'])
-    df2.to_csv('//data/scratch/r094879/data/annotations/annotations.csv',index=False)
+    # count = 0
+    # for img_to_delete in imgs_to_delete:
+    #     os.remove(os.path.join('//data/scratch/r094879/data/images',img_to_delete+'.dcm'))
+    #     count = count + 1
+    # print(count)
+    # df2 = df2.dropna(subset=['group'])
+    # df2.to_csv('//data/scratch/r094879/data/annotations/annotations.csv',index=False)
 
 
 def create_data_file(row,df):
@@ -159,6 +162,7 @@ def gather_boundaries(row,df):
     # Extract ID and group
     id = row['id']
     group = row['group']
+    image_name = row['image']
 
     # Open corresponding SPSS file
     spss_file = f"/data/scratch/r094879/data/annotations/{group}_mergedABQQM_Ling_20140128.sav"
@@ -172,36 +176,25 @@ def gather_boundaries(row,df):
 
     # For each vertebra, get image name and x, y coordinates
     for vertebra in vertebra_list:
-
-        x = spss_row[variable_names[group]+'_17971.'+str(vertebra)].values[0]
-        y = spss_row[variable_names[group]+'_17972.'+str(vertebra)].values[0]
+        
         img = spss_row[variable_names[group]+'_17962.'+str(vertebra)].values[0]
 
-        xy_pairs = []
-        
-        for i in range(79):
-            num_x = 18002 + (2*i)
-            num_y = 18002 + (2*i) + 1
-            if int(num_x) >= 18100:
-                num_x = num_x + 16
-                num_y = num_y + 16
-            bx = spss_row[variable_names[group]+'_'+str(num_x)+'.'+str(vertebra)].values[0]
-            by = spss_row[variable_names[group]+'_'+str(num_y)+'.'+str(vertebra)].values[0]
-            xy_pairs.append([int(bx),int(by)])
-        
-        if len(xy_pairs) != 0:   
-            create_mask(img,xy_pairs)
-            
-        df.loc[df["image"]==img,str(vertebra)+'x'] = x
-        df.loc[df["image"]==img,str(vertebra)+'y'] = y
-        df.loc[df["image"]==img,'id'] = id
-        df.loc[df["image"]==img,'group'] = group
+        if str(img) == str(image_name):
 
-        # Skip if any value is missing
-        if pd.isna(img) or pd.isna(x) or pd.isna(y):
-            print(f"Missing data for vertebra {vertebra} in ID {id}. Skipping...")
-            continue
-        df.to_csv('//data/scratch/r094879/data/annotations/annotations.csv',index=False)
+            xy_pairs = []
+            
+            for i in range(79):
+                num_x = 18002 + (2*i)
+                num_y = 18002 + (2*i) + 1
+                if int(num_x) >= 18100:
+                    num_x = num_x + 16
+                    num_y = num_y + 16
+                bx = spss_row[variable_names[group]+'_'+str(num_x)+'.'+str(vertebra)].values[0]
+                by = spss_row[variable_names[group]+'_'+str(num_y)+'.'+str(vertebra)].values[0]
+                xy_pairs.append([int(bx),int(by)])
+            
+            if len(xy_pairs) != 0:   
+                create_mask(img,xy_pairs)
 
 
 def create_mask(image_name,xy_pairs):
@@ -214,7 +207,7 @@ def create_mask(image_name,xy_pairs):
     if not os.path.exists(mask_dir):
         os.makedirs(mask_dir)
 
-    print(xy_pairs)
+    points = np.array(xy_pairs)
         
     img = dcmread(os.path.join(image_dir,image_name+".dcm"))
     img_size = img.pixel_array.shape
@@ -224,9 +217,9 @@ def create_mask(image_name,xy_pairs):
     else: 
         mask = np.zeros((int(img_size[0]),int(img_size[1])), dtype=np.uint8)
 
-    cv.fillPoly(mask,xy_pairs,(255,255,255))
+    cv.fillPoly(mask,pts=[points],1)
 
-    mask = Image.fromarray(mask)
+    mask = Image.fromarray(mask*255)
 
     mask.save(mask_file_path)
 

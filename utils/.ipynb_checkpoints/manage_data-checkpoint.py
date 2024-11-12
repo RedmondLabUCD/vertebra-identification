@@ -191,6 +191,9 @@ def gather_boundaries(row,df):
             bx_all.append(bx)
             by_all.append(by)
 
+        by_all = np.asarray(by_all)
+        bx_all = np.asarray(bx_all)
+        
         if not by_all.isempty():   
             create_mask(img,bx_all,by_all)
             

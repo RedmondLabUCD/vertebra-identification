@@ -193,8 +193,10 @@ def gather_boundaries(row,df):
 
         by_all = np.asarray(by_all)
         bx_all = np.asarray(bx_all)
+
+        print(by_all)
         
-        if by_all:   
+        if len(by_all) != 0:   
             create_mask(img,bx_all,by_all)
             
         df.loc[df["image"]==img,str(vertebra)+'x'] = x

@@ -226,12 +226,12 @@ def create_mask(image_name,xy_pairs):
     mask.save(mask_file_path)
 
     fig, ax = plt.subplots()
-    ax.plot(xy_pairs[:10,0],xy_pairs[:10,1],color='r')
-    ax.plot(xy_pairs[10:20,0],xy_pairs[10:20,1],color='b')
-    ax.plot(xy_pairs[20:30,0],xy_pairs[20:30,1],color='g')
-    ax.plot(xy_pairs[30:40,0],xy_pairs[30:40,1],color='y')
-    ax.plot(xy_pairs[40:50,0],xy_pairs[40:50,1],color='m')
-    ax.plot(xy_pairs[50:,0],xy_pairs[50:,1],color='c')
+    ax.plot(points[:10,0],points[:10,1],color='r')
+    ax.plot(points[10:20,0],points[10:20,1],color='b')
+    ax.plot(points[20:30,0],points[20:30,1],color='g')
+    ax.plot(points[30:40,0],points[30:40,1],color='y')
+    ax.plot(points[40:50,0],points[40:50,1],color='m')
+    ax.plot(points[50:,0],points[50:,1],color='c')
     plt.save(os.path.join(mask_dir,"test.png"))
 
 

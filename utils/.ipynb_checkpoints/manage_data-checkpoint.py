@@ -224,9 +224,9 @@ def create_mask(image_name,xy_pairs):
     else: 
         mask = np.zeros((int(img_size[0]),int(img_size[1])), dtype=np.uint8)
 
-    cv.fillPoly(mask,[xy_pairs],(255,255,255))
+    cv.fillPoly(mask,xy_pairs,(255,255,255))
 
-    mask = Image.fromarray(mask * 255)
+    mask = Image.fromarray(mask)
 
     mask.save(mask_file_path)
 

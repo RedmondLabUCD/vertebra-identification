@@ -187,7 +187,7 @@ def gather_boundaries(row,df):
                 num_y = num_y + 16
             bx = spss_row[variable_names[group]+'_'+str(num_x)+'.'+str(vertebra)].values[0]
             by = spss_row[variable_names[group]+'_'+str(num_y)+'.'+str(vertebra)].values[0]
-            xy_pairs.append([bx,by])
+            xy_pairs.append([int(bx),int(by)])
         
         if len(xy_pairs) != 0:   
             create_mask(img,xy_pairs)

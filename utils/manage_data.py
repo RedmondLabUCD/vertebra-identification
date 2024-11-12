@@ -192,6 +192,7 @@ def gather_boundaries(row):
                 bx = spss_row[variable_names[group]+'_'+str(num_x)+'.'+str(vertebra)].values[0]
                 by = spss_row[variable_names[group]+'_'+str(num_y)+'.'+str(vertebra)].values[0]
                 xy_pairs.append([int(bx),int(by)])
+                
             print(xy_pairs)
             
             if len(xy_pairs) != 0:   

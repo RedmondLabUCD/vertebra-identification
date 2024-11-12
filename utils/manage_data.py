@@ -191,7 +191,7 @@ def gather_boundaries(row,df):
             bx_all.append(bx)
             by_all.append(by)
 
-        if !by_all.isempty():   
+        if not by_all.isempty():   
             create_mask(img,bx_all,by_all)
             
         df.loc[df["image"]==img,str(vertebra)+'x'] = x

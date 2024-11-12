@@ -5,4 +5,4 @@ if __name__ == '__main__':
 
     # create_dataset()
     # plot_images_with_points_256()
-    gather_boundaries()
+    prep_data()

@@ -26,23 +26,24 @@ from pydicom.pixel_data_handlers.util import apply_voi_lut
 
 def prep_data():
 
-    # df = pd.DataFrame(columns = ['image','id','group','T4x','T4y','T5x','T5y','T6x','T6y','T7x','T7y','T8x','T8y','T9x','T9y',
-    #                          'T10x','T10y','T11x','T11y','T12x','T12y','L1x','L1y','L2x','L2y','L3x','L3y','L4x','L4y'])
+    df = pd.DataFrame(columns = ['image','id','group','T4x','T4y','T5x','T5y','T6x','T6y','T7x','T7y','T8x','T8y','T9x','T9y',
+                             'T10x','T10y','T11x','T11y','T12x','T12y','L1x','L1y','L2x','L2y','L3x','L3y','L4x','L4y'])
 
-    # filenames = [os.path.normpath(file).split(os.path.sep)[-1][:-4]
-    #                  for file in glob('//data/scratch/r094879/data/images/*.dcm')]
+    filenames = [os.path.normpath(file).split(os.path.sep)[-1][:-4]
+                     for file in glob('//data/scratch/r094879/data/images/*.dcm')]
 
-    # df['image'] = filenames
+    df['image'] = filenames
 
-    # # Read the Excel file
-    # mappings_file = '//data/scratch/r094879/data/annotations/mappings.csv' 
-    # df_x = pd.read_csv(mappings_file)
+    # Read the Excel file
+    mappings_file = '//data/scratch/r094879/data/annotations/mappings.csv' 
+    df_x = pd.read_csv(mappings_file)
 
-    # # Loop through each row in the Excel file and process
-    # for index, row in df_x.iterrows():
-    #     create_data_file(row,df)
+    # Loop through each row in the Excel file and process
+    for index, row in df_x.iterrows():
+        # create_data_file(row,df)
+        gather_boundaries(row,df)
 
-    # df2 = df.replace('', np.nan, regex=True)
+    df2 = df.replace('', np.nan, regex=True)
 
     annotations_file = '//data/scratch/r094879/data/annotations/annotations.csv' 
     df2 = pd.read_csv(annotations_file)
@@ -150,7 +151,7 @@ def plot_images_with_points():
     print("All images have been processed and saved as PNG files.")
 
 
-def gather_boundaries():
+def gather_boundaries(row,df):
 
     vertebra_list = ['T4','T5','T6','T7','T8','T9','T10','T11','T12','L1','L2','L3','L4']
     variable_names = {'RSI_1':'e1','RSI_2':'e2','RSI_3':'e3','RSI_4':'e4','RSII_2':'e4','RSIII_1':'ej'}

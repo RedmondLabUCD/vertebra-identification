@@ -214,12 +214,9 @@ def create_mask(image_name,xy_pairs):
 
     if os.path.isfile(mask_file_path):
         mask = cv.imread(mask_file_path)
-        print("not new")
     else: 
         mask = np.zeros((int(img_size[0]),int(img_size[1])), dtype=np.uint8)
-        print("new")
 
-    print(mask)
     cv.fillPoly(mask,pts=[points],color=(255,255,255))
 
     mask = Image.fromarray(mask)

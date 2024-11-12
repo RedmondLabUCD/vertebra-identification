@@ -176,12 +176,7 @@ class pb_mse_metric(nn.Module):
         lm_targets = np.array(lm_tars).reshape((-1,2))
         lm_pred = np.array(lm_preds).reshape((-1,2))
 
-        # print(lm_targets)
-        # print(lm_pred)
-
         mse = mean_squared_error(lm_targets, lm_pred)
-
-        print(mse)
 
         return mse
     

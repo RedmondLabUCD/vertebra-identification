@@ -216,9 +216,7 @@ def create_mask(image_name,bx_all,by_all):
     mask_dir = '//data/scratch/r094879/data/masks'
     image_dir = '//data/scratch/r094879/data/images'
 
-    xy_pairs = np.array(list(zip(bx_all,by_all)))
-
-    print(xy_pairs)
+    xy_pairs = list(zip(bx_all,by_all))
 
     mask_file_path = os.path.join(mask_dir,image_name+'.png')
 

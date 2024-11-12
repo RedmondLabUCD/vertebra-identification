@@ -150,6 +150,94 @@ def plot_images_with_points():
     print("All images have been processed and saved as PNG files.")
 
 
+def gather_boundaries():
+
+    vertebra_list = ['T4','T5','T6','T7','T8','T9','T10','T11','T12','L1','L2','L3','L4']
+    variable_names = {'RSI_1':'e1','RSI_2':'e2','RSI_3':'e3','RSI_4':'e4','RSII_2':'e4','RSIII_1':'ej'}
+
+    # Extract ID and group
+    id = row['id']
+    group = row['group']
+
+    # Open corresponding SPSS file
+    spss_file = f"/data/scratch/r094879/data/annotations/{group}_mergedABQQM_Ling_20140128.sav"
+    df_spss, meta = pyreadstat.read_sav(spss_file)
+
+    # Find the row in the SPSS file corresponding to the ID
+    spss_row = df_spss[df_spss['ergoid'] == id]
+    if spss_row.empty:
+        print(f"No matching row found for ID {id} in group {group}")
+        return
+
+    # For each vertebra, get image name and x, y coordinates
+    for vertebra in vertebra_list:
+
+        x = spss_row[variable_names[group]+'_17971.'+str(vertebra)].values[0]
+        y = spss_row[variable_names[group]+'_17972.'+str(vertebra)].values[0]
+        img = spss_row[variable_names[group]+'_17962.'+str(vertebra)].values[0]
+
+        bx_all = []
+        by_all = []
+        for i in range(95):
+            num_x = 18002 + (2*i)
+            num_y = 18002 + (2*i) + 1
+            bx = spss_row[variable_names[group]+'_'+str(num_x)+'.'+str(vertebra)].values[0]
+            by = spss_row[variable_names[group]+'_'+str(num_y)+'.'+str(vertebra)].values[0]
+            bx_all.append(bx)
+            by_all.append(by)
+
+        df.loc[df["image"]==img,str(vertebra)+'x'] = x
+        df.loc[df["image"]==img,str(vertebra)+'y'] = y
+        df.loc[df["image"]==img,str(vertebra)+'bx'] = bx_all
+        df.loc[df["image"]==img,str(vertebra)+'by'] = by_all
+        df.loc[df["image"]==img,'id'] = id
+        df.loc[df["image"]==img,'group'] = group
+
+        # Skip if any value is missing
+        if pd.isna(img) or pd.isna(x) or pd.isna(y):
+            print(f"Missing data for vertebra {vertebra} in ID {id}. Skipping...")
+            continue
+        df.to_csv('//data/scratch/r094879/data/annotations/annotations.csv',index=False)
+
+
+def create_mask():
+
+    vertebra_list = ['T4','T5','T6','T7','T8','T9','T10','T11','T12','L1','L2','L3','L4']
+
+    csv_file = '//data/scratch/r094879/data/annotations/annotations.csv' 
+    df = pd.read_csv(csv_file)
+
+    output_dir = '//data/scratch/r094879/data/masks'
+    img_dir = '//data/scratch/r094879/data/imgs'
+
+    if not os.path.exists(output_dir):
+        os.makedirs(output_dir)
+
+    for index, row in df.iterrows():
+        image_name = row['image']  # Get the DICOM image name from the 'image' column
+        output_file_path = os.path.join(output_dir,image_name+'.png')
+
+        img = dcmread(os.path.join(image_dir,image_name+".dcm"))
+        img_size = img.pixel_array.shape
+        img_size = np.asarray(img_size).astype(float)
+
+        mask = np.zeros((img_size[0],img_size[1]), dtype=np.uint8)
+
+        for vertebra in vertebra_list:
+            points_x = np.array(row[str(vertebra)+'bx'])
+            points_y = p.array(row[str(vertebra)+'by'])
+            xy_pairs = np.array(list(zip(points_x,points_y)))
+
+            cv.fillPoly(mask,[xy_pairs],1)
+
+        smoothed_mask = cv.GaussianBlur(mask.astype(np.float32), (5, 5), sigmaX=2, sigmaY=2)
+        _, binary_smoothed_mask = cv.threshold(smoothed_mask, 0.5, 1, cv.THRESH_BINARY)
+
+        binary_smoothed_mask = (binary_smoothed_mask * 255).astype(np.uint8)
+        smoothed_mask_image = Image.fromarray(binary_smoothed_mask)
+        smoothed_mask_image.save(output_file_path)
+    
+
 def plot_images_with_points_256():
 
     csv_file = '//data/scratch/r094879/data/annotations/annotations.csv' 

@@ -44,7 +44,7 @@ def prep_data():
     # Loop through each row in the Excel file and process
     for index, row in df_x.iterrows():
         # create_data_file(row,df)
-        gather_boundaries(row,df)
+        gather_boundaries(row)
 
     # df2 = df.replace('', np.nan, regex=True)
 
@@ -154,7 +154,7 @@ def plot_images_with_points():
     print("All images have been processed and saved as PNG files.")
 
 
-def gather_boundaries(row,df):
+def gather_boundaries(row):
 
     vertebra_list = ['T4','T5','T6','T7','T8','T9','T10','T11','T12','L1','L2','L3','L4']
     variable_names = {'RSI_1':'e1','RSI_2':'e2','RSI_3':'e3','RSI_4':'e4','RSII_2':'e4','RSIII_1':'ej'}

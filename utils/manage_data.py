@@ -177,8 +177,7 @@ def gather_boundaries(row,df):
         y = spss_row[variable_names[group]+'_17972.'+str(vertebra)].values[0]
         img = spss_row[variable_names[group]+'_17962.'+str(vertebra)].values[0]
 
-        bx_all = []
-        by_all = []
+        xy_pairs = []
         
         for i in range(79):
             num_x = 18002 + (2*i)
@@ -188,16 +187,10 @@ def gather_boundaries(row,df):
                 num_y = num_y + 16
             bx = spss_row[variable_names[group]+'_'+str(num_x)+'.'+str(vertebra)].values[0]
             by = spss_row[variable_names[group]+'_'+str(num_y)+'.'+str(vertebra)].values[0]
-            bx_all.append(bx)
-            by_all.append(by)
-
-        by_all = np.asarray(by_all)
-        bx_all = np.asarray(bx_all)
-
-        print(by_all)
+            xy_pairs.append([bx,by])
         
-        if len(by_all) != 0:   
-            create_mask(img,bx_all,by_all)
+        if len(xy_pairs) != 0:   
+            create_mask(img,xy_pairs)
             
         df.loc[df["image"]==img,str(vertebra)+'x'] = x
         df.loc[df["image"]==img,str(vertebra)+'y'] = y
@@ -211,14 +204,10 @@ def gather_boundaries(row,df):
         df.to_csv('//data/scratch/r094879/data/annotations/annotations.csv',index=False)
 
 
-def create_mask(image_name,bx_all,by_all):
+def create_mask(image_name,xy_pairs):
 
     mask_dir = '//data/scratch/r094879/data/masks'
     image_dir = '//data/scratch/r094879/data/images'
-
-    xy_pairs = list(zip(bx_all,by_all))
-
-    print(xy_pairs)
 
     mask_file_path = os.path.join(mask_dir,image_name+'.png')
 

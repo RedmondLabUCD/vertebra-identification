@@ -192,9 +192,7 @@ def gather_boundaries(row):
                 bx = spss_row[variable_names[group]+'_'+str(num_x)+'.'+str(vertebra)].values[0]
                 by = spss_row[variable_names[group]+'_'+str(num_y)+'.'+str(vertebra)].values[0]
                 xy_pairs.append([int(bx),int(by)])
-                
-            print(xy_pairs)
-            
+
             if len(xy_pairs) != 0:   
                 create_mask(image_name,xy_pairs)
 
@@ -210,6 +208,7 @@ def create_mask(image_name,xy_pairs):
         os.makedirs(mask_dir)
 
     points = np.array(xy_pairs)
+    print(points)
         
     img = dcmread(os.path.join(image_dir,image_name+".dcm"))
     img_size = img.pixel_array.shape

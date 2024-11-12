@@ -177,8 +177,6 @@ def gather_boundaries(row,df):
         y = spss_row[variable_names[group]+'_17972.'+str(vertebra)].values[0]
         img = spss_row[variable_names[group]+'_17962.'+str(vertebra)].values[0]
 
-        bx_all = []
-        by_all = []
         for i in range(79):
             num_x = 18002 + (2*i)
             num_y = 18002 + (2*i) + 1
@@ -187,13 +185,11 @@ def gather_boundaries(row,df):
                 num_y = num_y + 16
             bx = spss_row[variable_names[group]+'_'+str(num_x)+'.'+str(vertebra)].values[0]
             by = spss_row[variable_names[group]+'_'+str(num_y)+'.'+str(vertebra)].values[0]
-            bx_all.append(bx)
-            by_all.append(by)
+            df.loc[df["image"]==img,str(vertebra)+'x'+str(i)] = bx
+            df.loc[df["image"]==img,str(vertebra)+'y'+str(i)] = by
 
         df.loc[df["image"]==img,str(vertebra)+'x'] = x
         df.loc[df["image"]==img,str(vertebra)+'y'] = y
-        df.loc[df["image"]==img,str(vertebra)+'bx'] = bx_all
-        df.loc[df["image"]==img,str(vertebra)+'by'] = by_all
         df.loc[df["image"]==img,'id'] = id
         df.loc[df["image"]==img,'group'] = group
 

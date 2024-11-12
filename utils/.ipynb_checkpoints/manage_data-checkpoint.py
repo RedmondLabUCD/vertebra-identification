@@ -214,6 +214,7 @@ def create_mask(image_name,xy_pairs):
 
     if os.path.isfile(mask_file_path):
         mask = Image.open(mask_file_path)
+        mask = np.asarray(mask)
         print("not new")
     else: 
         mask = np.zeros((int(img_size[0]),int(img_size[1])), dtype=np.uint8)

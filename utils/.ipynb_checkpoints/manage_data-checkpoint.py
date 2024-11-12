@@ -40,8 +40,8 @@ def prep_data():
 
     # Loop through each row in the Excel file and process
     for index, row in df_x.iterrows():
-        # create_data_file(row,df)
-        gather_boundaries(row,df)
+        create_data_file(row,df)
+        # gather_boundaries(row,df)
 
     df2 = df.replace('', np.nan, regex=True)
 
@@ -177,6 +177,9 @@ def gather_boundaries(row,df):
         y = spss_row[variable_names[group]+'_17972.'+str(vertebra)].values[0]
         img = spss_row[variable_names[group]+'_17962.'+str(vertebra)].values[0]
 
+        bx_all = []
+        by_all = []
+        
         for i in range(79):
             num_x = 18002 + (2*i)
             num_y = 18002 + (2*i) + 1
@@ -185,13 +188,12 @@ def gather_boundaries(row,df):
                 num_y = num_y + 16
             bx = spss_row[variable_names[group]+'_'+str(num_x)+'.'+str(vertebra)].values[0]
             by = spss_row[variable_names[group]+'_'+str(num_y)+'.'+str(vertebra)].values[0]
-            df.loc[df["image"]==img,str(vertebra)+'x'+str(i)] = bx
-            df.loc[df["image"]==img,str(vertebra)+'y'+str(i)] = by
+            bx_all.append(bx)
+            by_all.append(by)
 
-            df.to_csv('//data/scratch/r094879/data/annotations/annotations.csv',index=False)
-            df = pd.read_csv('//data/scratch/r094879/data/annotations/annotations.csv')
+        if !by_all.isempty():   
+            create_mask(img,bx_all,by_all)
             
-
         df.loc[df["image"]==img,str(vertebra)+'x'] = x
         df.loc[df["image"]==img,str(vertebra)+'y'] = y
         df.loc[df["image"]==img,'id'] = id
@@ -204,45 +206,50 @@ def gather_boundaries(row,df):
         df.to_csv('//data/scratch/r094879/data/annotations/annotations.csv',index=False)
 
 
-def create_mask():
+def create_mask(image_name,bx_all,by_all):
 
-    vertebra_list = ['T4','T5','T6','T7','T8','T9','T10','T11','T12','L1','L2','L3','L4']
-
-    csv_file = '//data/scratch/r094879/data/annotations/annotations.csv' 
-    df = pd.read_csv(csv_file)
-
-    output_dir = '//data/scratch/r094879/data/masks'
+    mask_dir = '//data/scratch/r094879/data/masks'
     img_dir = '//data/scratch/r094879/data/imgs'
 
-    if not os.path.exists(output_dir):
-        os.makedirs(output_dir)
+    xy_pairs = np.array(list(zip(bx_all,by_all)))
 
-    for index, row in df.iterrows():
-        image_name = row['image']  # Get the DICOM image name from the 'image' column
-        output_file_path = os.path.join(output_dir,image_name+'.png')
+    mask_file_path = os.path.join(output_dir,image_name+'.png')
 
-        img = dcmread(os.path.join(image_dir,image_name+".dcm"))
-        img_size = img.pixel_array.shape
-        img_size = np.asarray(img_size).astype(float)
+    if not os.path.exists(mask_dir):
+        os.makedirs(mask_dir)
+        
+    img = dcmread(os.path.join(image_dir,image_name+".dcm"))
+    img_size = img.pixel_array.shape
+    img_size = np.asarray(img_size).astype(float)
 
+    if mask_file_path.exists():
+        mask = Image.open(mask_file_path)
+    else: 
         mask = np.zeros((img_size[0],img_size[1]), dtype=np.uint8)
 
-        for vertebra in vertebra_list:
-            x_values = row.iloc[29:187:2].values 
-            y_values = row.iloc[30:187:2].values
-            points_x = np.array(row[str(vertebra)+'bx'])
-            points_y = p.array(row[str(vertebra)+'by'])
-            xy_pairs = np.array(list(zip(points_x,points_y)))
+    cv.fillPoly(mask,[xy_pairs],1)
 
-            cv.fillPoly(mask,[xy_pairs],1)
+    mask = Image.fromarray(mask * 255)
+
+    mask.save(mask_file_path)
+
+
+def smooth_masks():
+
+    mask_dir = '//data/scratch/r094879/data/masks'
+
+    for file in os.listdir(mask_dir):
+
+        mask = Image.open(file)
 
         smoothed_mask = cv.GaussianBlur(mask.astype(np.float32), (5, 5), sigmaX=2, sigmaY=2)
         _, binary_smoothed_mask = cv.threshold(smoothed_mask, 0.5, 1, cv.THRESH_BINARY)
 
         binary_smoothed_mask = (binary_smoothed_mask * 255).astype(np.uint8)
         smoothed_mask_image = Image.fromarray(binary_smoothed_mask)
-        smoothed_mask_image.save(output_file_path)
-    
+
+        smoothed_mask_image.save(file)
+        
 
 def plot_images_with_points_256():
 

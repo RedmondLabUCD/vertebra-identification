@@ -213,6 +213,8 @@ def create_mask(image_name,xy_pairs):
 
     if not os.path.exists(mask_dir):
         os.makedirs(mask_dir)
+
+    print(xy_pairs)
         
     img = dcmread(os.path.join(image_dir,image_name+".dcm"))
     img_size = img.pixel_array.shape

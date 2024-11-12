@@ -179,7 +179,7 @@ def gather_boundaries(row,df):
 
         bx_all = []
         by_all = []
-        for i in range(95):
+        for i in range(79):
             num_x = 18002 + (2*i)
             num_y = 18002 + (2*i) + 1
             if int(num_x) >= 18100:

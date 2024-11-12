@@ -214,7 +214,7 @@ def gather_boundaries(row,df):
 def create_mask(image_name,bx_all,by_all):
 
     mask_dir = '//data/scratch/r094879/data/masks'
-    img_dir = '//data/scratch/r094879/data/imgs'
+    image_dir = '//data/scratch/r094879/data/images'
 
     xy_pairs = np.array(list(zip(bx_all,by_all)))
 

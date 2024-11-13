@@ -184,8 +184,8 @@ def gather_boundaries(row):
 
             xy_pairs = []
             
-            for i in range(78):
-                num_x = 18002 + (2*i)
+            for i in range(30):
+                num_x = 18020 + (2*i)
                 num_y = 18002 + (2*i) + 1
                 if int(num_x) >= 18100:
                     num_x = num_x + 16
@@ -225,19 +225,19 @@ def create_mask(image_name,xy_pairs):
 
     mask.save(mask_file_path)
 
-    dicom_file_path = os.path.join(image_dir, image_name+'.dcm')
-    dicom_image = dcmread(dicom_file_path)
-    pixel_array = dicom_image.pixel_array
+    # dicom_file_path = os.path.join(image_dir, image_name+'.dcm')
+    # dicom_image = dcmread(dicom_file_path)
+    # pixel_array = dicom_image.pixel_array
 
-    # fig, ax = plt.subplots()
-    plt.imshow(pixel_array, cmap='gray')
-    plt.scatter(points[:10,0],points[:10,1],color='r')
-    plt.scatter(points[10:20,0],points[10:20,1],color='b')
-    plt.scatter(points[20:30,0],points[20:30,1],color='g')
-    plt.scatter(points[30:40,0],points[30:40,1],color='y')
-    plt.scatter(points[40:50,0],points[40:50,1],color='m')
-    plt.scatter(points[50:,0],points[50:,1],color='c')
-    plt.savefig(os.path.join(mask_dir,"test.png"))
+    # # fig, ax = plt.subplots()
+    # plt.imshow(pixel_array, cmap='gray')
+    # plt.scatter(points[:10,0],points[:10,1],color='r')
+    # plt.scatter(points[10:20,0],points[10:20,1],color='b')
+    # plt.scatter(points[20:30,0],points[20:30,1],color='g')
+    # plt.scatter(points[30:40,0],points[30:40,1],color='y')
+    # plt.scatter(points[40:50,0],points[40:50,1],color='m')
+    # plt.scatter(points[50:,0],points[50:,1],color='c')
+    # plt.savefig(os.path.join(mask_dir,"test.png"))
 
 
 def smooth_masks():

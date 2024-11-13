@@ -209,7 +209,8 @@ def create_mask(image_name,xy_pairs):
         os.makedirs(mask_dir)
 
     points = np.array(xy_pairs)
-    print(points)
+
+    hull = cv.convexHull(points)
         
     img = dcmread(os.path.join(image_dir,image_name+".dcm"))
     img_size = img.pixel_array.shape
@@ -219,7 +220,7 @@ def create_mask(image_name,xy_pairs):
     else: 
         mask = np.zeros((int(img_size[0]),int(img_size[1])), dtype=np.uint8)
 
-    cv.fillPoly(mask,pts=[points],color=(255,255,255))
+    cv.fillPoly(mask,pts=[hull],color=(255,255,255))
 
     mask = Image.fromarray(mask)
 

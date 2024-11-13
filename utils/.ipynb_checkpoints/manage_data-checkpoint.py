@@ -107,7 +107,7 @@ def plot_images_with_points():
     df = pd.read_csv(csv_file)
 
     dicom_dir = '//data/scratch/r094879/data/images'
-    output_dir = '//data/scratch/r094879/data/images_with_points'
+    output_dir = '//data/scratch/r094879/data/images_with_points_new'
 
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)

@@ -184,8 +184,8 @@ def gather_boundaries(row):
 
             xy_pairs = []
             
-            for i in range(30):
-                num_x = 18020 + (2*i)
+            for i in range(78):
+                num_x = 18002 + (2*i)
                 num_y = 18002 + (2*i) + 1
                 if int(num_x) >= 18100:
                     num_x = num_x + 16

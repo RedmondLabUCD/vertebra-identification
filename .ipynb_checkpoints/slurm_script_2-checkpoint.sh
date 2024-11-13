@@ -20,6 +20,6 @@ source "/tmp/${SLURM_JOB_USER}.${SLURM_JOB_ID}/prolog.env"
 source /trinity/home/r094879/vertebra-detection/bin/activate
 
 # ----- Your tasks -----
-python final_training_2.py UNet_LM_CL --custom_loss True --ckpt 'Checkpoint/Quick'
+python final_training_quick.py UNet_LM_CL --custom_loss True --ckpt 'Checkpoint/Quick'
 # python main.py
 # python test.py UNet_LM_CL

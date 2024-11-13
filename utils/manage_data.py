@@ -198,6 +198,20 @@ def gather_boundaries(row):
                 create_mask(image_name,xy_pairs)
 
 
+def sort_points(xy: np.ndarray) -> np.ndarray:
+    # normalize data  [-1, 1]
+    xy_sort = np.empty_like(xy)
+    xy_sort[:, 0] = 2 * (xy[:, 0] - np.min(xy[:, 0]))/(np.max(xy[:, 0] - np.min(xy[:, 0]))) - 1
+    xy_sort[:, 1] = 2 * (xy[:, 1] - np.min(xy[:, 1])) / (np.max(xy[:, 1] - np.min(xy[:, 1]))) - 1
+
+    # get sort result
+    sort_array = np.arctan2(xy_sort[:, 0], xy_sort[:, 1])
+    sort_result = np.argsort(sort_array)
+
+    # apply sort result
+    return xy[sort_result]
+    
+
 def create_mask(image_name,xy_pairs):
 
     mask_dir = '//data/scratch/r094879/data/masks'
@@ -209,8 +223,9 @@ def create_mask(image_name,xy_pairs):
         os.makedirs(mask_dir)
 
     points = np.array(xy_pairs)
+    sorted_points = sort_points(points)
 
-    hull = cv.convexHull(points)
+    # hull = cv.convexHull(points)
         
     img = dcmread(os.path.join(image_dir,image_name+".dcm"))
     img_size = img.pixel_array.shape
@@ -220,7 +235,7 @@ def create_mask(image_name,xy_pairs):
     else: 
         mask = np.zeros((int(img_size[0]),int(img_size[1])), dtype=np.uint8)
 
-    cv.fillPoly(mask,pts=[hull],color=(255,255,255))
+    cv.fillPoly(mask,pts=[sorted_points],color=(255,255,255))
 
     mask = Image.fromarray(mask)
 

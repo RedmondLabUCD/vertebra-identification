@@ -119,7 +119,7 @@ class pb_mse_metric(nn.Module):
         lm_pred = np.zeros((params.num_classes,2))
         root = '//data/scratch/r094879/data/'
 
-        cumulative_sum = np.zeros(prediction.shape[2:])
+        # cumulative_sum = np.zeros(prediction.shape[2:])
         # Get most likely landmark locations based on heatmap predictions
         for i in range(params.num_classes):
             lm_preds = np.unravel_index(prediction[0,i,:,:].argmax(),
@@ -127,17 +127,17 @@ class pb_mse_metric(nn.Module):
             lm_preds = np.asarray(lm_preds).astype(float)
             lm_pred[i,0] = lm_preds[1]
             lm_pred[i,1] = lm_preds[0]
-            cumulative_sum += prediction[0,i,:,:]
+            # cumulative_sum += prediction[0,i,:,:]
             # plt.imshow(prediction[0,i,:,:], cmap='gray')
             # plt.title("Cumulative Sum of All Slices")
             # plt.savefig(os.path.join("//data/scratch/r094879/data/data_check",filename+'_'+str(i)+'.png'))
             # plt.close()
         
 
-        plt.imshow(cumulative_sum, cmap='gray')
-        plt.title("Cumulative Sum of All Slices")
-        plt.savefig(os.path.join("//data/scratch/r094879/data/data_check",filename+'.png'))
-        plt.close()
+        # plt.imshow(cumulative_sum, cmap='gray')
+        # plt.title("Cumulative Sum of All Slices")
+        # plt.savefig(os.path.join("//data/scratch/r094879/data/data_check",filename+'.png'))
+        # plt.close()
     
         # Use input image to resize predictions
         image_dir = params.image_dir
@@ -162,6 +162,10 @@ class pb_mse_metric(nn.Module):
         # Combine x and y values and filter out NaN pairs
         xy_pairs = np.concatenate([x_values,y_values],axis=1)
 
+        if str(filename) == "1.2.392.200036.9.0.84872641.28053248.3927965275":
+            print(lm_pred)
+            print(xy_pairs)
+
         lm_targets = xy_pairs.reshape((-1,2))
         lm_targets = np.nan_to_num(lm_targets)
 
@@ -177,6 +181,9 @@ class pb_mse_metric(nn.Module):
         lm_pred = np.array(lm_preds).reshape((-1,2))
 
         mse = mean_squared_error(lm_targets, lm_pred)
+
+        if str(filename) == "1.2.392.200036.9.0.84872641.28053248.3927965275":
+            print(mse)
 
         return mse
     

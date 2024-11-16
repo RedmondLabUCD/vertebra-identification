@@ -162,9 +162,9 @@ class pb_mse_metric(nn.Module):
         # Combine x and y values and filter out NaN pairs
         xy_pairs = np.concatenate([x_values,y_values],axis=1)
 
-        if str(filename) == str("1.2.392.200036.9125.9.0.84872641.28053248.3927965275"):
-            print(lm_pred)
-            print(xy_pairs)
+        # if str(filename) == str("1.2.392.200036.9125.9.0.84872641.28053248.3927965275"):
+        #     print(lm_pred)
+        #     print(xy_pairs)
 
         lm_targets = xy_pairs.reshape((-1,2))
         lm_targets = np.nan_to_num(lm_targets)
@@ -182,9 +182,9 @@ class pb_mse_metric(nn.Module):
 
         mse = mean_squared_error(lm_targets, lm_pred)
 
-        print(filename)
-        if str(filename) == str("1.2.392.200036.9125.9.0.84872641.28053248.3927965275"):
-            print(mse)
+        # print(filename)
+        # if str(filename) == str("1.2.392.200036.9125.9.0.84872641.28053248.3927965275"):
+        #     print(mse)
 
         return mse
     

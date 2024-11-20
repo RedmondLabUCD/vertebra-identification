@@ -22,4 +22,4 @@ source /trinity/home/r094879/vertebra-detection/bin/activate
 # ----- Your tasks -----
 # python final_training.py UNet_LM_CL --custom_loss True --ckpt 'Checkpoint/Long'
 # python main.py
-python test.py UNet_LM_CL --chpt 'Checkpoint/Long'
+python test.py UNet_LM_CL --ckpt 'Checkpoint/Long'

@@ -101,6 +101,9 @@ def final_mean_and_std(data_dir, params):
     val = []
     test = []
 
+    train_id = 0
+    val_id = 0
+
     for index, row in csv_df.iterrows():
         image_name = row['image']
 

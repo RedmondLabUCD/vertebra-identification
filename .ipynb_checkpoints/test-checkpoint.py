@@ -26,7 +26,7 @@ from utils.params import Params
 from utils.plotting import plot_training
 from utils.train_progress_tools import run_train_generator, track_running_average_loss, monitor_progress
 import utils.eval_metrics as e_metric
-from utils.data_prep import mean_and_std
+from utils.data_prep import final_mean_and_std
 
 
 def main():
@@ -61,15 +61,26 @@ def main():
     val = []
     test = []
 
+    train_id = 0
+    val_id = 0
+
     for index, row in csv_df.iterrows():
         image_name = row['image']
 
-        if index < int(0.1*len(csv_df)):
+        if index < int(0.8*len(csv_df)):
             train.append(image_name)
-        elif index < int(0.11*len(csv_df)):
-            val.append(image_name)
-        elif index >= int(0.90*len(csv_df)):
-            test.append(image_name)
+            train_id = row['id']
+        elif index < int(0.9*len(csv_df)):
+            if int(row['id']) == int(train_id):
+                train.append(image_name)
+            else:
+                val.append(image_name)
+                val_id = row['id']
+        elif index >= int(0.9*len(csv_df)):
+            if int(row['id']) == int(val_id):
+                val.append(image_name)
+            else:
+                test.append(image_name)
     
     Dataset = getattr(datasets,params.dataset_class)
     

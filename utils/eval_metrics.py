@@ -129,12 +129,14 @@ class pb_mse_metric(nn.Module):
             lm_pred[i,1] = lm_preds[0]
             cumulative_sum += prediction[0,i,:,:]
             plt.imshow(prediction[0,i,:,:], cmap='gray')
-            plt.savefig(os.path.join("//data/scratch/r094879/data/data_check",filename+'_'+str(i)+'.png'))
+            plt.axis('off')
+            plt.savefig(os.path.join("//data/scratch/r094879/data/data_check_long",filename+'_'+str(i)+'.png'))
             plt.close()     
 
         plt.imshow(cumulative_sum, cmap='gray')
         plt.title("Cumulative Sum of All Slices")
-        plt.savefig(os.path.join("//data/scratch/r094879/data/data_check",filename+'.png'))
+        plt.axis('off')
+        plt.savefig(os.path.join("//data/scratch/r094879/data/data_check_long",filename+'.png'))
         plt.close()
     
         # Use input image to resize predictions

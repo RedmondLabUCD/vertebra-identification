@@ -18,3 +18,18 @@ UNet_LM_CL:
   input_size: 256
   early_stopping_up: False
   
+UNet_LM_CL3:
+  <<: *DEFAULT
+  model_name: UNet
+  image_dir: "images"
+  target_dir: "heatmaps"
+  target_sfx: ".npy"
+  checkpoint_dir: "Checkpoint/Test1"
+  log_dir: 'Logs/Test1'
+  dataset_class: "SpineDataset"
+  loss: "custom_weighted_loss_3"
+  eval_metric: "pb_mse_metric"
+  num_classes: 13
+  batch_size: 32
+  input_size: 256
+  early_stopping_up: False

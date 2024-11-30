@@ -156,7 +156,7 @@ def main():
     train_accs = []
 
     # Initialize early stopping
-    early_stopping = EarlyStopping(verbose=True, patience=10, up=params.early_stopping_up, path=os.path.join(root,params.checkpoint_dir))
+    early_stopping = EarlyStopping(verbose=True, patience=20, up=params.early_stopping_up, path=os.path.join(root,params.checkpoint_dir))
 
     # ==================== TRAIN THE MODEL FOR ONE FOLD ====================
 

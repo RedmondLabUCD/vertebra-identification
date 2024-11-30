@@ -353,12 +353,52 @@ class custom_weighted_loss(nn.Module):
     
 class custom_weighted_loss2(nn.Module):
     def __init__(self):
-        super(custom_weighted_loss, self).__init__()
+        super(custom_weighted_loss2, self).__init__()
     
     def forward(self,prediction,target):
         weight_map = target.detach().clone()
         weight_map = (weight_map*10).int()
         diff = (prediction - target)**2
         weighted = diff*(weight_map+1)
+        loss = torch.mean(weighted)
+        return loss
+
+
+class custom_weighted_loss_3(nn.Module):
+    # Custom weight loss that:
+    #     1) ignore the layers that are immediately before/after layers that contain landmarks
+    #     2) increase the error weighting in layers that contain no landmark at all 
+    def __init__(self):
+        super(custom_weighted_loss_3, self).__init__()
+    
+    def forward(self,prediction,target):
+        weight_map = target.detach().clone()
+        weight_map = (weight_map>0.5).float()
+        weight_map = weight_map*9 + 1
+        for k in range(weight_map.shape[0]):
+            first = False
+            last = False
+            next = True
+            for i in range(13):
+                if 10 in weight_map[k,i,:,:]:
+                    if not first:
+                        first = True 
+                        last = False
+                        next = False
+                        if i != 0:
+                            weight_map[k,i-1,:,:] = weight_map[k,i-1,:,:] - 1
+                else:    
+                    if first and not last:
+                        first = False
+                        last = True
+                        weight_map[k,i,:,:] = weight_map[k,i,:,:] - 1
+                    elif last and not next:
+                        next = True
+                        weight_map[k,i,:,:] = weight_map[k,i,:,:]*5
+                    elif next:
+                        weight_map[k,i,:,:] = weight_map[k,i,:,:]*5
+                        
+        diff = (prediction - target)**2
+        weighted = diff*weight_map
         loss = torch.mean(weighted)
         return loss

@@ -127,17 +127,17 @@ class pb_mse_metric(nn.Module):
             lm_preds = np.asarray(lm_preds).astype(float)
             lm_pred[i,0] = lm_preds[1]
             lm_pred[i,1] = lm_preds[0]
-            cumulative_sum += prediction[0,i,:,:]
-            plt.imshow(prediction[0,i,:,:], cmap='gray')
-            plt.axis('off')
-            plt.savefig(os.path.join("//data/scratch/r094879/data/data_check_long",filename+'_'+str(i)+'.png'))
-            plt.close()     
+            # cumulative_sum += prediction[0,i,:,:]
+            # plt.imshow(prediction[0,i,:,:], cmap='gray')
+            # plt.axis('off')
+            # plt.savefig(os.path.join("//data/scratch/r094879/data/data_check_long",filename+'_'+str(i)+'.png'))
+            # plt.close()     
 
-        plt.imshow(cumulative_sum, cmap='gray')
-        plt.title("Cumulative Sum of All Slices")
-        plt.axis('off')
-        plt.savefig(os.path.join("//data/scratch/r094879/data/data_check_long",filename+'.png'))
-        plt.close()
+        # plt.imshow(cumulative_sum, cmap='gray')
+        # plt.title("Cumulative Sum of All Slices")
+        # plt.axis('off')
+        # plt.savefig(os.path.join("//data/scratch/r094879/data/data_check_long",filename+'.png'))
+        # plt.close()
     
         # Use input image to resize predictions
         image_dir = params.image_dir
@@ -162,8 +162,8 @@ class pb_mse_metric(nn.Module):
         # Combine x and y values and filter out NaN pairs
         xy_pairs = np.concatenate([x_values,y_values],axis=1)
         
-        print(lm_pred)
-        print(xy_pairs)
+        # print(lm_pred)
+        # print(xy_pairs)
 
         lm_targets = xy_pairs.reshape((-1,2))
         lm_targets = np.nan_to_num(lm_targets)
@@ -181,8 +181,8 @@ class pb_mse_metric(nn.Module):
 
         mse = mean_squared_error(lm_targets, lm_pred)
 
-        print(filename)
-        print(mse)
+        # print(filename)
+        # print(mse)
 
         return mse
     

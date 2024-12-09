@@ -412,10 +412,12 @@ class custom_weighted_loss_3(nn.Module):
     def forward(self,prediction,target):
         weight_map = target.detach().clone()
         weight_map = (weight_map>0.5).float()
+
+        weight_map_equal = np.zeros(weight_map.shape[2:])
         
-        weight_map = weight_map*9 + 1
         for k in range(weight_map.shape[0]):
-            weight_map_equal = np.sum(weight_map[k,:,:,:],axis=1)
+            for i in range(13):
+                weight_map_equal += weight_map[k,i,:,:]
             plt.imshow(weight_map_equal*255, cmap='gray')
             plt.title("Weighted")
             plt.axis('off')

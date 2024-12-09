@@ -413,7 +413,7 @@ class custom_weighted_loss_3(nn.Module):
         weight_map = target.detach().clone()
         weight_map = (weight_map>0.5).float()
 
-        weight_map_equal = np.zeros(weight_map.shape[2:])
+        weight_map_equal = np.zeros((1,1,weight_map.shape[2],weight_map.shape[2]))
         
         for k in range(weight_map.shape[0]):
             for i in range(13):

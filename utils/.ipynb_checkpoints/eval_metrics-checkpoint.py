@@ -417,11 +417,11 @@ class custom_weighted_loss_3(nn.Module):
         
         for k in range(weight_map.shape[0]):
             weight_map_equal = torch.sum(weight_map[k,:,:,:],0)
-            plt.imshow(weight_map_equal*255, cmap='gray')
-            plt.title("Weighted")
-            plt.axis('off')
-            plt.savefig(os.path.join("//data/scratch/r094879/data/data_check_weighted",str(k)+'.png'))
-            plt.close()
+            # plt.imshow(weight_map_equal*255, cmap='gray')
+            # plt.title("Weighted")
+            # plt.axis('off')
+            # plt.savefig(os.path.join("//data/scratch/r094879/data/data_check_weighted",str(k)+'.png'))
+            # plt.close()
             
             first = False
             last = False

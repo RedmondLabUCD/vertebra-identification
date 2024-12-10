@@ -416,7 +416,7 @@ class custom_weighted_loss_3(nn.Module):
         weight_map_equal = np.zeros((1,1,weight_map.shape[2],weight_map.shape[2]))
         
         for k in range(weight_map.shape[0]):
-            weight_map_equal = torch.sum(weight_map[k,:,:,:],1)
+            weight_map_equal = torch.sum(weight_map[k,:,:,:],0)
             plt.imshow(weight_map_equal*255, cmap='gray')
             plt.title("Weighted")
             plt.axis('off')

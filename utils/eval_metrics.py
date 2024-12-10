@@ -420,7 +420,7 @@ class custom_weighted_loss_3(nn.Module):
             plt.imshow(weight_map_equal*255, cmap='gray')
             plt.title("Weighted")
             plt.axis('off')
-            plt.savefig(os.path.join("//data/scratch/r094879/data/data_check_weighted",k+'.png'))
+            plt.savefig(os.path.join("//data/scratch/r094879/data/data_check_weighted",str(k)+'.png'))
             plt.close()
             
             first = False

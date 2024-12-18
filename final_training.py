@@ -105,9 +105,6 @@ def main():
     
     Dataset = getattr(datasets,params.dataset_class)
     
-    # Create checkpoint directory if not already existing
-    if not os.path.exists(os.path.join(root,params.checkpoint_dir)): os.makedirs(os.path.join(root,params.checkpoint_dir))
-    
     # Make directories to save results 
     if not os.path.exists(os.path.join(root,params.log_dir)): os.makedirs(os.path.join(root,params.log_dir))
     if not os.path.exists(os.path.join(root,params.checkpoint_dir)): os.makedirs(os.path.join(root,params.checkpoint_dir))
@@ -120,8 +117,6 @@ def main():
         
     # Calculate mean and std for dataset normalization 
     norm_mean,norm_std = final_mean_and_std(root,params)
-    # norm_mean = [np.float32(0.99997693),np.float32(0.99997693),np.float32(0.99997693)]
-    # norm_std = [np.float32(0.0009455526),np.float32(0.0009455526),np.float32(0.0009455526)]
 
     # Define transform for images
     transform=transforms.Compose([transforms.ToTensor(),

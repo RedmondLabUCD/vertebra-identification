@@ -100,7 +100,7 @@ class net(nn.Module):
         # level 6 - encode
         x = self.dconv_down6(x)
         
-        # level 4 - decode
+        # level 5 - decode
         x = self.up5(x)        
         x = torch.cat([x, conv5], dim=1)
         x = self.dconv_up5(x)
@@ -122,7 +122,7 @@ class net(nn.Module):
 
         # level 1 - decode
         x = self.up1(x)  
-        x = torch.cat([x, conv1], dim=1)  
+        x = torch.cat([x, conv1], dim=1)
         x = self.dconv_up1(x)
         
         out = self.conv_last(x)

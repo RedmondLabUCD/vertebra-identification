@@ -166,7 +166,7 @@ def test(model, loader, eval_metric, params, checkpoint=None, name=None, extra=N
                                     'T10x','T10y','T10_val','T11x','T11y','T11_val','T12x','T12y','T12_val','L1x','L1y','L1_val',
                                      'L2x','L2y','L2_val','L3x','L3y','L3_val','L4x','L4y','L4_val'])
 
-    stats_df.to_csv(os.path.join('//data/scratch/r094879/data/results/',name+'.csv'),index=False)
+    stats_df.to_csv(os.path.join('//data/scratch/r094879/data/stats/',name+'.csv'),index=False)
     
     with torch.no_grad():
         for batch_idx, (inputs, targets, full_filenames) in enumerate(loader):

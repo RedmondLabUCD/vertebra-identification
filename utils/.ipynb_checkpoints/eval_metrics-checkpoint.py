@@ -209,13 +209,13 @@ class pb_mse_metric_test(nn.Module):
             cumulative_sum += prediction[0,i,:,:]
             plt.imshow(prediction[0,i,:,:], cmap='gray')
             plt.axis('off')
-            plt.savefig(os.path.join("//data/scratch/r094879/data/data_check_long",name,paramsfilename+'_'+str(i)+'.png'))
+            plt.savefig(os.path.join("//data/scratch/r094879/data/results",name,'heatmaps',paramsfilename+'_'+str(i)+'.png'))
             plt.close()     
 
         plt.imshow(cumulative_sum, cmap='gray')
         plt.title("Cumulative Sum of All Slices")
         plt.axis('off')
-        plt.savefig(os.path.join("//data/scratch/r094879/data/data_check_long",name,filename+'.png'))
+        plt.savefig(os.path.join("//data/scratch/r094879/data/results",name,'heatmaps',filename+'.png'))
         plt.close()
     
         # Use input image to resize predictions
@@ -238,7 +238,7 @@ class pb_mse_metric_test(nn.Module):
         x_values = np.array(filtered_row.iloc[:,3:29:2].values).reshape((-1,1))
         y_values = np.array(filtered_row.iloc[:,4:29:2].values).reshape((-1,1))
 
-        stats_df = pd.read_csv(os.path.join('//data/scratch/r094879/data/results/',name+'.csv'))
+        stats_df = pd.read_csv(os.path.join('//data/scratch/r094879/data/stats/',name+'.csv'))
 
         new_row = pd.DataFrame({"image":filename,'T4x':lm_pred[0,0],'T4y':lm_pred[0,1],'T4_val':max_val[0],
                                 'T5x':lm_pred[1,0],'T5y':lm_pred[1,1],'T5_val':max_val[1],'T6x':lm_pred[2,0],'T6y':lm_pred[2,1],
@@ -251,7 +251,7 @@ class pb_mse_metric_test(nn.Module):
                                 'L4_val':max_val[12]})
         stats_df = pd.concat([stats_df, new_row], ignore_index=True)
 
-        stats_df.to_csv(os.path.join('//data/scratch/r094879/data/results/',name+'.csv'),index=False)
+        stats_df.to_csv(os.path.join('//data/scratch/r094879/data/stats/',name+'.csv'),index=False)
 
         # Combine x and y values and filter out NaN pairs
         xy_pairs = np.concatenate([x_values,y_values],axis=1)

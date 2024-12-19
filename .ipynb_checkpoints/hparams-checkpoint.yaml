@@ -13,6 +13,7 @@ UNet_LM_CL:
   dataset_class: "SpineDataset"
   loss: "custom_weighted_loss"
   eval_metric: "pb_mse_metric"
+  test_eval_metric: "pb_mse_metric_test"
   num_classes: 13
   batch_size: 32
   input_size: 256
@@ -29,6 +30,7 @@ UNet_LM_CL2:
   dataset_class: "SpineDataset"
   loss: "custom_weighted_loss_2"
   eval_metric: "pb_mse_metric"
+  test_eval_metric: "pb_mse_metric_test"
   num_classes: 13
   batch_size: 32
   input_size: 256
@@ -45,6 +47,7 @@ UNet_LM_CL3:
   dataset_class: "SpineDataset"
   loss: "custom_weighted_loss_3"
   eval_metric: "pb_mse_metric"
+  test_eval_metric: "pb_mse_metric_test"
   num_classes: 13
   batch_size: 32
   input_size: 256

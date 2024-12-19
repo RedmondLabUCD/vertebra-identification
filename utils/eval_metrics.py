@@ -238,9 +238,11 @@ class pb_mse_metric_test(nn.Module):
         x_values = np.array(filtered_row.iloc[:,3:29:2].values).reshape((-1,1))
         y_values = np.array(filtered_row.iloc[:,4:29:2].values).reshape((-1,1))
 
-        stats_df = pd.read_csv(os.path.join('//data/scratch/r094879/data/stats/',name+'.csv'))
+        stats_df = pd.read_csv(os.path.join('//data/scratch/r094879/data/stats',name+'.csv'))
 
-        new_row = pd.DataFrame({"image":filename,'T4x':lm_pred[0,0],'T4y':lm_pred[0,1],'T4_val':max_val[0],
+        print(stats_df)
+
+        new_row = pd.DataFrame({'image':filename,'T4x':lm_pred[0,0],'T4y':lm_pred[0,1],'T4_val':max_val[0],
                                 'T5x':lm_pred[1,0],'T5y':lm_pred[1,1],'T5_val':max_val[1],'T6x':lm_pred[2,0],'T6y':lm_pred[2,1],
                                 'T6_val':max_val[2],'T7x':lm_pred[3,0],'T7y':lm_pred[3,1],'T7_val':max_val[3],'T8x':lm_pred[4,0],
                                 'T8y':lm_pred[4,1],'T8_val':max_val[4],'T9x':lm_pred[5,0],'T9y':lm_pred[5,1],'T9_val':max_val[5],
@@ -251,7 +253,9 @@ class pb_mse_metric_test(nn.Module):
                                 'L4_val':max_val[12]})
         stats_df = pd.concat([stats_df, new_row], ignore_index=True)
 
-        stats_df.to_csv(os.path.join('//data/scratch/r094879/data/stats/',name+'.csv'),index=False)
+        print(stats_df)
+
+        stats_df.to_csv(os.path.join('//data/scratch/r094879/data/stats',name+'.csv'),index=False)
 
         # Combine x and y values and filter out NaN pairs
         xy_pairs = np.concatenate([x_values,y_values],axis=1)

@@ -205,7 +205,7 @@ class pb_mse_metric_test(nn.Module):
             lm_preds = np.asarray(lm_preds).astype(float)
             lm_pred[i,0] = lm_preds[1]
             lm_pred[i,1] = lm_preds[0]
-            max_val[i] = prediction[0,i,lm_preds[0],lm_preds[1]]
+            max_val[i] = prediction[0,i,int(lm_preds[0]),int(lm_preds[1])]
             cumulative_sum += prediction[0,i,:,:]
             plt.imshow(prediction[0,i,:,:], cmap='gray')
             plt.axis('off')

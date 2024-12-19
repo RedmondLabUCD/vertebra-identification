@@ -189,7 +189,7 @@ class pb_mse_metric(nn.Module):
 
 class pb_mse_metric_test(nn.Module):
     def __init__(self):
-        super(pb_mse_metric, self).__init__()
+        super(pb_mse_metric_test, self).__init__()
     
     def forward(self,target,prediction,filename,params,name):
         prediction = prediction.cpu().detach().numpy()

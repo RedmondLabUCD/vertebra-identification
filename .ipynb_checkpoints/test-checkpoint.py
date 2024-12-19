@@ -128,7 +128,7 @@ def main():
     chkpt = os.path.join(root,params.checkpoint_dir,"chkpt_{}".format(args.model_name+extra+"_lr0001"))
     
     acc = test(model,test_loader,metrics,params,checkpoint=chkpt,name=args.model_name,extra=extra, 
-               prediction_dir=prediction_save,test_names)
+               prediction_dir=prediction_save,test_names=test_names)
     print("Test Accuracy: {}".format(acc))
     acc_scores.append(float(acc))
         

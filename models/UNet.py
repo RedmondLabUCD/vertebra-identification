@@ -148,7 +148,7 @@ def val(model, loader, criterion, eval_metric, params, checkpoint=None):
 
 
 def test(model, loader, eval_metric, params, checkpoint=None, name=None, extra=None,
-         prediction_dir=None,test_names):
+         prediction_dir=None,test_names=None):
     if checkpoint is not None:
         model_state = torch.load(checkpoint)
         model.load_state_dict(model_state['model']) 

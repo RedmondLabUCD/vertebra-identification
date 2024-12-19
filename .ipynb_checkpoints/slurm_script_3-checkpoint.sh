@@ -21,4 +21,7 @@ source /trinity/home/r094879/vertebra-detection/bin/activate
 
 # ----- Your tasks -----
 # python final_training.py UNet_LM_CL3 --custom_loss True
-python final_training.py UNet_deep_CL3 --custom_loss True
+# python final_training.py UNet_deep_CL3 --custom_loss True
+python test.py UNet_LM_CL
+python test.py UNet_LM_CL2
+python test.py UNet_LM_CL3

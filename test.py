@@ -48,7 +48,7 @@ def main():
     model_module = __import__('.'.join(['models', params.model_name]), fromlist=['object'])
     
     # Define evaluation metric
-    eval_metric = getattr(e_metric, params.eval_metric)
+    eval_metric = getattr(e_metric, params.test_eval_metric)
     metrics = eval_metric()
     
     # Get root for dataset

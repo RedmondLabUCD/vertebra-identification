@@ -185,6 +185,100 @@ class pb_mse_metric(nn.Module):
         # print(mse)
 
         return mse
+
+
+class pb_mse_metric_test(nn.Module):
+    def __init__(self):
+        super(pb_mse_metric, self).__init__()
+    
+    def forward(self,target,prediction,filename,params,name):
+        prediction = prediction.cpu().detach().numpy()
+        lm_pred = np.zeros((params.num_classes,2))
+        root = '//data/scratch/r094879/data/'
+
+        cumulative_sum = np.zeros(prediction.shape[2:])
+        max_val = np.zeros(13)
+        # Get most likely landmark locations based on heatmap predictions
+        for i in range(params.num_classes):
+            lm_preds = np.unravel_index(prediction[0,i,:,:].argmax(),
+                                           (params.input_size,params.input_size))
+            lm_preds = np.asarray(lm_preds).astype(float)
+            lm_pred[i,0] = lm_preds[1]
+            lm_pred[i,1] = lm_preds[0]
+            max_val[i] = prediction[0,i,lm_preds[0],lm_preds[1]]
+            cumulative_sum += prediction[0,i,:,:]
+            plt.imshow(prediction[0,i,:,:], cmap='gray')
+            plt.axis('off')
+            plt.savefig(os.path.join("//data/scratch/r094879/data/data_check_long",name,paramsfilename+'_'+str(i)+'.png'))
+            plt.close()     
+
+        plt.imshow(cumulative_sum, cmap='gray')
+        plt.title("Cumulative Sum of All Slices")
+        plt.axis('off')
+        plt.savefig(os.path.join("//data/scratch/r094879/data/data_check_long",name,filename+'.png'))
+        plt.close()
+    
+        # Use input image to resize predictions
+        image_dir = params.image_dir
+        target_dir = "annotations/"
+        img = dcmread(os.path.join(root,image_dir,filename+".dcm"))
+        img_size = img.pixel_array.shape
+        img_size = np.asarray(img_size).astype(float)
+        
+        lm_pred[:,0] = lm_pred[:,0] * float(img_size[1])/float(params.input_size)
+        lm_pred[:,1] = lm_pred[:,1] * float(img_size[0])/float(params.input_size)
+
+        # Get targets
+
+        csv_file = os.path.join(root,'annotations/annotations.csv')
+        csv_df = pd.read_csv(csv_file)
+
+        filtered_row = csv_df[csv_df['image'] == filename]
+
+        x_values = np.array(filtered_row.iloc[:,3:29:2].values).reshape((-1,1))
+        y_values = np.array(filtered_row.iloc[:,4:29:2].values).reshape((-1,1))
+
+        stats_df = pd.read_csv(os.path.join('//data/scratch/r094879/data/results/',name+'.csv'))
+
+        new_row = pd.DataFrame({"image":filename,'T4x':lm_pred[0,0],'T4y':lm_pred[0,1],'T4_val':max_val[0],
+                                'T5x':lm_pred[1,0],'T5y':lm_pred[1,1],'T5_val':max_val[1],'T6x':lm_pred[2,0],'T6y':lm_pred[2,1],
+                                'T6_val':max_val[2],'T7x':lm_pred[3,0],'T7y':lm_pred[3,1],'T7_val':max_val[3],'T8x':lm_pred[4,0],
+                                'T8y':lm_pred[4,1],'T8_val':max_val[4],'T9x':lm_pred[5,0],'T9y':lm_pred[5,1],'T9_val':max_val[5],
+                                'T10x':lm_pred[6,0],'T10y':lm_pred[6,1],'T10_val':max_val[6],'T11x':lm_pred[7,0],'T11y':lm_pred[7,1],
+                                'T11_val':max_val[7],'T12x':lm_pred[8,0],'T12y':lm_pred[8,1],'T12_val':max_val[8],'L1x':lm_pred[9,0],
+                                'L1y':lm_pred[9,1],'L1_val':max_val[9],'L2x':lm_pred[10,0],'L2y':lm_pred[10,1],'L2_val':max_val[10],
+                                'L3x':lm_pred[11,0],'L3y':lm_pred[11,1],'L3_val':max_val[11],'L4x':lm_pred[12,0],'L4y':lm_pred[12,1],
+                                'L4_val':max_val[12]})
+        stats_df = pd.concat([stats_df, new_row], ignore_index=True)
+
+        stats_df.to_csv(os.path.join('//data/scratch/r094879/data/results/',name+'.csv'),index=False)
+
+        # Combine x and y values and filter out NaN pairs
+        xy_pairs = np.concatenate([x_values,y_values],axis=1)
+        
+        # print(lm_pred)
+        # print(xy_pairs)
+
+        lm_targets = xy_pairs.reshape((-1,2))
+        lm_targets = np.nan_to_num(lm_targets)
+
+        lm_tars = []
+        lm_preds = []
+
+        for i in range(len(lm_targets)):
+            if int(lm_targets[i][0]) != 0:
+                lm_tars.append(lm_targets[i])
+                lm_preds.append(lm_pred[i])
+
+        lm_targets = np.array(lm_tars).reshape((-1,2))
+        lm_pred = np.array(lm_preds).reshape((-1,2))
+
+        mse = mean_squared_error(lm_targets, lm_pred)
+
+        # print(filename)
+        # print(mse)
+
+        return mse
     
 
 class test_pb_mse_metric(nn.Module):

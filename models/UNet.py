@@ -148,7 +148,7 @@ def val(model, loader, criterion, eval_metric, params, checkpoint=None):
 
 
 def test(model, loader, eval_metric, params, checkpoint=None, name=None, extra=None,
-         prediction_dir=None):
+         prediction_dir=None,test_names):
     if checkpoint is not None:
         model_state = torch.load(checkpoint)
         model.load_state_dict(model_state['model']) 
@@ -166,6 +166,7 @@ def test(model, loader, eval_metric, params, checkpoint=None, name=None, extra=N
                                     'T10x','T10y','T10_val','T11x','T11y','T11_val','T12x','T12y','T12_val','L1x','L1y','L1_val',
                                      'L2x','L2y','L2_val','L3x','L3y','L3_val','L4x','L4y','L4_val'])
 
+    stats_df['image'] = test_names
     stats_df.to_csv(os.path.join('//data/scratch/r094879/data/stats',name+'.csv'),index=False)
     
     with torch.no_grad():

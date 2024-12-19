@@ -57,9 +57,9 @@ def main():
     csv_file = os.path.join(root,'annotations/annotations.csv')
     csv_df = pd.read_csv(csv_file)
 
-    train = []
-    val = []
-    test = []
+    train_names = []
+    val_names = []
+    test_names = []
 
     train_id = 0
     val_id = 0
@@ -68,19 +68,19 @@ def main():
         image_name = row['image']
 
         if index < int(0.8*len(csv_df)):
-            train.append(image_name)
+            train_names.append(image_name)
             train_id = row['id']
         elif index < int(0.9*len(csv_df)):
             if int(row['id']) == int(train_id):
-                train.append(image_name)
+                train_names.append(image_name)
             else:
-                val.append(image_name)
+                val_names.append(image_name)
                 val_id = row['id']
         elif index >= int(0.9*len(csv_df)):
             if int(row['id']) == int(val_id):
-                val.append(image_name)
+                val_names.append(image_name)
             else:
-                test.append(image_name)
+                test_names.append(image_name)
     
     Dataset = getattr(datasets,params.dataset_class)
     
@@ -111,7 +111,7 @@ def main():
     target_transform = transforms.ToTensor()
       
     # Define test dataset
-    test_data = Dataset(root,test,params.image_dir,params.target_dir,target_sfx=params.target_sfx,
+    test_data = Dataset(root,test_names,params.image_dir,params.target_dir,target_sfx=params.target_sfx,
                        input_tf=transform,output_tf=target_transform)
            
     # Define dataloaders
@@ -128,7 +128,7 @@ def main():
     chkpt = os.path.join(root,params.checkpoint_dir,"chkpt_{}".format(args.model_name+extra+"_lr0001"))
     
     acc = test(model,test_loader,metrics,params,checkpoint=chkpt,name=args.model_name,extra=extra, 
-               prediction_dir=prediction_save)
+               prediction_dir=prediction_save,test_names)
     print("Test Accuracy: {}".format(acc))
     acc_scores.append(float(acc))
         

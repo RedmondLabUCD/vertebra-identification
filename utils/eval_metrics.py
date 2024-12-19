@@ -240,20 +240,45 @@ class pb_mse_metric_test(nn.Module):
 
         stats_df = pd.read_csv(os.path.join('//data/scratch/r094879/data/stats',name+'.csv'))
 
-        print(stats_df)
-
-        new_row = pd.DataFrame({'image':filename,'T4x':lm_pred[0,0],'T4y':lm_pred[0,1],'T4_val':max_val[0],
-                                'T5x':lm_pred[1,0],'T5y':lm_pred[1,1],'T5_val':max_val[1],'T6x':lm_pred[2,0],'T6y':lm_pred[2,1],
-                                'T6_val':max_val[2],'T7x':lm_pred[3,0],'T7y':lm_pred[3,1],'T7_val':max_val[3],'T8x':lm_pred[4,0],
-                                'T8y':lm_pred[4,1],'T8_val':max_val[4],'T9x':lm_pred[5,0],'T9y':lm_pred[5,1],'T9_val':max_val[5],
-                                'T10x':lm_pred[6,0],'T10y':lm_pred[6,1],'T10_val':max_val[6],'T11x':lm_pred[7,0],'T11y':lm_pred[7,1],
-                                'T11_val':max_val[7],'T12x':lm_pred[8,0],'T12y':lm_pred[8,1],'T12_val':max_val[8],'L1x':lm_pred[9,0],
-                                'L1y':lm_pred[9,1],'L1_val':max_val[9],'L2x':lm_pred[10,0],'L2y':lm_pred[10,1],'L2_val':max_val[10],
-                                'L3x':lm_pred[11,0],'L3y':lm_pred[11,1],'L3_val':max_val[11],'L4x':lm_pred[12,0],'L4y':lm_pred[12,1],
-                                'L4_val':max_val[12]})
-        stats_df = pd.concat([stats_df, new_row], ignore_index=True)
-
-        print(stats_df)
+        stats_df.loc[stats_df["image"]==int(filename),"T4x"] = lm_pred[0,0]
+        stats_df.loc[stats_df["image"]==int(filename),"T4y"] = lm_pred[0,1]
+        stats_df.loc[stats_df["image"]==int(filename),"T4_val"] = max_val[0]
+        stats_df.loc[stats_df["image"]==int(filename),"T5x"] = lm_pred[1,0]
+        stats_df.loc[stats_df["image"]==int(filename),"T5y"] = lm_pred[1,1]
+        stats_df.loc[stats_df["image"]==int(filename),"T5_val"] = max_val[1]
+        stats_df.loc[stats_df["image"]==int(filename),"T6x"] = lm_pred[2,0]
+        stats_df.loc[stats_df["image"]==int(filename),"T6y"] = lm_pred[2,1]
+        stats_df.loc[stats_df["image"]==int(filename),"T6_val"] = max_val[2]
+        stats_df.loc[stats_df["image"]==int(filename),"T7x"] = lm_pred[3,0]
+        stats_df.loc[stats_df["image"]==int(filename),"T7y"] = lm_pred[3,1]
+        stats_df.loc[stats_df["image"]==int(filename),"T7_val"] = max_val[3]
+        stats_df.loc[stats_df["image"]==int(filename),"T8x"] = lm_pred[4,0]
+        stats_df.loc[stats_df["image"]==int(filename),"T8y"] = lm_pred[4,1]
+        stats_df.loc[stats_df["image"]==int(filename),"T8_val"] = max_val[4]
+        stats_df.loc[stats_df["image"]==int(filename),"T9x"] = lm_pred[5,0]
+        stats_df.loc[stats_df["image"]==int(filename),"T9y"] = lm_pred[5,1]
+        stats_df.loc[stats_df["image"]==int(filename),"T9_val"] = max_val[5]
+        stats_df.loc[stats_df["image"]==int(filename),"T10x"] = lm_pred[6,0]
+        stats_df.loc[stats_df["image"]==int(filename),"T10y"] = lm_pred[6,1]
+        stats_df.loc[stats_df["image"]==int(filename),"T10_val"] = max_val[6]
+        stats_df.loc[stats_df["image"]==int(filename),"T11x"] = lm_pred[7,0]
+        stats_df.loc[stats_df["image"]==int(filename),"T11y"] = lm_pred[7,1]
+        stats_df.loc[stats_df["image"]==int(filename),"T11_val"] = max_val[7]
+        stats_df.loc[stats_df["image"]==int(filename),"T12x"] = lm_pred[8,0]
+        stats_df.loc[stats_df["image"]==int(filename),"T12y"] = lm_pred[8,1]
+        stats_df.loc[stats_df["image"]==int(filename),"T12_val"] = max_val[8]
+        stats_df.loc[stats_df["image"]==int(filename),"L1x"] = lm_pred[9,0]
+        stats_df.loc[stats_df["image"]==int(filename),"L1y"] = lm_pred[9,1]
+        stats_df.loc[stats_df["image"]==int(filename),"L1_val"] = max_val[9]
+        stats_df.loc[stats_df["image"]==int(filename),"L2x"] = lm_pred[10,0]
+        stats_df.loc[stats_df["image"]==int(filename),"L2y"] = lm_pred[10,1]
+        stats_df.loc[stats_df["image"]==int(filename),"L2_val"] = max_val[10]
+        stats_df.loc[stats_df["image"]==int(filename),"L3x"] = lm_pred[11,0]
+        stats_df.loc[stats_df["image"]==int(filename),"L3y"] = lm_pred[11,1]
+        stats_df.loc[stats_df["image"]==int(filename),"L3_val"] = max_val[11]
+        stats_df.loc[stats_df["image"]==int(filename),"L4x"] = lm_pred[12,0]
+        stats_df.loc[stats_df["image"]==int(filename),"L4y"] = lm_pred[12,1]
+        stats_df.loc[stats_df["image"]==int(filename),"L4_val"] = max_val[12]
 
         stats_df.to_csv(os.path.join('//data/scratch/r094879/data/stats',name+'.csv'),index=False)
 

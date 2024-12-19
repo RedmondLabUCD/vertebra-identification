@@ -209,7 +209,7 @@ class pb_mse_metric_test(nn.Module):
             cumulative_sum += prediction[0,i,:,:]
             plt.imshow(prediction[0,i,:,:], cmap='gray')
             plt.axis('off')
-            plt.savefig(os.path.join("//data/scratch/r094879/data/results",name,'heatmaps',paramsfilename+'_'+str(i)+'.png'))
+            plt.savefig(os.path.join("//data/scratch/r094879/data/results",name,'heatmaps',filename+'_'+str(i)+'.png'))
             plt.close()     
 
         plt.imshow(cumulative_sum, cmap='gray')

@@ -162,7 +162,7 @@ def plot_test_images_with_points(predictions_file,name='LM1'):
     predictions_df = pd.read_csv(os.path.join(pred_path,predictions_file))
     
     target_file = '//data/scratch/r094879/data/annotations/annotations.csv' 
-    df = pd.read_csv(target_file)
+    targets_df = pd.read_csv(target_file)
 
     dicom_dir = '//data/scratch/r094879/data/images'
     output_dir = '//data/scratch/r094879/data/test_images_' + name

@@ -186,11 +186,11 @@ def plot_test_images_with_points(predictions_file,name='LM1'):
         pred_row = predictions_df.loc[image_name]
         targ_row = targets_df.loc[image_name]
 
-        pred_x.extend([pred_row[i] for i in range(0, len(pred_row), 3) if pred_row[i+2] > 0.5 else 0])
-        pred_y.extend([pred_row[i] for i in range(1, len(pred_row), 3) if pred_row[i+1] > 0.5 else 0])
+        pred_x.extend([pred_row[i] if pred_row[i+2] > 0.5 else 0 for i in range(0, len(pred_row), 3)])
+        pred_y.extend([pred_row[i] if pred_row[i+1] > 0.5 else 0 for i in range(1, len(pred_row), 3)])
 
-        targ_x.extend([targ_row[i] for i in range(2, len(targ_row), 2) if targ_row[i] > 0 else 0])
-        targ_y.extend([targ_row[i] for i in range(3, len(targ_row), 2) if targ_row[i] > 0 else 0])
+        targ_x.extend([targ_row[i] if targ_row[i] > 0 else 0 for i in range(2, len(targ_row), 2)])
+        targ_y.extend([targ_row[i] if targ_row[i] > 0 else 0 for i in range(3, len(targ_row), 2)])
 
         dicom_file_path = os.path.join(dicom_dir, image_name+'.dcm')
 

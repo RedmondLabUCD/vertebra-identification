@@ -1,8 +1,9 @@
-from utils.manage_data import prep_data, plot_images_with_points, create_dataset, view_heatmaps, plot_images_with_points_256, gather_boundaries, create_mask
+from utils.manage_data import prep_data, plot_images_with_points, create_dataset, view_heatmaps, plot_images_with_points_256, gather_boundaries, create_mask, plot_test_images_with_points
 
 
 if __name__ == '__main__':
 
     # create_dataset()
-    plot_images_with_points()
+    # plot_images_with_points()
     # prep_data()
+    plot_test_images_with_points('UNet_LM_CL.csv',name='LM1')

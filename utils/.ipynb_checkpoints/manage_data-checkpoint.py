@@ -155,6 +155,72 @@ def plot_images_with_points():
     print("All images have been processed and saved as PNG files.")
 
 
+def plot_test_images_with_points(predictions_file,name='LM1'):
+
+    pred_path = '//data/scratch/r094879/data/stats'
+
+    predictions_df = pd.read_csv(os.path.join(pred_path,predictions_file))
+    
+    target_file = '//data/scratch/r094879/data/annotations/annotations.csv' 
+    df = pd.read_csv(target_file)
+
+    dicom_dir = '//data/scratch/r094879/data/images'
+    output_dir = '//data/scratch/r094879/data/test_images_' + name
+
+    common_images = predictions_df['image'].tolist()
+
+    # Ensure both dataframes have "image name" as the key column
+    predictions_df.set_index('image', inplace=True)
+    targets_df.set_index('image', inplace=True)
+
+    if not os.path.exists(output_dir):
+        os.makedirs(output_dir)
+
+    for image_name in common_images:
+
+        pred_x = []
+        pred_y = []
+        targ_x = []
+        targ_y = []
+
+        pred_row = predictions_df.loc[image_name]
+        targ_row = targets_df.loc[image_name]
+
+        pred_x.extend([pred_row[i] for i in range(0, len(pred_row), 3) if pred_row[i+2] > 0.5 else 0])
+        pred_y.extend([pred_row[i] for i in range(1, len(pred_row), 3) if pred_row[i+1] > 0.5 else 0])
+
+        targ_x.extend([targ_row[i] for i in range(2, len(targ_row), 2) if targ_row[i] > 0 else 0])
+        targ_y.extend([targ_row[i] for i in range(3, len(targ_row), 2) if targ_row[i] > 0 else 0])
+
+        dicom_file_path = os.path.join(dicom_dir, image_name+'.dcm')
+
+        # Read the DICOM file
+        dicom_image = dcmread(dicom_file_path)
+
+        # Extract pixel array from the DICOM file
+        pixel_array = dicom_image.pixel_array
+
+        # Plot the DICOM image
+        plt.imshow(pixel_array, cmap='gray')
+
+        vertebra_list = ['T4','T5','T6','T7','T8','T9','T10','T11','T12','L1','L2','L3','L4']
+        
+        # Plot the x and y points on the image
+        for i in range(len(pred_x)):
+            if pred_x[i] > 0 and pred_y[i] > 0:
+                plt.scatter(pred_x[i],pred_y[i], marker="$"+str(vertebra_list[i])+"$",c='b')
+            if targ_x[i] > 0 and targ_y[i] > 0:
+                plt.scatter(targ_x[i],targ_y[i], marker="$"+str(vertebra_list[i])+"$",c='r')
+
+        # Save the image as a PNG file
+        output_file_name = f"{image_name}_annotated.png"
+        output_file_path = os.path.join(output_dir, output_file_name)
+        plt.savefig(output_file_path)
+
+        # Clear the plot for the next iteration
+        plt.clf()
+
+
 def gather_boundaries(row):
 
     vertebra_list = ['T4','T5','T6','T7','T8','T9','T10','T11','T12','L1','L2','L3','L4']

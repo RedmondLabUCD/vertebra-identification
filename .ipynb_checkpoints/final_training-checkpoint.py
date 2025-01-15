@@ -39,6 +39,7 @@ def main():
     parser.add_argument("--roi",required=False,type=str,default=None,help="Uses ROI predictions as base.")
     parser.add_argument("--custom_loss",required=False,default=False,help="Use custom loss function.")
     parser.add_argument("--ckpt",required=False,type=str,default='Checkpoint/Test1',help="Set a checkpoint folder.")
+    parser.add_argument("--checkpoint",required=False,default=False,help="Set a checkpoint folder.")
     args = parser.parse_args()
     
     # Parse our YAML file which has our model parameters. 
@@ -105,9 +106,6 @@ def main():
     
     Dataset = getattr(datasets,params.dataset_class)
     
-    # Create checkpoint directory if not already existing
-    if not os.path.exists(os.path.join(root,params.checkpoint_dir)): os.makedirs(os.path.join(root,params.checkpoint_dir))
-    
     # Make directories to save results 
     if not os.path.exists(os.path.join(root,params.log_dir)): os.makedirs(os.path.join(root,params.log_dir))
     if not os.path.exists(os.path.join(root,params.checkpoint_dir)): os.makedirs(os.path.join(root,params.checkpoint_dir))
@@ -120,8 +118,6 @@ def main():
         
     # Calculate mean and std for dataset normalization 
     norm_mean,norm_std = final_mean_and_std(root,params)
-    # norm_mean = [np.float32(0.99997693),np.float32(0.99997693),np.float32(0.99997693)]
-    # norm_std = [np.float32(0.0009455526),np.float32(0.0009455526),np.float32(0.0009455526)]
 
     # Define transform for images
     transform=transforms.Compose([transforms.ToTensor(),
@@ -150,6 +146,12 @@ def main():
     train = model_module.train
     val = model_module.val
 
+    if checkpoint is not None:
+#         load_checkpoint(optimizer=None, model, checkpoint)
+        ckpt_name = os.path.join(root,params.checkpoint_dir,"chkpt_{}".format(args.model_name+extra))
+        model_state = torch.load(ckpt_name)
+        model.load_state_dict(model_state['model']) 
+
     val_accs = []
     val_losses = []
     train_losses = []
@@ -161,7 +163,7 @@ def main():
     # ==================== TRAIN THE MODEL FOR ONE FOLD ====================
 
     epoch_max = 100
-    for epoch in range(1,epoch_max):
+    for epoch in range(14,epoch_max):
         print("Epoch: {}".format(epoch))
         # Call training function. 
         train_generator = train(model, train_loader, optimizer, criterion, params)

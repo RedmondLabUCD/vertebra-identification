@@ -208,9 +208,11 @@ def plot_test_images_with_points(predictions_file,name='LM1'):
         # Plot the x and y points on the image
         for i in range(len(pred_x)):
             if pred_x[i] > 0 and pred_y[i] > 0:
-                plt.scatter(pred_x[i],pred_y[i], marker="$"+str(vertebra_list[i])+"$",c='b',size=50)
+                plt.scatter(pred_x[i],pred_y[i],marker='o',c='b',size=40)
+                plt.text(pred_x[i],pred_y[i],str(vertebra_list[i]),c='b',ha='left')
             if targ_x[i] > 0 and targ_y[i] > 0:
-                plt.scatter(targ_x[i],targ_y[i], marker="$"+str(vertebra_list[i])+"$",c='r',size=50)
+                plt.scatter(targ_x[i],targ_y[i],marker='o',c='r',size=40)
+                plt.text(targ_x[i],targ_y[i],str(vertebra_list[i]),c='r',ha='right')
 
         # Save the image as a PNG file
         output_file_name = f"{image_name}_annotated.png"

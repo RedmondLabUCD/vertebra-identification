@@ -146,7 +146,7 @@ def main():
     train = model_module.train
     val = model_module.val
 
-    if checkpoint is not None:
+    if args.checkpoint:
 #         load_checkpoint(optimizer=None, model, checkpoint)
         ckpt_name = os.path.join(root,params.checkpoint_dir,"chkpt_{}".format(args.model_name+extra))
         model_state = torch.load(ckpt_name)

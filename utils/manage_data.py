@@ -214,6 +214,12 @@ def plot_test_images_with_points(predictions_file,name='LM1'):
                 plt.scatter(targ_x[i],targ_y[i],marker='o',c='r',s=40)
                 plt.text(targ_x[i],targ_y[i],str(vertebra_list[i]),c='r',ha='right')
 
+        custom_lines = [Line2D([0], [0], marker='o', color='b', markerfacecolor='blue', markersize=10),
+                        Line2D([0], [0], marker='o', color='r', markerfacecolor='red', markersize=10)]
+
+        # Add the legend
+        plt.legend(custom_lines, ['Prediction', 'Ground Truth'])
+
         # Save the image as a PNG file
         output_file_name = f"{image_name}_annotated.png"
         output_file_path = os.path.join(output_dir, output_file_name)

@@ -147,10 +147,9 @@ def main():
     val = model_module.val
 
     if args.checkpoint:
-#         load_checkpoint(optimizer=None, model, checkpoint)
-        ckpt_name = os.path.join(root,params.checkpoint_dir,"chkpt_{}".format(args.model_name+extra))
+        ckpt_name = os.path.join(root,args.ckpt,"chkpt_{}".format(args.model_name+extra))
         model_state = torch.load(ckpt_name)
-        model.load_state_dict(model_state['model']) 
+        model.load_state_dicd ct(model_state['model']) 
 
     val_accs = []
     val_losses = []
@@ -163,7 +162,7 @@ def main():
     # ==================== TRAIN THE MODEL FOR ONE FOLD ====================
 
     epoch_max = 100
-    for epoch in range(14,epoch_max):
+    for epoch in range(1,epoch_max):
         print("Epoch: {}".format(epoch))
         # Call training function. 
         train_generator = train(model, train_loader, optimizer, criterion, params)

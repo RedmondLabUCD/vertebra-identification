@@ -149,7 +149,7 @@ def main():
     if args.checkpoint:
         ckpt_name = os.path.join(root,args.ckpt,"chkpt_{}".format(args.model_name+extra))
         model_state = torch.load(ckpt_name)
-        model.load_state_dicd ct(model_state['model']) 
+        model.load_state_dict(model_state['model']) 
 
     val_accs = []
     val_losses = []

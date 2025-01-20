@@ -239,7 +239,6 @@ class pb_mse_metric_test(nn.Module):
         y_values = np.array(filtered_row.iloc[:,4:29:2].values).reshape((-1,1))
 
         stats_df = pd.read_csv(os.path.join('//data/scratch/r094879/data/stats',name+'.csv'))
-        print(filename)
 
         stats_df.loc[stats_df["image"]==str(filename),"T4x"] = lm_pred[0,0]
         stats_df.loc[stats_df["image"]==str(filename),"T4y"] = lm_pred[0,1]

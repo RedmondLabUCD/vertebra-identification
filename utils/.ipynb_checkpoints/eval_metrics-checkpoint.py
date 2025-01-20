@@ -6,7 +6,7 @@ import os
 import itertools
 import torch
 import torch.nn as nn
-from sklearn.metrics import mean_squared_error
+from sklearn.metrics import root_mean_squared_error, mean_squared_error
 from PIL import Image
 from utils.landmark_prep import prep_landmarks, prep_landmarks_no_femur
 from utils.process_predictions import pixel_to_mm
@@ -206,17 +206,17 @@ class pb_mse_metric_test(nn.Module):
             lm_pred[i,0] = lm_preds[1]
             lm_pred[i,1] = lm_preds[0]
             max_val[i] = prediction[0,i,int(lm_preds[0]),int(lm_preds[1])]
-            cumulative_sum += prediction[0,i,:,:]
-            plt.imshow(prediction[0,i,:,:], cmap='gray')
-            plt.axis('off')
-            plt.savefig(os.path.join("//data/scratch/r094879/data/results",name,'heatmaps',filename+'_'+str(i)+'.png'))
-            plt.close()     
+        #     cumulative_sum += prediction[0,i,:,:]
+        #     plt.imshow(prediction[0,i,:,:], cmap='gray')
+        #     plt.axis('off')
+        #     plt.savefig(os.path.join("//data/scratch/r094879/data/results",name,'heatmaps',filename+'_'+str(i)+'.png'))
+        #     plt.close()     
 
-        plt.imshow(cumulative_sum, cmap='gray')
-        plt.title("Cumulative Sum of All Slices")
-        plt.axis('off')
-        plt.savefig(os.path.join("//data/scratch/r094879/data/results",name,'heatmaps',filename+'.png'))
-        plt.close()
+        # plt.imshow(cumulative_sum, cmap='gray')
+        # plt.title("Cumulative Sum of All Slices")
+        # plt.axis('off')
+        # plt.savefig(os.path.join("//data/scratch/r094879/data/results",name,'heatmaps',filename+'.png'))
+        # plt.close()
     
         # Use input image to resize predictions
         image_dir = params.image_dir
@@ -303,12 +303,24 @@ class pb_mse_metric_test(nn.Module):
         lm_targets = np.array(lm_tars).reshape((-1,2))
         lm_pred = np.array(lm_preds).reshape((-1,2))
 
-        mse = mean_squared_error(lm_targets, lm_pred)
+        y_mm2pix = img.PixelSpacing[0]/100
+        x_mm2pix = img.PixelSpacing[1]/100
+        print(y_mm2pix)
+        print(x_mm2pix)
+
+        lm_targets = lm_targets[:,0] * x_mm2pix
+        lm_targets = lm_targets[:,1] * y_mm2pix
+        lm_pred = lm_pred[:,0] * x_mm2pix
+        lm_pred = lm_pred[:,1] * y_mm2pix
+
+        rmse = root_mean_squared_error(lm_targets, lm_pred)
+
+        stats_df.loc[stats_df["image"]==str(filename),"RMSE"] = rmse
 
         # print(filename)
         # print(mse)
 
-        return mse
+        return rmse
     
 
 class test_pb_mse_metric(nn.Module):

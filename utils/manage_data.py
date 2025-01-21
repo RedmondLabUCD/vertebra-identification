@@ -115,8 +115,12 @@ def check_px_spacing():
 
         # Read the DICOM file
         dicom_image = dcmread(dicom_file_path)
+        
         try:
+            dicom_image.PixelSpacing
             print(dicom_image.PixelSpacing)
+        except NameError:
+            print("No pixel spacing detected")
 
 
 def plot_images_with_points():

@@ -307,9 +307,10 @@ class pb_mse_metric_test(nn.Module):
 
         count = 0
         dist = (lm_targets[1,1]-lm_targets[0,1])/2
+        print(dist)
         for i in range(len(lm_targets)):
-            if abs(int(lm_preds[i,1])-int(lm_targets[i,1])) < dist:
-                if abs(int(lm_preds[i,0])-int(lm_targets[i,0])) < dist:
+            if abs(int(lm_preds[i][1])-int(lm_targets[i][1])) < dist:
+                if abs(int(lm_preds[i][0])-int(lm_targets[i][0])) < dist:
                     count+=1
         id_acc = count/len(lm_targets)
         

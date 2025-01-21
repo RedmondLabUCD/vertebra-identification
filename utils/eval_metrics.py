@@ -222,6 +222,9 @@ class pb_mse_metric_test(nn.Module):
         image_dir = params.image_dir
         target_dir = "annotations/"
         img = dcmread(os.path.join(root,image_dir,filename+".dcm"))
+        for element in img:
+            print(element)
+    
         img_size = img.pixel_array.shape
         img_size = np.asarray(img_size).astype(float)
         
@@ -280,8 +283,6 @@ class pb_mse_metric_test(nn.Module):
         stats_df.loc[stats_df["image"]==str(filename),"L4y"] = lm_pred[12,1]
         stats_df.loc[stats_df["image"]==str(filename),"L4_val"] = max_val[12]
 
-        stats_df.to_csv(os.path.join('//data/scratch/r094879/data/stats',name+'.csv'),index=False)
-
         # Combine x and y values and filter out NaN pairs
         xy_pairs = np.concatenate([x_values,y_values],axis=1)
         
@@ -315,6 +316,8 @@ class pb_mse_metric_test(nn.Module):
         rmse = root_mean_squared_error(lm_targets, lm_pred)
 
         stats_df.loc[stats_df["image"]==str(filename),"RMSE"] = rmse
+
+        stats_df.to_csv(os.path.join('//data/scratch/r094879/data/stats',name+'.csv'),index=False)
 
         # print(filename)
         # print(mse)

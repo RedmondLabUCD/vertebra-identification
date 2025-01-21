@@ -199,7 +199,6 @@ class pb_mse_metric_test(nn.Module):
         cumulative_sum = np.zeros(prediction.shape[2:])
         max_val = np.zeros(13)
 
-        print(filename)
         # Get most likely landmark locations based on heatmap predictions
         for i in range(params.num_classes):
             lm_preds = np.unravel_index(prediction[0,i,:,:].argmax(),

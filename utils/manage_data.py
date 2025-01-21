@@ -230,10 +230,10 @@ def plot_test_images_with_points(predictions_file,name='LM1'):
         # Plot the x and y points on the image
         for i in range(len(pred_x)):
             if pred_x[i] > 0 and pred_y[i] > 0:
-                plt.scatter(pred_x[i],pred_y[i],marker='o',c='b',s=40)
+                plt.scatter(pred_x[i],pred_y[i],marker='o',c='b',s=20)
                 plt.text(pred_x[i],pred_y[i],str(vertebra_list[i]),c='b',ha='left')
             if targ_x[i] > 0 and targ_y[i] > 0:
-                plt.scatter(targ_x[i],targ_y[i],marker='o',c='r',s=40)
+                plt.scatter(targ_x[i],targ_y[i],marker='o',c='r',s=20)
                 plt.text(targ_x[i],targ_y[i],str(vertebra_list[i]),c='r',ha='right')
 
         custom_lines = [Line2D([0], [0], marker='o', color='b', markerfacecolor='blue', markersize=10),

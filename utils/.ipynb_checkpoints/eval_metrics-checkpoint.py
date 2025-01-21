@@ -221,10 +221,7 @@ class pb_mse_metric_test(nn.Module):
         # Use input image to resize predictions
         image_dir = params.image_dir
         target_dir = "annotations/"
-        img = dcmread(os.path.join(root,image_dir,filename+".dcm"))
-        for element in img:
-            print(element)
-    
+        img = dcmread(os.path.join(root,image_dir,filename+".dcm"))    
         img_size = img.pixel_array.shape
         img_size = np.asarray(img_size).astype(float)
         
@@ -303,19 +300,21 @@ class pb_mse_metric_test(nn.Module):
         lm_targets = np.array(lm_tars).reshape((-1,2))
         lm_pred = np.array(lm_preds).reshape((-1,2))
 
-        y_mm2pix = img.PixelSpacing[0]/100
-        x_mm2pix = img.PixelSpacing[1]/100
-        print(y_mm2pix)
-        print(x_mm2pix)
-
-        lm_targets = lm_targets[:,0] * x_mm2pix
-        lm_targets = lm_targets[:,1] * y_mm2pix
-        lm_pred = lm_pred[:,0] * x_mm2pix
-        lm_pred = lm_pred[:,1] * y_mm2pix
-
         rmse = root_mean_squared_error(lm_targets, lm_pred)
 
         stats_df.loc[stats_df["image"]==str(filename),"RMSE"] = rmse
+
+        count = 0
+        dist = (lm_targets[1,1]-lm_targets[0,1])/2
+        for i in range(len(lm_targets)):
+            if abs(lm_preds[i,1]-lm_targets[i,1]) < dist:
+                if abs(lm_preds[i,0]-lm_targets[i,0]) < dist:
+                    count+=1
+        id_acc = count/len(lm_targets)
+        
+        stats_df.loc[stats_df["image"]==str(filename),"correct"] = count
+        stats_df.loc[stats_df["image"]==str(filename),"total"] = len(lm_targets)
+        stats_df.loc[stats_df["image"]==str(filename),"id_acc"] = id_acc
 
         stats_df.to_csv(os.path.join('//data/scratch/r094879/data/stats',name+'.csv'),index=False)
 

@@ -102,6 +102,23 @@ def create_data_file(row,df):
         df.to_csv('//data/scratch/r094879/data/annotations/annotations.csv',index=False)
 
 
+def check_px_spacing():
+
+    csv_file = '//data/scratch/r094879/data/annotations/annotations.csv' 
+    df = pd.read_csv(csv_file)
+
+    dicom_dir = '//data/scratch/r094879/data/images'
+
+    for index, row in df.iterrows():
+        image_name = row['image']  # Get the DICOM image name from the 'image' column
+        dicom_file_path = os.path.join(dicom_dir,image_name+'.dcm')
+
+        # Read the DICOM file
+        dicom_image = dcmread(dicom_file_path)
+        try:
+            print(dicom_image.PixelSpacing)
+
+
 def plot_images_with_points():
 
     csv_file = '//data/scratch/r094879/data/annotations/annotations.csv' 

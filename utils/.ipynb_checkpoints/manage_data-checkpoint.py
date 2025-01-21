@@ -44,8 +44,8 @@ def prep_data():
 
     # Loop through each row in the Excel file and process
     for index, row in df_x.iterrows():
-        # create_data_file(row,df)
-        gather_boundaries(row)
+        create_data_file(row,df_x)
+        # gather_boundaries(row)
         break
 
     # df2 = df.replace('', np.nan, regex=True)
@@ -512,9 +512,6 @@ def create_dataset():
 
         # Combine x and y values and filter out NaN pairs
         xy_pairs = np.array(list(zip(x_values, y_values)))
-
-        print(img.shape)
-        print(xy_pairs)
 
         hm = create_hm(xy_pairs,(float(img.shape[1]),float(img.shape[0])),new_dim=256.0,size=5)
         np.save(os.path.join(output_dir,image_name),hm)

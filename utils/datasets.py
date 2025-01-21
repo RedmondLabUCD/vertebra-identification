@@ -29,7 +29,7 @@ class SpineDataset(Dataset):
         filename = self.file_list[index]
         input_filename = os.path.join(self.input_dir, filename+'.dcm')
         output_filename = os.path.join(self.output_dir, filename+'.npy')
-        
+        print(filename)
         dicom_image = dcmread(input_filename)
         input = dicom_image.pixel_array
         input = input.astype(float)

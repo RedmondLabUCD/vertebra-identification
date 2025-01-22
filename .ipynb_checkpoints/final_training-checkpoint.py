@@ -162,7 +162,7 @@ def main():
     # ==================== TRAIN THE MODEL FOR ONE FOLD ====================
 
     epoch_max = 100
-    for epoch in range(1,epoch_max):
+    for epoch in range(3,epoch_max):
         print("Epoch: {}".format(epoch))
         # Call training function. 
         train_generator = train(model, train_loader, optimizer, criterion, params)

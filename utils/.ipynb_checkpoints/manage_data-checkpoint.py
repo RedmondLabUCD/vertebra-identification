@@ -102,25 +102,47 @@ def create_data_file(row,df):
         df.to_csv('//data/scratch/r094879/data/annotations/annotations.csv',index=False)
 
 
-def check_px_spacing():
+# def check_px_spacing():
 
-    csv_file = '//data/scratch/r094879/data/annotations/annotations.csv' 
-    df = pd.read_csv(csv_file)
+#     csv_file = '//data/scratch/r094879/data/annotations/annotations.csv' 
+#     df = pd.read_csv(csv_file)
 
-    dicom_dir = '//data/scratch/r094879/data/images'
+#     dicom_dir = '//data/scratch/r094879/data/images'
 
-    for index, row in df.iterrows():
-        image_name = row['image']  # Get the DICOM image name from the 'image' column
-        dicom_file_path = os.path.join(dicom_dir,image_name+'.dcm')
+#     for index, row in df.iterrows():
+#         image_name = row['image']  # Get the DICOM image name from the 'image' column
+#         dicom_file_path = os.path.join(dicom_dir,image_name+'.dcm')
 
-        # Read the DICOM file
-        dicom_image = dcmread(dicom_file_path)
+#         # Read the DICOM file
+#         dicom_image = dcmread(dicom_file_path)
         
-        try:
-            dicom_image.PixelSpacing
-            print(dicom_image.PixelSpacing)
-        except NameError:
-            print("No pixel spacing detected")
+#         try:
+#             dicom_image.PixelSpacing
+#             print(dicom_image.PixelSpacing)
+#         except NameError:
+#             print("No pixel spacing detected")
+
+
+def split_data_for_check():
+    directory = '//data/scratch/r094879/data/images_with_points_new'
+    output_dir1 = '//data/scratch/r094879/data/images_with_points_new/fold1'
+    output_dir2 = '//data/scratch/r094879/data/images_with_points_new/fold2'
+    output_dir3 = '//data/scratch/r094879/data/images_with_points_new/fold3'
+
+    if not os.path.exists(output_dir1): os.makedirs(output_dir1)
+    if not os.path.exists(output_dir2): os.makedirs(output_dir2)
+    if not os.path.exists(output_dir3): os.makedirs(output_dir3)
+    
+    count = 0
+    output_dir = output_dir1
+    
+    for name in os.listdir(directory):
+        os.rename(os.path.join(directory,name),os.path.join(output_dir,name))
+        count += 1
+        if count > 1800:
+            output_dir = output_dir3
+        elif count > 900:
+            output_dir = output_dir2
 
 
 def plot_images_with_points():

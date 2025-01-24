@@ -124,10 +124,10 @@ def create_data_file(row,df):
 
 
 def split_data_for_check():
-    directory = '//data/scratch/r094879/data/images_with_points'
-    output_dir1 = '//data/scratch/r094879/data/images_with_points/fold1'
-    output_dir2 = '//data/scratch/r094879/data/images_with_points/fold2'
-    output_dir3 = '//data/scratch/r094879/data/images_with_points/fold3'
+    directory = '//data/scratch/r094879/data/images_with_points_new'
+    output_dir1 = '//data/scratch/r094879/data/images_with_points_new/fold1'
+    output_dir2 = '//data/scratch/r094879/data/images_with_points_new/fold2'
+    output_dir3 = '//data/scratch/r094879/data/images_with_points_new/fold3'
 
     if not os.path.exists(output_dir1): os.makedirs(output_dir1)
     if not os.path.exists(output_dir2): os.makedirs(output_dir2)

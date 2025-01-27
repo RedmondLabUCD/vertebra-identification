@@ -137,6 +137,7 @@ def split_data_for_check():
     output_dir = output_dir1
     listing = glob(os.path.join(orig_dir,'*.png'))
     for name in listing:
+        filename = name.split('/')[-1]
         shutil.move(os.path.join(orig_dir,name),os.path.join(output_dir,name))
         count += 1
         if count > 1800:

@@ -179,7 +179,7 @@ def rotate_180_check():
             #ROTATE IMAGE
             pixel_array = np.rot90(pixel_array, 2)
 
-            if str(image_name) is "1.3.6.1.4.1.23849.3047549382.11.1634226912973281250.3.1.1":
+            if str(image_name) == "1.3.6.1.4.1.23849.3047549382.11.1634226912973281250.3.1.1":
                 pixel_array = np.flip(pixel_array,1)
     
             # Get the x and y values for each vertebra

@@ -146,6 +146,72 @@ def split_data_for_check():
             output_dir = output_dir2
 
 
+def rotate_180_check():
+
+    csv_file = '//data/scratch/r094879/data/annotations/annotations.csv' 
+    df = pd.read_csv(csv_file)
+
+    dicom_dir = '//data/scratch/r094879/data/images'
+    output_dir = '//data/scratch/r094879/data/images_with_points_new/rotate_check'
+
+    if not os.path.exists(output_dir):
+        os.makedirs(output_dir)
+
+    images_to_rotate = {"1.3.6.1.4.1.23849.1523372706.11.1634383154459843750.3.1.1","1.3.6.1.4.1.23849.2292492336.11.1634353588374204427.3.1.1",
+                        "1.3.6.1.4.1.23849.3070783366.11.1634412454096093750.3.1.1","1.3.6.1.4.1.23849.3292118434.11.1634302616143596860.3.1.1",
+                        "1.3.6.1.4.1.23849.3482538762.11.1634445082479062500.3.1.1","1.3.6.1.4.1.23849.4190597982.11.1634445083927187500.3.1.1",
+                        "1.3.6.1.4.1.23849.2872276509.11.1634353586206235677.3.1.1","1.3.6.1.4.1.23849.3047549382.11.1634226912973281250.3.1.1",
+                        "1.3.6.1.4.1.23849.3088759028.11.1634357890243125000.3.1.1","1.3.6.1.4.1.23849.3715794974.11.1634412455716875000.3.1.1",
+                        "1.3.6.1.4.1.23849.452091744.11.1634281971797812500.3.1.1","1.3.6.1.4.1.23849.2498714632.11.1634302614592034360.3.1.1"}
+
+    for index, row in df.iterrows():
+        image_name = row['image']  # Get the DICOM image name from the 'image' column
+        
+        if str(image_name) in images_to_rotate:
+            dicom_file_path = os.path.join(dicom_dir, image_name+'.dcm')
+    
+            # Read the DICOM file
+            dicom_image = dcmread(dicom_file_path)
+    
+            # Extract pixel array from the DICOM file
+            pixel_array = dicom_image.pixel_array
+
+            #ROTATE IMAGE
+            pixel_array = np.rot90(pixel_array, 2)
+    
+            # Get the x and y values for each vertebra
+            x_values = row.iloc[3:29:2].values 
+            y_values = row.iloc[4:29:2].values
+    
+            # Combine x and y values and filter out NaN pairs
+            xy_pairs = np.array(list(zip(x_values, y_values)))
+            xy_pairs = xy_pairs[~np.isnan(xy_pairs).any(axis=1)]
+    
+            # Split back into x and y arrays after removing NaN pairs
+            if len(xy_pairs) > 0:  # Proceed only if we have valid points to plot
+                x_values, y_values = xy_pairs[:, 0], xy_pairs[:, 1]
+        
+                # Plot the DICOM image
+                plt.imshow(pixel_array, cmap='gray')
+        
+                # Plot the x and y points on the image
+                plt.scatter(x_values, y_values, c='red', s=40, marker='o')
+        
+                # Save the image as a PNG file
+                output_file_name = f"{image_name}_rotated.png"
+                output_file_path = os.path.join(output_dir, output_file_name)
+                plt.savefig(output_file_path)
+        
+                # Clear the plot for the next iteration
+                plt.clf()
+        
+                print(f"Saved {output_file_path}")
+            else:
+                print(f"No valid points to plot for {image_name}")
+    
+        print("All images have been processed and saved as PNG files.")
+
+
 def plot_images_with_points():
 
     csv_file = '//data/scratch/r094879/data/annotations/annotations.csv' 

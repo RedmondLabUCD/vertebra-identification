@@ -137,11 +137,14 @@ def split_data_for_check():
     output_dir = output_dir1
     listing = glob(os.path.join(directory,'*.png'))
     for name in listing:
+        print(name)
         os.rename(os.path.join(directory,name),os.path.join(output_dir,name))
         count += 1
         if count > 1800:
+            print("group 3")
             output_dir = output_dir3
         elif count > 900:
+            print("group 2")
             output_dir = output_dir2
 
 

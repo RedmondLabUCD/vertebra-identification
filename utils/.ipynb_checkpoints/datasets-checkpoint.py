@@ -27,6 +27,7 @@ class SpineDataset(Dataset):
             
     def __getitem__(self, index): #getitem method
         filename = self.file_list[index]
+        print(filename)
         input_filename = os.path.join(self.input_dir, filename+'.dcm')
         output_filename = os.path.join(self.output_dir, filename+'.npy')
 
@@ -50,8 +51,6 @@ class SpineDataset(Dataset):
         input = input.astype(np.uint8)
         input = Image.fromarray(input)
         input = input.resize((256,256))
-
-        print(filename)
         
         # input = self.loader(input_filename)
         output = np.load(output_filename) 

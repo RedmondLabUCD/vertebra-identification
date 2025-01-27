@@ -6,7 +6,7 @@
 #SBATCH -t 6-00:00:00        ### The time limit in D-hh:mm:ss format
 #SBATCH -o /trinity/home/r094879/repositories/vertebra-identification/output/out2_%j.log       ### Where to store the console output (%j is the job number)
 #SBATCH -e /trinity/home/r094879/repositories/vertebra-identification/error/error2_%j.log      ### Where to store the error output
-#SBATCH --job-name=sp_lm_model  ### Name your job so you can distinguish between jobs
+#SBATCH --job-name=sp_lm_2  ### Name your job so you can distinguish between jobs
 #SBATCH --exclude=gpu004        ### exclude a gpu from the job
 
 # ----- Load the modules -----
@@ -21,8 +21,8 @@ source "/tmp/${SLURM_JOB_USER}.${SLURM_JOB_ID}/prolog.env"
 source /trinity/home/r094879/vertebra-detection/bin/activate
 
 # ----- Your tasks -----
-# python final_training.py UNet_LM_CL2 --custom_loss True
+python final_training.py UNet_LM_CL2 --custom_loss True --ckpt "Checkpoint/Test2"
 # python final_training.py UNet_deep_CL2 --custom_loss True
-python test.py UNet_LM_CL
-python test.py UNet_LM_CL2
-python test.py UNet_LM_CL3
+# python test.py UNet_LM_CL
+# python test.py UNet_LM_CL2
+# python test.py UNet_LM_CL3

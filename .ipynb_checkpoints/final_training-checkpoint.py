@@ -38,7 +38,7 @@ def main():
     parser.add_argument("--k",required=False,type=int,default=10,help="Number of times to train and evaluate model")
     parser.add_argument("--roi",required=False,type=str,default=None,help="Uses ROI predictions as base.")
     parser.add_argument("--custom_loss",required=False,default=False,help="Use custom loss function.")
-    parser.add_argument("--ckpt",required=False,type=str,default='Checkpoint/Test1',help="Set a checkpoint folder.")
+    parser.add_argument("--ckpt",required=False,default=False,help="Set a checkpoint folder.")
     parser.add_argument("--checkpoint",required=False,default=False,help="Set a checkpoint folder.")
     args = parser.parse_args()
     
@@ -66,7 +66,8 @@ def main():
         loss_func = getattr(nn, params.loss)
     criterion = loss_func()
 
-    params.checkpoint_dir = str(args.ckpt)
+    if args.ckpt:
+        params.checkpoint_dir = str(args.ckpt)
     
     # Define evaluation metric
     eval_metric = getattr(e_metric, params.eval_metric)

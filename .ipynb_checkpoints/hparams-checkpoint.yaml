@@ -1,6 +1,23 @@
 default: &DEFAULT
   num_epochs: 20
   batch_size: 64
+
+UNet_LM:
+  <<: *DEFAULT
+  model_name: UNet
+  image_dir: "images"
+  target_dir: "heatmaps"
+  target_sfx: ".npy"
+  checkpoint_dir: "Checkpoint/Loss_check"
+  log_dir: 'Logs/Loss_check'
+  dataset_class: "SpineDataset"
+  loss: "MSELoss"
+  eval_metric: "pb_mse_metric"
+  test_eval_metric: "pb_mse_metric_test"
+  num_classes: 13
+  batch_size: 32
+  input_size: 256
+  early_stopping_up: False
   
 UNet_LM_CL:
   <<: *DEFAULT

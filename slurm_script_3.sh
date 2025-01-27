@@ -7,6 +7,7 @@
 #SBATCH -o /trinity/home/r094879/repositories/vertebra-identification/output/out_%j.log       ### Where to store the console output (%j is the job number)
 #SBATCH -e /trinity/home/r094879/repositories/vertebra-identification/error/error_%j.log      ### Where to store the error output
 #SBATCH --job-name=sp_lm_model  ### Name your job so you can distinguish between jobs
+#SBATCH --exclude=gpu002        ### exclude a gpu from the job
 
 # ----- Load the modules -----
 module purge

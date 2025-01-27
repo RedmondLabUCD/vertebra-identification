@@ -42,7 +42,7 @@ class SpineDataset(Dataset):
 
         if str(filename) in images_to_rotate:
             input = np.rot90(input,2)
-            if str(image_name) == "1.3.6.1.4.1.23849.3047549382.11.1634226912973281250.3.1.1":
+            if str(filename) == "1.3.6.1.4.1.23849.3047549382.11.1634226912973281250.3.1.1":
                 input = np.flip(input,1)
             
         input = input.astype(float)

@@ -50,6 +50,8 @@ class SpineDataset(Dataset):
         input = input.astype(np.uint8)
         input = Image.fromarray(input)
         input = input.resize((256,256))
+
+        print(filename)
         
         # input = self.loader(input_filename)
         output = np.load(output_filename) 

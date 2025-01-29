@@ -8,7 +8,7 @@
 #SBATCH -e /trinity/home/r094879/repositories/vertebra-identification/error/error2_%j.log      ### Where to store the error output
 #SBATCH --job-name=sp_lm_2  ### Name your job so you can distinguish between jobs
 #SBATCH --exclude=gpu004        ### exclude a gpu from the job
-#SBATCH --nodelist=gpu001       ### only use this gpu for the job
+#SBATCH --nodelist=gpu006       ### only use this gpu for the job
 
 # ----- Load the modules -----
 module purge

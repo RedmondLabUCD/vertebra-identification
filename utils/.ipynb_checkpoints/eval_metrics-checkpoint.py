@@ -312,13 +312,14 @@ class pb_mse_metric_test(nn.Module):
                     count+=1
                     error_tar.append(lm_targets[i])
                     error_pred.append(lm_pred[i])
-                    
-        error_tar = np.array(error_tar).reshape((-1,2))
-        error_pred = np.array(error_pred).reshape((-1,2))
+        
+        if error_pred:            
+            error_tar = np.array(error_tar).reshape((-1,2))
+            error_pred = np.array(error_pred).reshape((-1,2))
 
-        rmse = root_mean_squared_error(error_tar, error_pred)
+            rmse = root_mean_squared_error(error_tar, error_pred)
 
-        stats_df.loc[stats_df["image"]==str(filename),"RMSE"] = rmse        
+            stats_df.loc[stats_df["image"]==str(filename),"RMSE"] = rmse        
                     
         id_acc = count/len(lm_targets)
         

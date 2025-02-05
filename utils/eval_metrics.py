@@ -319,7 +319,10 @@ class pb_mse_metric_test(nn.Module):
 
             rmse = root_mean_squared_error(error_tar, error_pred)
 
-            stats_df.loc[stats_df["image"]==str(filename),"RMSE"] = rmse        
+            stats_df.loc[stats_df["image"]==str(filename),"RMSE"] = rmse   
+        else:
+            rmse = np.nan
+            
                     
         id_acc = count/len(lm_targets)
         

@@ -27,5 +27,5 @@ python final_training.py UNet_LM_CL3 --custom_loss True --ckpt 'Checkpoint/Test2
 # python final_training.py UNet_deep_CL --custom_loss True --ckpt 'Checkpoint/Deep'
 # python final_training.py UNet_LM_CL3 --custom_loss True --ckpt 'Checkpoint/Long3'
 # python main.py
-# python test.py UNet_LM_CL --ckpt 'Checkpoint/Long'
+python test.py UNet_LM_CL --ckpt 'Checkpoint/Long'
 

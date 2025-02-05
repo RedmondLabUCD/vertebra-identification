@@ -301,10 +301,8 @@ class pb_mse_metric_test(nn.Module):
         lm_targets = np.array(lm_tars).reshape((-1,2))
         lm_pred = np.array(lm_preds).reshape((-1,2))
 
-        rmse = root_mean_squared_error(lm_targets, lm_pred)
-
-        stats_df.loc[stats_df["image"]==str(filename),"RMSE"] = rmse
-
+        error_tar = []
+        error_pred = []
         count = 0
         dist = (lm_targets[1,1]-lm_targets[0,1])/2
         print(dist)
@@ -312,6 +310,16 @@ class pb_mse_metric_test(nn.Module):
             if abs(int(lm_preds[i][1])-int(lm_targets[i][1])) < dist:
                 if abs(int(lm_preds[i][0])-int(lm_targets[i][0])) < dist:
                     count+=1
+                    error_tar.append(lm_targets[i])
+                    error_pred.append(lm_pred[i])
+                    
+        error_tar = np.array(error_tar).reshape((-1,2))
+        error_pred = np.array(error_pred).reshape((-1,2))
+
+        rmse = root_mean_squared_error(error_tar, error_pred)
+
+        stats_df.loc[stats_df["image"]==str(filename),"RMSE"] = rmse        
+                    
         id_acc = count/len(lm_targets)
         
         stats_df.loc[stats_df["image"]==str(filename),"correct"] = count

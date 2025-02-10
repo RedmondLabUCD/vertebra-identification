@@ -76,26 +76,18 @@ def avg_vertebra_dist():
     dists = []
     
     for index, row in csv_df.iterrows():
-        x_values = np.array(row.iloc[3:29:2].values).reshape((-1,1))
-        y_values = np.array(row.iloc[4:29:2].values).reshape((-1,1))
+        x_values = np.array(row.iloc[3:29:2].values)
+        y_values = np.array(row.iloc[4:29:2].values)
 
         # Combine x and y values and filter out NaN pairs
-        xy_pairs = np.concatenate([x_values,y_values],axis=1)
-
-        lm_targets = xy_pairs.reshape((-1,2))
-        # lm_targets = np.nan_to_num(lm_targets)
-
-        lm_tars = []
-
-        print(lm_targets)
-
-        for i in range(len(lm_targets)):
-            if str(lm_targets[i][0]) is not "nan":
-                lm_tars.append(lm_targets[i])
+        xy_pairs = np.array(list(zip(x_values, y_values)))
+        lm_tars = xy_pairs[~np.isnan(xy_pairs).any(axis=1)]
 
         print(lm_tars)
                 
         lm_targets = np.array(lm_tars).reshape((-1,2))
+
+        print(lm_targets)
         
         for i in range(len(lm_targets)):
             if i+1 < len(lm_targets):

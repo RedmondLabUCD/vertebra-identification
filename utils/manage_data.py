@@ -83,7 +83,7 @@ def avg_vertebra_dist():
         xy_pairs = np.concatenate([x_values,y_values],axis=1)
 
         lm_targets = xy_pairs.reshape((-1,2))
-        lm_targets = np.nan_to_num(lm_targets)
+        lm_targets = np.nan_to_num(lm_targets).astype('int')
 
         lm_tars = []
 

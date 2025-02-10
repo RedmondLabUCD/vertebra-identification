@@ -76,8 +76,8 @@ def avg_vertebra_dist():
     dists = []
     
     for index, row in csv_df.iterrows():
-        x_values = np.array(row.iloc[:,3:29:2].values).reshape((-1,1))
-        y_values = np.array(row.iloc[:,4:29:2].values).reshape((-1,1))
+        x_values = np.array(row.iloc[3:29:2].values).reshape((-1,1))
+        y_values = np.array(row.iloc[4:29:2].values).reshape((-1,1))
 
         # Combine x and y values and filter out NaN pairs
         xy_pairs = np.concatenate([x_values,y_values],axis=1)

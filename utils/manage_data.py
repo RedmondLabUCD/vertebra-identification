@@ -22,6 +22,7 @@ from utils.feature_extraction import extract_image_size
 import cv2 as cv
 from pydicom.pixel_data_handlers.util import apply_voi_lut
 from matplotlib.lines import Line2D
+import statistics
 # import h5py
     
 
@@ -62,6 +63,42 @@ def prep_data():
     # print(count)
     # df2 = df2.dropna(subset=['group'])
     # df2.to_csv('//data/scratch/r094879/data/annotations/annotations.csv',index=False)
+
+
+def avg_vertebra_dist():
+    root = '//data/scratch/r094879/data/'
+
+    # Get targets
+
+    csv_file = os.path.join(root,'annotations/annotations.csv')
+    csv_df = pd.read_csv(csv_file)
+    
+    dists = []
+    
+    for index, row in csv_df.iterrows():
+        x_values = np.array(row.iloc[:,3:29:2].values).reshape((-1,1))
+        y_values = np.array(row.iloc[:,4:29:2].values).reshape((-1,1))
+
+        # Combine x and y values and filter out NaN pairs
+        xy_pairs = np.concatenate([x_values,y_values],axis=1)
+
+        lm_targets = xy_pairs.reshape((-1,2))
+        lm_targets = np.nan_to_num(lm_targets)
+
+        lm_tars = []
+
+        for i in range(len(lm_targets)):
+            if int(lm_targets[i][0]) != 0:
+                lm_tars.append(lm_targets[i])
+                
+        lm_targets = np.array(lm_tars).reshape((-1,2))
+        
+        for i in range(len(lm_targets)):
+            if i+1 < len(lm_targets):
+                dists.append(lm_targets[i+1,1]-lm_targets[i,1])
+                
+    print(statistics.mean(dists))
+    print(statistics.stdev(dists))
 
 
 def create_data_file(row,df):

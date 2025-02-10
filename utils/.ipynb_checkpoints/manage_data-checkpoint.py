@@ -82,12 +82,8 @@ def avg_vertebra_dist():
         # Combine x and y values and filter out NaN pairs
         xy_pairs = np.array(list(zip(x_values, y_values)))
         lm_tars = xy_pairs[~np.isnan(xy_pairs).any(axis=1)]
-
-        print(lm_tars)
                 
         lm_targets = np.array(lm_tars).reshape((-1,2))
-
-        print(lm_targets)
         
         for i in range(len(lm_targets)):
             if i+1 < len(lm_targets):

@@ -90,7 +90,7 @@ def avg_vertebra_dist():
         print(lm_targets)
 
         for i in range(len(lm_targets)):
-            if lm_targets[i][0] is not np.nan:
+            if str(lm_targets[i][0]) is not "nan":
                 lm_tars.append(lm_targets[i])
 
         print(lm_tars)

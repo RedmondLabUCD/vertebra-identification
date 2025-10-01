@@ -16,7 +16,6 @@ from PIL import Image,ImageEnhance
 from scipy import ndimage
 from skimage import io
 from utils import datasets
-from utils.landmark_prep import prep_landmarks
 
 
 def final_mean_and_std(data_dir, params):

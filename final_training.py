@@ -162,7 +162,7 @@ def main():
 
     # ==================== TRAIN THE MODEL FOR ONE FOLD ====================
 
-    epoch_max = 100
+    epoch_max = 300
     for epoch in range(1,epoch_max):
         print("Epoch: {}".format(epoch))
         # Call training function. 

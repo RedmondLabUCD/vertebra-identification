@@ -2,7 +2,7 @@ default: &DEFAULT
   num_epochs: 20
   batch_size: 64
 
-UNet_LM:
+UNet_LM_100:
   <<: *DEFAULT
   model_name: UNet
   image_dir: "images"
@@ -19,7 +19,7 @@ UNet_LM:
   input_size: 256
   early_stopping_up: False
   
-UNet_LM_CL:
+UNet_LM_CL_100:
   <<: *DEFAULT
   model_name: UNet
   image_dir: "images"
@@ -36,7 +36,7 @@ UNet_LM_CL:
   input_size: 256
   early_stopping_up: False
   
-UNet_LM_CL2:
+UNet_LM_CL2_100:
   <<: *DEFAULT
   model_name: UNet
   image_dir: "images"
@@ -53,7 +53,7 @@ UNet_LM_CL2:
   input_size: 256
   early_stopping_up: False
 
-UNet_LM_CL3:
+UNet_LM_CL3_100:
   <<: *DEFAULT
   model_name: UNet
   image_dir: "images"

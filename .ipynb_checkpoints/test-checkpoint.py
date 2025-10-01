@@ -34,7 +34,7 @@ def main():
     parser.add_argument("model_name",type=str,help="Pass name of model as defined in hparams.yaml.")
     parser.add_argument("--k",required=False,type=int,default=10,help="Number of times to train and evaluate model")
     parser.add_argument("--cl",required=False,default=False,help="Set to true to use the UNet with Custom Loss as base.")
-    parser.add_argument("--ckpt",required=False,type=str,default='Checkpoint/Test1',help="Set a checkpoint folder.")
+    parser.add_argument("--ckpt",required=False,default=False,help="Set a checkpoint folder.")
     args = parser.parse_args()
 
     # Parse our YAML file which has our model parameters. 
@@ -86,16 +86,16 @@ def main():
     
     extra = ""
     extra2 = extra
-                        
-    if args.cl:
-        extra2 = extra2 + "_CL"
+        
+    if args.ckpt:
+        params.checkpoint_dir = str(args.ckpt)
         
     acc_scores = []
     pred_acc_scores = []
     
     # Make directories to save results 
     prediction_save = os.path.join(root,"Results",args.model_name,
-                                   "Predicted_long" + extra + " " + params.target_dir)
+                                   "Predicted_epoch" + extra + " " + params.target_dir)
     if not os.path.exists(prediction_save): os.makedirs(prediction_save)
     
         

@@ -86,9 +86,6 @@ def main():
     
     extra = ""
     extra2 = extra
-                        
-    if args.cl:
-        extra2 = extra2 + "_CL"
         
     if args.ckpt:
         params.checkpoint_dir = str(args.ckpt)
@@ -98,7 +95,7 @@ def main():
     
     # Make directories to save results 
     prediction_save = os.path.join(root,"Results",args.model_name,
-                                   "Predicted_long" + extra + " " + params.target_dir)
+                                   "Predicted_epoch" + extra + " " + params.target_dir)
     if not os.path.exists(prediction_save): os.makedirs(prediction_save)
     
         

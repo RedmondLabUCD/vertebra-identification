@@ -23,7 +23,6 @@ from utils.earlystopping import EarlyStopping
 from utils import datasets
 from torchvision.datasets.utils import list_files
 from utils.params import Params
-from utils.plotting import plot_training
 from utils.train_progress_tools import run_train_generator, track_running_average_loss, monitor_progress
 import utils.eval_metrics as e_metric
 from utils.data_prep import final_mean_and_std
@@ -33,7 +32,6 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("model_name",type=str,help="Pass name of model as defined in hparams.yaml.")
     parser.add_argument("--k",required=False,type=int,default=10,help="Number of times to train and evaluate model")
-    parser.add_argument("--cl",required=False,default=False,help="Set to true to use the UNet with Custom Loss as base.")
     parser.add_argument("--ckpt",required=False,default=False,help="Set a checkpoint folder.")
     args = parser.parse_args()
 

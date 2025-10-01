@@ -3,10 +3,6 @@ import numpy as np
 import pandas as pd 
 import os
 import math
-
-from utils.roi_functions import resize_roi_lm, roi_contour_dims
-from utils.feature_extraction import get_contours
-from utils.landmark_prep import resize_lm
 import cv2
 import matplotlib.pyplot as plt
 

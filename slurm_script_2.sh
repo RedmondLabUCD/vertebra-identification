@@ -22,9 +22,9 @@ source "/tmp/${SLURM_JOB_USER}.${SLURM_JOB_ID}/prolog.env"
 source /trinity/home/r094879/vertebra-detection/bin/activate
 
 # ----- Your tasks -----
-python final_training.py UNet_LM_CL2_100 --custom_loss True --ckpt "Checkpoint/epoch"
+python final_training.py UNet_LM_100 --ckpt "Checkpoint/epoch"
 # python final_training.py UNet_deep_CL2 --custom_loss True
 # python test.py UNet_LM_CL --ckpt "Checkpoint/Test1"
-python test.py UNet_LM_CL2_100 --ckpt "Checkpoint/epoch"
+python test.py UNet_LM_100 --ckpt "Checkpoint/epoch"
 # python test.py UNet_LM_CL3 --ckpt "Checkpoint/Test1"
 # python test.py UNet_LM --ckpt "Checkpoint/Test2"

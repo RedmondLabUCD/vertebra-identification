@@ -42,7 +42,7 @@ The model follows a heatmap-based landmark detection approach using a U-Net.
 
 A key contribution of this work is the design of loss functions that handle incomplete labels.
 
-### Standard heatmap loss (baseline)
+### Standard heatmap loss: MSE
 
 $$
 \mathcal{L}_{MSE} = \frac{1}{N} \sum_{j=1}^{L} \sum_{i=1}^{N} (y_{ij} - \hat{y}_{ij})^2

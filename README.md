@@ -58,30 +58,41 @@ $$
 - Handle vertebrae never labelled in dataset  
 - Apply weighting based on annotation availability
 
+## Model Assessment
+
+Model performance is evaluated using the following metrics:
+
+### Localisation Performance
+
+Root Mean Squared Error (RMSE) between predicted and ground truth centroid locations. Computed only on vertebrae with available annotations.
+
+### Identification Performance
+
+Vertebral ID accuracy based on correctly classified vertebra labels (percentage). 
+
+### Detection Analysis. Predictions are categorised into:
+
+Correctly Classified (CC): Correct centroid and correct label
+Misclassified (MC): Correct detection but incorrect label
+Missing Detections (MD): Ground truth vertebra not detected
+Additional Correct (ACC): Correct prediction on an unlabelled vertebra
+Additional Misclassified (AMC): Incorrect prediction on an unlabelled vertebra
+
+### Evaluation Considerations
+
+Metrics are computed only on annotated vertebrae for fair comparison. Additional detections are analysed separately due to partial annotation settings. This evaluation framework ensures robust assessment under incomplete labels. 
+
 ## 1. Clone Repository
 
     git clone [https://github.com/RedmondLabUCD/vertebra-identification.git](https://github.com/RedmondLabUCD/vertebra-identification.git)
 
 ## 2. Data Preparation
 
-The dataset used in this work is unfortunately not available publicly. However, all code for data preparation is provided to create the heatmaps and extract the images from original DICOM files. 
+The dataset used in this work is unfortunately not available publicly. However, all code for data preparation is provided to create the heatmaps and extract the images from original DICOM files (utils/manage_data.py/create_dataset())
 
-Split data into folds:
+## 3. Train and test models.
 
-    split_data()
-
-Create all data files needed (regions of interest, heatmaps, etc.):
-
-    create_dataset()
-
-## 3. Train model and test on reserved test dataset.
-
-To train and test the final coarse and fine models, use:
+To train and test the models, use:
 
     %run final_training.py <model_name>
-    %run final_test.py <model_name>
-
-Process results of coarse model and calculate accuracy:
-
-    final_lm_preds_postprocess(model_name=<model_name>)
-    calculate_percentage_box(model_name==<model_name>,size=<ROI width in pixels>)
+    %run test.py <model_name>
